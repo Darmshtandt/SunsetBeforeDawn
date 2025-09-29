@@ -89,47 +89,9 @@ private:
 	Scene m_Scene;
 
 private:
-	ControllerPtr& _GetController(const ControllerID& id) {
-		auto it = m_Controllers.find(id);
-		Assert(it != m_Controllers.cend(), "Unknown controller");
-		return it->second;
-	}
+	ControllerPtr& _GetController(const ControllerID& id);
 
-	void _HandleEventOnAdd(const Scene::OnAdd& event) {
-		if (event.pObject->GetType() == ObjectType::Player) {
-			Player* pPlayer = static_cast<Player*>(event.pObject);
-
-			AddController<MovableController, Movable>(pPlayer);
-			AddController<RotatableController, Movable>(pPlayer);
-
-			ActivateController<MovableController>();
-			ActivateController<RotatableController>();
-			m_Camera.SetTarget(pPlayer);
-		}
-		else if (event.pObject->GetType() == ObjectType::Creature) {
-			Creature* pCreature = static_cast<Creature*>(event.pObject);
-
-			m_BehaviorSystem.EvaluateBehavior(pCreature);
-			m_TargetingSystem.RegisterCreature(m_Scene, *pCreature);
-		}
-
-		m_PhysicsSystem.AddObject(event.pObject);		
-	}
-	void _HandleEventOnRemove(const Scene::OnRemove& event) {
-		if (event.pObject->GetType() == ObjectType::Player) {
-			RemoveController<MovableController>();
-			RemoveController<RotatableController>();
-			m_Camera.SetTarget(nullptr);
-		}
-
-		m_PhysicsSystem.RemoveObject(event.pObject);
-	}
-	void _HandleEventOnClear(const Scene::OnClear& event) {
-		(void)event;
-
-		m_ActiveControllers.clear();
-		m_Controllers.clear();
-		m_PhysicsSystem.Clear();
-		m_Camera.SetTarget(nullptr);		
-	}
+	void _HandleEventOnAdd(const Scene::OnAdd& event);
+	void _HandleEventOnRemove(const Scene::OnRemove& event);
+	void _HandleEventOnClear(const Scene::OnClear& event);
 };

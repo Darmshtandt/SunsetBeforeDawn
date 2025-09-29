@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Nt/Graphics/Objects/Model.h>
+#include <Objects/Components/IComponent.h>
 #include <RegistrarBase.h>
 #include <Signal.h>
 
@@ -15,6 +16,9 @@ enum class ObjectType : Byte {
 };
 
 class GameObject : public Nt::Model, public Identifier {
+private:
+	using ComponentPtr = std::unique_ptr<IComponent>;
+
 protected:
 	GameObject(const ClassID& id, const ObjectType& type) noexcept;
 
@@ -31,6 +35,32 @@ public:
 	void Translate(const Nt::Float3D& offset) noexcept;
 	void SubscribeOnMoved(const Signal<GameObject*>::Slot& onMoved);
 
+	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	void AddComponent() {
+		m_Components[Class<_Ty>::ID()] = std::make_unique<_Ty>();
+	}
+
+	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	[[nodiscard]] const _Ty* GetComponent() const noexcept {
+		auto it = m_Components.find(Class<_Ty>::ID());
+		if (it == m_Components.cend())
+			return nullptr;
+		return static_cast<const _Ty*>(it->second.get());
+	}
+
+	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	[[nodiscard]] _Ty* GetComponent() noexcept {
+		auto it = m_Components.find(Class<_Ty>::ID());
+		if (it == m_Components.cend())
+			return nullptr;
+		return static_cast<_Ty*>(it->second.get());
+	}
+
+	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	[[nodiscard]] Bool HasComponent() const noexcept {
+		return m_Components.contains(Class<_Ty>::ID());
+	}
+
 	[[nodiscard]] Float GetDistance(const GameObject& object) const noexcept;
 	[[nodiscard]] ObjectType GetType() const noexcept;
 	[[nodiscard]] IBody* GetBodyPtr() noexcept;
@@ -38,6 +68,7 @@ public:
 
 protected:
 	Signal<GameObject*> m_OnMoved;
+	std::unordered_map<ComponentID, ComponentPtr> m_Components;
 	std::unique_ptr<IBody> m_pBody;
 	ObjectType m_Type;
 

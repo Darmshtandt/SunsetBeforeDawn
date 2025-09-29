@@ -100,6 +100,18 @@
     <Filter Include="Source Files\Objects\Creatures\Humanoid">
       <UniqueIdentifier>{682d98ba-0385-453f-8c11-8ef6661dd3d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{7ee046f1-9f96-4308-a247-ec75b6703f2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{2b42bccc-02c7-4f8b-8c23-146fd54ee576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Components">
+      <UniqueIdentifier>{6d46af6a-32d1-434b-8603-67ca91228032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Components">
+      <UniqueIdentifier>{48aa97bd-9771-4056-8606-89c0eee089bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Vert.glsl">
@@ -336,8 +348,38 @@
     <ClInclude Include="MovementSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputSystem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Input\MouseHandler.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\OSInputCollector.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputSystem.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\KeyboardHandler.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputMapper.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\RawInput.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\IComponent.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\InputComponent.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Commands.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\MovementComponent.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\PlayerController.h">
+      <Filter>Header Files\Controllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -449,8 +491,32 @@
     <ClCompile Include="MovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Input\InputSystem.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\OSInputCollector.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\KeyboardHandler.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\MouseHandler.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputMapper.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Components\InputComponent.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Components\IComponent.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Components\MovementComponent.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\PlayerController.cpp">
+      <Filter>Source Files\Controllers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

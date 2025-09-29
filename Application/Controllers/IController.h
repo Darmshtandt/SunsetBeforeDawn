@@ -27,8 +27,8 @@ public:
 	IController& operator = (IController&&) noexcept = default;
 
 	virtual void Update(const Float& deltaTime) = 0;
-	virtual void Register(NotNull<Nt::Window*> pWindow) = 0;
-	virtual void Unregister(NotNull<Nt::Window*> pWindow) = 0;
+	virtual void Register(NotNull<Nt::Window*> pWindow) {};
+	virtual void Unregister(NotNull<Nt::Window*> pWindow) {};
 
 	void Enable() noexcept {
 		m_Enabled = true;
