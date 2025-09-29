@@ -1,0 +1,8 @@
+.idea/
+.PVS-Studio/
+.vs/
+cmake-build-debug/
+Debug/
+packages/
+CMakeLists.txt
+Безымянный.png

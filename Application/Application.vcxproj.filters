@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Actions">
+      <UniqueIdentifier>{17f46918-0943-4e36-a935-c368fb5078ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms">
+      <UniqueIdentifier>{f515d56c-9dc4-49d2-b510-62983d1ef34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers">
+      <UniqueIdentifier>{70ad2927-53ab-496d-96de-001dc3ec977b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{be39da45-6fdc-4bcf-a44b-ba22b19e86bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Listeners">
+      <UniqueIdentifier>{c10c0bda-1ef0-496e-ba40-eb377d785220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{3749bfc5-9321-49cd-b142-9aaa3dc2077b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{71410925-205a-4b6a-a137-0e1ab43c1eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\World">
+      <UniqueIdentifier>{6f533a98-43b6-42e4-bd76-536e00a3603d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Biomes">
+      <UniqueIdentifier>{bafe8aaf-f587-49d9-b998-e80699d19834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{4867063b-5355-47e8-be0e-a97689858b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Actors">
+      <UniqueIdentifier>{d56e4222-e0c7-4103-b59c-118c84c9f3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\NPC">
+      <UniqueIdentifier>{9672cae2-1710-4e9f-a77f-62bd6cdcc962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Actors">
+      <UniqueIdentifier>{725a2468-b2c7-4610-ab85-fed33d9bf35b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\NPC">
+      <UniqueIdentifier>{8e197b7a-7e59-4c93-a753-8bbd823fb4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\NPC\Behaviors">
+      <UniqueIdentifier>{4def2f34-5b28-42ee-ab57-31a6cddfdeb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\NPC\Behaviors">
+      <UniqueIdentifier>{d921b967-227c-4a64-a825-d1fc672b8043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Interactives">
+      <UniqueIdentifier>{701b4285-3464-4b11-b8e3-7162eb3330d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Interactives">
+      <UniqueIdentifier>{ba8cd6a0-bc83-432d-bb85-d7fbbdc1ae75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{078a17e0-1ca1-4cf9-8bfb-49310cfbf1f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{6bfec0df-7e33-4bc6-840c-c0f75e8a9671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Nt">
+      <UniqueIdentifier>{8679d903-4764-4492-a21e-a4c6aacd80e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Nt\CollisionAlgorithms">
+      <UniqueIdentifier>{784ea06d-a768-4aea-b4b9-7f1e2d771ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers">
+      <UniqueIdentifier>{8a99173c-d52e-4963-88e0-9e0d74a08db1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Creatures">
+      <UniqueIdentifier>{cb8916ef-4d23-4127-a2ee-b140a110a4d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Creatures\Undead">
+      <UniqueIdentifier>{51625cf8-ffea-4ecd-a346-684ae2398d90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Creature">
+      <UniqueIdentifier>{aa117af3-6d29-4628-8e29-2d27ebe36a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Creature\Undead">
+      <UniqueIdentifier>{f9deecb4-a9bb-4546-8249-e4ef3cf11f31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Creature\Humanoid">
+      <UniqueIdentifier>{8ddc9219-265a-494c-9d1c-b60e9361aa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Creatures\Humanoid">
+      <UniqueIdentifier>{682d98ba-0385-453f-8c11-8ef6661dd3d6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Vert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Frag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Geometry.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="packages.config" />
+    <None Include="ClassManager.inl">
+      <Filter>Header Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Visualizer.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Actions\IAction.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\MaxRects.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\CommandActions.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\Command.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\CommandBinder.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\DebugController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\IController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\MovableController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\DebugSpectator.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Profiler.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\ProgressBar.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Listeners\KeyboardHandler.h">
+      <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="Listeners\MouseHandler.h">
+      <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Scene.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Terrain.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\WorldLoader.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\WorldEditor.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Landscape.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\DesertBiome.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\ForestBiome.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\HilsBiome.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\OceanBiome.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\SwampBiome.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\Biome.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\BiomeFactory.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\BiomeRegistrar.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegistrarBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FactoryBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Signal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\RotatableController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\CameraObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Animation.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\Faction.h">
+      <Filter>Header Files\Objects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\FactionManager.h">
+      <Filter>Header Files\Objects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\Creature.h">
+      <Filter>Header Files\Objects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\TargetingSystem.h">
+      <Filter>Header Files\Objects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Actor.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Armor.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Health.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\IAlive.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\IArmored.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Movable.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Player.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Resource.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\Behaviors\BehaviorSystem.h">
+      <Filter>Header Files\Objects\NPC\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\Behaviors\IBehavior.h">
+      <Filter>Header Files\Objects\NPC\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\Behaviors\WanderingBehavior.h">
+      <Filter>Header Files\Objects\NPC\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Interval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\NPC\Behaviors\PersecutionBehavior.h">
+      <Filter>Header Files\Objects\NPC\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Actors\Character.h">
+      <Filter>Header Files\Objects\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Interactives\Interactive.h">
+      <Filter>Header Files\Objects\Interactives</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Interactives\Door.h">
+      <Filter>Header Files\Objects\Interactives</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\RigidBody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsSystem.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\Collider.h">
+      <Filter>Nt</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\IBody.h">
+      <Filter>Nt</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\CollisionAlgorithms\GJK_EPA.h">
+      <Filter>Nt\CollisionAlgorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\CollisionAlgorithms\CollisionAlgorithm.h">
+      <Filter>Nt\CollisionAlgorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\InputMapper.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\StaticBody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creatures\Undead\Zombie.h">
+      <Filter>Header Files\Objects\Creature\Undead</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creatures\Humanoid\Orc.h">
+      <Filter>Header Files\Objects\Creature\Humanoid</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creatures\AllCreatures.h">
+      <Filter>Header Files\Objects\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Biomes\AllBiomes.h">
+      <Filter>Header Files\World\Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="EventBus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\CollisionSystem.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="World\Landscape.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="World\Scene.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Actors\Actor.cpp">
+      <Filter>Source Files\Objects\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Actors\Player.cpp">
+      <Filter>Source Files\Objects\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\Creature.cpp">
+      <Filter>Source Files\Objects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\Faction.cpp">
+      <Filter>Source Files\Objects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\FactionManager.cpp">
+      <Filter>Source Files\Objects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\Behaviors\WanderingBehavior.cpp">
+      <Filter>Source Files\Objects\NPC\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Interval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\Behaviors\BehaviorSystem.cpp">
+      <Filter>Source Files\Objects\NPC\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\Behaviors\IBehavior.cpp">
+      <Filter>Source Files\Objects\NPC\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\TargetingSystem.cpp">
+      <Filter>Source Files\Objects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\NPC\Behaviors\PersecutionBehavior.cpp">
+      <Filter>Source Files\Objects\NPC\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Actors\Character.cpp">
+      <Filter>Source Files\Objects\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Interactives\Interactive.cpp">
+      <Filter>Source Files\Objects\Interactives</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Interactives\Door.cpp">
+      <Filter>Source Files\Objects\Interactives</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\IBody.cpp">
+      <Filter>Nt</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\Collider.cpp">
+      <Filter>Nt</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\RigidBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsSystem.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\CollisionAlgorithms\GJK_EPA.cpp">
+      <Filter>Nt\CollisionAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\CollisionAlgorithms\CollisionAlgorithm.cpp">
+      <Filter>Nt\CollisionAlgorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\RotatableController.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\CameraObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Actors\Movable.cpp">
+      <Filter>Source Files\Objects\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\InputMapper.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\StaticBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Creatures\Undead\Zombie.cpp">
+      <Filter>Source Files\Objects\Creatures\Undead</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Creatures\Humanoid\Orc.cpp">
+      <Filter>Source Files\Objects\Creatures\Humanoid</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\CollisionSystem.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
