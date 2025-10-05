@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <Objects/NPC/Behaviors/IBehavior.h>
+#include <Objects/NPC/Creature.h>
 
 class BehaviorSystem final {
 public:

@@ -4,7 +4,7 @@
 
 class Zombie : public Creature {
 public:
-	Zombie() noexcept;
+	Zombie();
 	Zombie(const Zombie&) noexcept = default;
 	Zombie(Zombie&&) noexcept = default;
 	~Zombie() noexcept override = default;

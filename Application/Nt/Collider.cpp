@@ -2,17 +2,9 @@
 #include <GL/GL.h>
 
 #include <Nt/Collider.h>
-#include <Nt/CollisionAlgorithms/GJK_EPA.h>
 #include <Objects/GameObject.h>
 
 namespace Nt {
-	Collider::Collider(NotNull<GameObject*> pOwner) :
-		m_pOwner(pOwner),
-		m_Model(&m_Mesh),
-		m_pAlgorithm(std::make_unique<GJK_EPA>(this))
-	{
-	}
-
 	void Collider::Render(NotNull<Renderer*> pRenderer) const {
 		if (!m_IsVisible)
 			return;
@@ -21,9 +13,7 @@ namespace Nt {
 		pRenderer->SetLineWidth(10);
 		pRenderer->SetDrawingMode(Renderer::DrawingMode::LINE_STRIP);
 
-		pRenderer->Translate(m_pOwner->GetPosition());
 		pRenderer->Render(&m_Mesh);
-		pRenderer->Translate(-m_pOwner->GetPosition());
 
 		pRenderer->SetDrawingMode(Renderer::DrawingMode::TRIANGLES);
 		pRenderer->SetLineWidth(1);
@@ -49,30 +39,6 @@ namespace Nt {
 		m_IsVisible = !m_IsVisible;
 	}
 
-	Bool Collider::CheckCollision(const Collider& collider, CollisionPoint* pPoint) {
-		if (m_pAlgorithm)
-			return m_pAlgorithm->CheckCollision(collider, pPoint);
-		return false;
-	}
-
-	Int Collider::RayCastTest(const Ray& ray, Float3D* pResultIntersectionPoint /*= nullptr*/) const {
-		Float3D intersectionPoint;
-		for (uInt i = 2; i < m_Points.size(); i += 3) {
-			const Double3D face[3] = {
-				GetPointRealPosition(-m_Points[i - 2]),
-				GetPointRealPosition(-m_Points[i - 1]),
-				GetPointRealPosition(-m_Points[i - 0]),
-			};
-
-			if (ray.IntersectTriangleTest(face, intersectionPoint)) {
-				if (pResultIntersectionPoint != nullptr)
-					(*pResultIntersectionPoint) = intersectionPoint;
-				return (i / 3);
-			}
-		}
-		return -1;
-	}
-
 	void Collider::SetShape(const Shape& shape) {
 		m_Points.clear();
 		if (shape.Indices.empty()) {
@@ -82,7 +48,7 @@ namespace Nt {
 		}
 		else {
 			m_Points.reserve(shape.Indices.size());
-			for (Index_t index : shape.Indices)
+			for (const Index_t index : shape.Indices)
 				m_Points.emplace_back(shape.Vertices[index].Position.xyz);
 		}
 
@@ -112,17 +78,11 @@ namespace Nt {
 		return m_IsVisible;
 	}
 
-	Double3D Collider::GetPointRealPosition(const Float3D& point) const noexcept {
-		const Matrix4x4& localToWorld = m_pOwner->LocalToWorld();
-
-		Double3D position = Float3D(localToWorld.Rows[3]);
-		//position.x -= Double((point.x * localToWorld._11) + (point.y * localToWorld._12) + (point.z * localToWorld._13));
-		//position.y -= Double((point.x * localToWorld._21) + (point.y * localToWorld._22) + (point.z * localToWorld._23));
-		//position.z -= Double((point.x * localToWorld._31) + (point.y * localToWorld._32) + (point.z * localToWorld._33));
-		return position;
+	Matrix4x4 Collider::GetLocalToWorld() const noexcept {
+		return m_LocalToWorld;
 	}
 
-	Matrix4x4 Collider::LocalToWorld() const noexcept {
-		return m_pOwner->LocalToWorld();
+	void Collider::SetLocalToWorld(const Matrix4x4& matrix) noexcept {
+		m_LocalToWorld = matrix;
 	}
 }

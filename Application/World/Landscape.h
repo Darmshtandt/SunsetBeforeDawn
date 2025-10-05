@@ -14,7 +14,7 @@ private:
 	};
 
 public:
-	Landscape() noexcept;
+	Landscape();
 	Landscape(const Landscape&) = default;
 	Landscape(Landscape&&) noexcept = default;
 	~Landscape() override = default;
@@ -24,19 +24,12 @@ public:
 
 	void Generate(const uInt& biomeCount);
 
-	void Render(NotNull<Nt::Renderer*> pRenderer) const override;
-
-	[[nodiscard]]
-	const Nt::Texture& GetBiomeMap() const noexcept;
-
 	[[nodiscard]]
 	const std::vector<std::unique_ptr<Biome>>& GetBiomes() const noexcept;
 
 private:
 	std::vector<std::unique_ptr<Biome>> m_Biomes;
-	std::unordered_map<uInt, std::shared_ptr<Nt::Texture>> m_Textures;
 	Nt::Mesh m_Mesh;
-	Nt::Texture m_BiomeMapTexture;
 
 private:
 	std::unique_ptr<Nt::KDTree> _CreateKDTree(const uInt& biomeCount);

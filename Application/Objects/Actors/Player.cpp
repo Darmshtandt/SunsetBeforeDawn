@@ -1,17 +1,31 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
-#include <Game.h>
 #include <Objects/Actors/Player.h>
-#include <Objects/Components/InputComponent.h>
-#include <Objects/Components/MovementComponent.h>
+#include <Objects/Components/RenderComponents.h>
+#include <Objects/Components/PhysicComponents.h>
+#include <Objects/Components/GameComponents.h>
+#include <StdH.h>
 
-Player::Player() noexcept :
+Player::Player() :
 	Character(Class<Player>::ID(), ObjectType::Player, "Humanoid")
 {
 	AddComponent<InputComponent>();
-	AddComponent<MovementComponent>();
+	AddComponent<Camera3D>();
+	AddComponent<Movement3D>()->Speed = 5.f;
 
-	GetBodyPtr()->SetColliderShape(
-		Nt::ResourceManager::Instance().Get<Nt::Mesh>(MESH_CUBE)->GetShape());
+	Nt::Mesh* pMesh = Nt::ResourceManager::Instance().Get<Nt::Mesh>(MESH_CUBE);
+	GetComponent<ColliderComponent>()->Collider
+		.SetShape(pMesh->GetShape());
+}
+
+void Player::Update(const Float& deltaTime) {
+	(void)deltaTime;
+}
+
+Player::Statistics Player::GetStatistics() const noexcept {
+	Statistics stats = { };
+	stats.HealthAmount = m_pHealth->GetAmount();
+	stats.ArmorAmount = m_pArmor->GetAmount();
+	return stats;
 }

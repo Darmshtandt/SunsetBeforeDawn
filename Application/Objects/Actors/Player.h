@@ -4,13 +4,23 @@
 
 class Player final : public Character {
 public:
-	Player() noexcept;
+	struct Statistics final {
+		Float HealthAmount = -FLT_MAX;
+		Float ArmorAmount = -FLT_MAX;
+	};
+
+public:
+	Player();
 	Player(const Player&) noexcept = default;
 	Player(Player&&) noexcept = default;
 	~Player() noexcept override = default;
 
 	Player& operator = (const Player&) noexcept = default;
 	Player& operator = (Player&&) noexcept = default;
+
+	void Update(const Float& deltaTime) override;
+
+	[[nodiscard]] Statistics GetStatistics() const noexcept;
 
 private:
 	inline static ObjectRegistrar<Player> m_Registrar = { "Player" };

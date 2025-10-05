@@ -8,10 +8,10 @@ MouseHandler::MouseHandler(OnPressed onPressed, OnReleased onReleased) :
 	Assert(m_OnReleased, "Invalid OnReleased");
 }
 
-void MouseHandler::ButtonPressed(const Nt::Mouse::Button& button) {
+void MouseHandler::ButtonPressed(const Nt::Key& button) {
 	m_OnPressed(button);
 }
 
-void MouseHandler::ButtonReleased(const Nt::Mouse::Button& button) {
+void MouseHandler::ButtonReleased(const Nt::Key& button) {
 	m_OnReleased(button);
 }

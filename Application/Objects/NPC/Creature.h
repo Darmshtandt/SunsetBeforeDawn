@@ -4,15 +4,30 @@
 #include <Objects/Actors/Character.h>
 #include <Objects/NPC/Behaviors/IBehavior.h>
 
+class MeshComponent;
+class TextureComponent;
+class Creature;
+
+struct MovableCreature final {
+	const Transform3D* pTransform = nullptr;
+	Movement3D* pMovement = nullptr;
+	Creature* pCreature = nullptr;
+};
+
 class Creature : public Character {
 public:
-	struct View {
-		Float Range = 0.f;
+	struct Target final {
+		Transform3D* pTransform = nullptr;
+		GameObject* pObject = nullptr;
+	};
+
+	struct View final {
+		Float RangeSq = 0.f;
 		Float Angle = 0.f;
 	};
 
 protected:
-	Creature(const ClassID& id, std::string factionName) noexcept;
+	Creature(const ClassID& id, std::string factionName);
 
 public:
 	Creature() = delete;
@@ -23,28 +38,33 @@ public:
 	Creature& operator = (const Creature&) noexcept = default;
 	Creature& operator = (Creature&&) noexcept = default;
 
-	void Update(const Float& deltaTime);
+	void Update(const Float& deltaTime) override;
 
-	void SetTarget(std::weak_ptr<Character> pTarget) noexcept;
+	void SetTarget(const Target& target);
 	void SetBehavior(NotNull<IBehavior*> pBehavior) noexcept;
 	void SetOnTargetFound(const Signal<Creature&>::Slot& slot);
 	void SetOnTargetLost(const Signal<Creature&>::Slot& slot);
 
 	[[nodiscard]] Float GetPersecutionDistance() const noexcept;
-	[[nodiscard]] const std::weak_ptr<Character>& GetTarget() const noexcept;
+	[[nodiscard]] const Target& GetTarget() const noexcept;
 	[[nodiscard]] const View& GetView() const noexcept;
 	[[nodiscard]] Bool HasTarget() const noexcept;
 	[[nodiscard]] Bool CanInteract() const noexcept;
 
 protected:
+	Transform3D* m_pTransform = nullptr;
+	Movement3D* m_pMovement = nullptr;
+	MeshComponent* m_pMesh = nullptr;
+	TextureComponent* m_pTexture = nullptr;
 	View m_View;
-	Float m_InteractionDistance = 0.f;
-	Float m_PersecutionDistance = 0.f;
+	Float m_InteractionDistSq = 0.f;
+	Float m_PersecutionDistSq = 0.f;
 
 private:
+	MovableCreature m_Movable;
 	Signal<Creature&> m_OnTargetFound;
 	Signal<Creature&> m_OnTargetLost;
-	std::weak_ptr<Character> m_pTarget;
+	Target m_Target;
 	IBehavior* m_pBehavior = nullptr;
 };
 

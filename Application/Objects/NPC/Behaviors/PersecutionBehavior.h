@@ -13,11 +13,8 @@ public:
 	PersecutionBehavior& operator = (const PersecutionBehavior&) noexcept = default;
 	PersecutionBehavior& operator = (PersecutionBehavior&&) noexcept = default;
 
-	void Update(Creature& creature, const Float& deltaTime) override;
+	void Update(MovableCreature& creature, const Float& deltaTime) override;
 
 private:
 	inline static BehaviorRegistrar<PersecutionBehavior> m_Registrar { "Persecution" };
-
-private:
-	Nt::Float3D _CalculateAngle(const Nt::Float3D& npcPosition, const Nt::Float3D& targetPosition);
 };

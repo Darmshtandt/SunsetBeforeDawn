@@ -37,11 +37,6 @@ public:
 	EventBus& operator = (const EventBus&) = default;
 	EventBus& operator = (EventBus&&) noexcept = default;
 
-	[[nodiscard]] static EventBus& Instance() noexcept {
-		static EventBus eventBus;
-		return eventBus;
-	}
-
 	template <class _Event, class _Func>
 	Subscription Subscribe(_Func&& func) {
 		Container<_Event>& container = _GetOrCreateContainer<_Event>();

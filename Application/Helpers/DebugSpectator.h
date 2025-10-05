@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Objects/Actors/Movable.h>
 #include <Objects/GameObject.h>
 
-class DebugSpectator final : public GameObject, public Movable {
+class DebugSpectator final : public GameObject {
 public:
 	DebugSpectator() noexcept :
 		GameObject(Class<DebugSpectator>::ID(), ObjectType::Debug)
@@ -17,11 +16,8 @@ public:
 	DebugSpectator& operator = (const DebugSpectator&) = delete;
 	DebugSpectator& operator = (DebugSpectator&&) noexcept = default;
 
-	void Move(const Nt::Float3D& velocity) noexcept override {
-		Translate(velocity);
-	}
-	void ApplyRotation(const Nt::Float3D& angle) override {
-		Rotate(angle);
+	void Update(const Float& deltaTime) override {
+		(void)deltaTime;
 	}
 
 	void Increase() noexcept {
@@ -31,12 +27,8 @@ public:
 		m_Speed /= 2.f;
 	}
 
-	[[nodiscard]] Float GetSpeed() const noexcept override {
+	[[nodiscard]] Float GetSpeed() const noexcept {
 		return m_Speed;
-	}
-
-	Float GetPitch() const noexcept override {
-		return m_Angle.y;
 	}
 
 private:

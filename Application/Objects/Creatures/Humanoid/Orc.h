@@ -4,7 +4,7 @@
 
 class Orc : public Creature {
 public:
-	Orc() noexcept;
+	Orc();
 	Orc(const Orc&) noexcept = default;
 	Orc(Orc&&) noexcept = default;
 	~Orc() noexcept override = default;

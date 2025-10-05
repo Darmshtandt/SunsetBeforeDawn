@@ -1,41 +1,43 @@
 #pragma once
 
 #include <World/Scene.h>
-#include <Helpers/DebugSpectator.h>
-#include <Controllers/DebugController.h>
-#include <Controllers/RotatableController.h>
-#include <Physics/PhysicsSystem.h>
+#include <Controllers/IController.h>
+#include <unordered_set>
+
+class BehaviorSystem;
+class TargetingSystem;
+class PhysicsSystem;
+class MovementSystem;
 
 class Game {
 public:
 	using ControllerMap = std::unordered_map<ControllerID, ControllerPtr>;
 	using ControllerSet = std::unordered_set<IController*>;
 
-	struct OnRegisterInput final {
-		IController* pController;
+	struct OnAddToScene final {
+		GameObject* pObject;
 	};
-	struct OnUnregisterInput final {
-		IController* pController;
+	struct OnRemoveFromScene final {
+		GameObject* pObject;
+	};
+	struct OnClearScene final
+	{
 	};
 
 public:
 	Game();
 	Game(const Game&) = delete;
 	Game(Game&&) noexcept = default;
-	~Game();
+	~Game() noexcept;
 
 	Game& operator = (const Game&) = delete;
 	Game& operator = (Game&&) noexcept = default;
 
-	void Initialize(Nt::Shader* pShader);
-
-	void Uninitialize();
+	void Initialize();
 
 	template <class _Controller, class _Object>
 	void AddController(NotNull<_Object*> object) {
 		ControllerPtr pController = std::make_unique<_Controller>(object);
-
-		EventBus::Instance().Emmit<OnRegisterInput>({ pController.get() });
 
 		m_Controllers[Class<_Controller>::ID()] = std::move(pController);
 	}
@@ -48,15 +50,14 @@ public:
 		const auto it = m_Controllers.find(id);
 		if (it != m_Controllers.end()) {
 			IController* pController = it->second.get();
-			EventBus::Instance().Emmit<OnUnregisterInput>({ pController });
 			m_Controllers.erase(it);
 		}
 	}
 
 	void Update(const Float& deltaTime);
-	void Render(Nt::Renderer* pRenderer) const;
 
-	[[nodiscard]] CameraObject* GetCameraPtr() noexcept;
+	[[nodiscard]] Scene& GetScene() noexcept;
+	[[nodiscard]] EventBus& GetDispatcher() noexcept;
 
 	template <class _Controller>
 	void ActivateController() {
@@ -78,15 +79,16 @@ public:
 	void ToggleController(const ControllerID& id);
 
 private:
-	PhysicsSystem m_PhysicsSystem;
-	BehaviorSystem m_BehaviorSystem;
-	TargetingSystem m_TargetingSystem;
+	std::unique_ptr<PhysicsSystem> m_pPhysicsSystem;
+	std::unique_ptr<MovementSystem> m_pMovementSystem;
+	std::unique_ptr<BehaviorSystem> m_pBehaviorSystem;
+	std::unique_ptr<TargetingSystem> m_pTargetingSystem;
 	ControllerMap m_Controllers;
 	ControllerSet m_ActiveControllers;
 
-	CameraObject m_Camera;
-	DebugSpectator m_Spectator;
 	Scene m_Scene;
+	EventBus m_Dispatcher;
+	EventBus* m_pSceneDispatcher;
 
 private:
 	ControllerPtr& _GetController(const ControllerID& id);

@@ -13,5 +13,3 @@ struct IAction {
 
 	virtual void SetDone() = 0;
 };
-
-using ActionPtr = std::shared_ptr<IAction>;

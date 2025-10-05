@@ -1,7 +1,9 @@
 #include <World/Landscape.h>
 #include <Helpers/ProgressBar.h>
 #include <Helpers/Profiler.h>
-
+#include <Objects/Components/RenderComponents.h>
+#include <Objects/Components/PhysicComponents.h>
+#include <Nt/Core/Timer.h>
 #include <random>
 
 Landscape::Site::Site(const Nt::Float2D& point, const uInt& biomeIndex) :
@@ -16,10 +18,13 @@ Landscape::Site::Site(const Nt::Float2D& point) :
 {
 }
 
-Landscape::Landscape() noexcept :
+Landscape::Landscape() :
 	Terrain(Class<Landscape>::ID())
 {
-	SetMeshByPtr(&m_Mesh);
+	AddComponent<TextureMapComponent>();
+
+	NotNull<MeshComponent*> pMeshComponent = GetComponent<MeshComponent>();
+	pMeshComponent->Handler.SetByPointer(&m_Mesh);
 }
 
 void Landscape::Generate(const uInt& biomeCount) {
@@ -35,7 +40,10 @@ void Landscape::Generate(const uInt& biomeCount) {
 	const uInt totalVertices = vertexDensity.x * vertexDensity.y;
 	uInt* pBiomeMap = new uInt[totalVertices];
 
-	const Nt::Double2D basePosition(m_Position.x, m_Position.z);
+	const auto* pTransform = 
+		RequireNotNull(GetComponent<Transform3D>());
+
+	const Nt::Double2D basePosition(pTransform->Position().x, pTransform->Position().z);
 
 	Nt::Vertices_t& vertices = GetShape().Vertices;
 	std::vector<uInt> indices(totalVertices);
@@ -122,7 +130,8 @@ void Landscape::Generate(const uInt& biomeCount) {
 	_ComputeNormals();
 	m_Mesh.SetShape(GetShape());
 
-	GetBodyPtr()->SetColliderShape(GetShape());
+	GetComponent<ColliderComponent>()->Collider
+		.SetShape(GetShape());
 	Profiler::Instance().Stop("Generation Terrain time");
 
 	Profiler::Instance().Start();
@@ -130,20 +139,14 @@ void Landscape::Generate(const uInt& biomeCount) {
 		biome->Construct();
 	Profiler::Instance().Stop("Construction Biomes time");
 
+	auto* pTexMapComponent = RequireNotNull(GetComponent<TextureMapComponent>());
+
 	std::unique_ptr<Byte[]> biomeData(reinterpret_cast<Byte*>(pBiomeMap));
-	m_BiomeMapTexture.Create(4, vertexDensity, std::move(biomeData));
-}
+	pTexMapComponent->Main.Create(4, vertexDensity, std::move(biomeData));
 
-void Landscape::Render(NotNull<Nt::Renderer*> pRenderer) const {
-	m_BiomeMapTexture.BindUnit(1);
-	for (auto& [biomeID, texture] : m_Textures)
-		texture->BindUnit(2 + biomeID);
-
-	Terrain::Render(pRenderer);
-}
-
-const Nt::Texture& Landscape::GetBiomeMap() const noexcept {
-	return m_BiomeMapTexture;
+	pTexMapComponent->Main.BindUnit(1);
+	for (auto& [biomeID, texture] : pTexMapComponent->Map)
+		texture.BindUnit(2 + biomeID);
 }
 
 const std::vector<std::unique_ptr<Biome>>& Landscape::GetBiomes() const noexcept {
@@ -151,6 +154,8 @@ const std::vector<std::unique_ptr<Biome>>& Landscape::GetBiomes() const noexcept
 }
 
 std::unique_ptr<Nt::KDTree> Landscape::_CreateKDTree(const uInt& biomeCount) {
+	auto* pTexMapComponent = RequireNotNull(GetComponent<TextureMapComponent>());
+
 	const std::vector<std::string> biomeNames = BiomeFactory::Instance().GetBiomeNames();
 
 	std::vector<Site> sites;
@@ -163,8 +168,8 @@ std::unique_ptr<Nt::KDTree> Landscape::_CreateKDTree(const uInt& biomeCount) {
 
 		sites.emplace_back(point, sites.size());
 
-		if (!m_Textures.contains(biomeID))
-			m_Textures[biomeID] = std::make_shared<Nt::Texture>(m_Biomes.back()->GetTexturePath());
+		if (!pTexMapComponent->Map.contains(biomeID))
+			pTexMapComponent->Map[biomeID].LoadFromFile(m_Biomes.back()->GetTexturePath());
 	}
 
 	return std::make_unique<Nt::KDTree>(sites);

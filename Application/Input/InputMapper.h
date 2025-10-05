@@ -3,7 +3,6 @@
 #include <Input/Commands.h>
 #include <unordered_map>
 #include <unordered_set>
-#include <Nt/Core/Input.h>
 
 class InputMapper final {
 public:
@@ -16,7 +15,6 @@ public:
 	InputMapper& operator = (InputMapper&&) noexcept = default;
 
 	void Bind(const Int& key, const Command& command);
-	void Bind(const Nt::Key& key, const Command& command);
 
 	[[nodiscard]]
 	std::unordered_set<Command> ToActions(const std::unordered_set<Int>& activeKeys) const;

@@ -2,14 +2,12 @@
 
 #include <Input/InputMapper.h>
 #include <Input/RawInput.h>
-#include <Objects/Components/InputComponent.h>
-#include <World/Scene.h>
 
-class GameObject;
+class Scene;
 
 class InputSystem final {
 public:
-	InputSystem();
+	InputSystem() noexcept = default;
 	InputSystem(const InputSystem&) noexcept = default;
 	InputSystem(InputSystem&&) noexcept = default;
 	~InputSystem() noexcept = default;
@@ -17,7 +15,8 @@ public:
 	InputSystem& operator = (const InputSystem&) noexcept = default;
 	InputSystem& operator = (InputSystem&&) noexcept = default;
 
-	void Update(Scene& scene, RawInputQueue& queue);
+	void LoadKeyBinds();
+	void Update(const Scene& scene, RawInputQueue queue);
 
 private:
 	InputMapper m_Mapper;

@@ -25,9 +25,6 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{be39da45-6fdc-4bcf-a44b-ba22b19e86bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Listeners">
-      <UniqueIdentifier>{c10c0bda-1ef0-496e-ba40-eb377d785220}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{3749bfc5-9321-49cd-b142-9aaa3dc2077b}</UniqueIdentifier>
     </Filter>
@@ -76,9 +73,6 @@
     <Filter Include="Nt">
       <UniqueIdentifier>{8679d903-4764-4492-a21e-a4c6aacd80e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Nt\CollisionAlgorithms">
-      <UniqueIdentifier>{784ea06d-a768-4aea-b4b9-7f1e2d771ff9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Controllers">
       <UniqueIdentifier>{8a99173c-d52e-4963-88e0-9e0d74a08db1}</UniqueIdentifier>
     </Filter>
@@ -106,26 +100,42 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{2b42bccc-02c7-4f8b-8c23-146fd54ee576}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Objects\Components">
-      <UniqueIdentifier>{6d46af6a-32d1-434b-8603-67ca91228032}</UniqueIdentifier>
+    <Filter Include="Nt\Algorithms">
+      <UniqueIdentifier>{784ea06d-a768-4aea-b4b9-7f1e2d771ff9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects\Components">
-      <UniqueIdentifier>{48aa97bd-9771-4056-8606-89c0eee089bf}</UniqueIdentifier>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{4720f7a0-7eac-46b3-a901-6bbc6259cb70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{31950347-869f-4de8-bb59-aef1744ce933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Components">
+      <UniqueIdentifier>{aa0f6a68-81d4-4ee4-b676-9808792f9009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helper">
+      <UniqueIdentifier>{807b240e-b5ec-4cd2-b43e-3571d3201faa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Vert.glsl">
+    <None Include="packages.config" />
+    <None Include="ClassManager.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Helpers\ClassDiagram.cd" />
+    <None Include="Shaders\TerrainVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\Frag.glsl">
+    <None Include="Shaders\UIFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\UIVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Shaders\Geometry.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="packages.config" />
-    <None Include="ClassManager.inl">
-      <Filter>Header Files</Filter>
+    <None Include="Shaders\TerrainFrag.glsl">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -138,22 +148,7 @@
     <ClInclude Include="Algorithms\MaxRects.h">
       <Filter>Header Files\Algorithms</Filter>
     </ClInclude>
-    <ClInclude Include="Controllers\CommandActions.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Controllers\Command.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Controllers\CommandBinder.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Controllers\DebugController.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
     <ClInclude Include="Controllers\IController.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Controllers\MovableController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\DebugSpectator.h">
@@ -164,12 +159,6 @@
     </ClInclude>
     <ClInclude Include="Helpers\ProgressBar.h">
       <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Listeners\KeyboardHandler.h">
-      <Filter>Header Files\Listeners</Filter>
-    </ClInclude>
-    <ClInclude Include="Listeners\MouseHandler.h">
-      <Filter>Header Files\Listeners</Filter>
     </ClInclude>
     <ClInclude Include="World\Scene.h">
       <Filter>Header Files\World</Filter>
@@ -234,9 +223,6 @@
     <ClInclude Include="Objects\GameObject.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\CameraObject.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Animation.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -252,28 +238,7 @@
     <ClInclude Include="Objects\NPC\TargetingSystem.h">
       <Filter>Header Files\Objects\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Actors\Actor.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Actors\Armor.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Actors\Health.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Actors\IAlive.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Actors\IArmored.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Actors\Movable.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Actors\Player.h">
-      <Filter>Header Files\Objects\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Actors\Resource.h">
       <Filter>Header Files\Objects\Actors</Filter>
     </ClInclude>
     <ClInclude Include="Objects\NPC\Behaviors\BehaviorSystem.h">
@@ -312,21 +277,6 @@
     <ClInclude Include="Nt\Collider.h">
       <Filter>Nt</Filter>
     </ClInclude>
-    <ClInclude Include="Nt\IBody.h">
-      <Filter>Nt</Filter>
-    </ClInclude>
-    <ClInclude Include="Nt\CollisionAlgorithms\GJK_EPA.h">
-      <Filter>Nt\CollisionAlgorithms</Filter>
-    </ClInclude>
-    <ClInclude Include="Nt\CollisionAlgorithms\CollisionAlgorithm.h">
-      <Filter>Nt\CollisionAlgorithms</Filter>
-    </ClInclude>
-    <ClInclude Include="Controllers\InputMapper.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\StaticBody.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Creatures\Undead\Zombie.h">
       <Filter>Header Files\Objects\Creature\Undead</Filter>
     </ClInclude>
@@ -341,9 +291,6 @@
     </ClInclude>
     <ClInclude Include="EventBus.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\CollisionSystem.h">
-      <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="MovementSystem.h">
       <Filter>Header Files</Filter>
@@ -366,20 +313,65 @@
     <ClInclude Include="Input\RawInput.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Components\IComponent.h">
-      <Filter>Header Files\Objects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Components\InputComponent.h">
-      <Filter>Header Files\Objects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Input\Commands.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Components\MovementComponent.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
     <ClInclude Include="Controllers\PlayerController.h">
       <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\Algorithms\EPA.h">
+      <Filter>Nt\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\Algorithms\GJK.h">
+      <Filter>Nt\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\Algorithms\RayCast.h">
+      <Filter>Nt\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MSAA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\HUD.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIImage.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UISystem.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Nt\MatrixPlus.h">
+      <Filter>Nt</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Canvas.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\BasicComponents.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\PhysicComponents.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\RenderComponents.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\IComponent.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\UIComponents.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Components\GameComponents.h">
+      <Filter>Header Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryBus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -391,9 +383,6 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\Actors\Actor.cpp">
-      <Filter>Source Files\Objects\Actors</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Actors\Player.cpp">
       <Filter>Source Files\Objects\Actors</Filter>
@@ -443,9 +432,6 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Nt\IBody.cpp">
-      <Filter>Nt</Filter>
-    </ClCompile>
     <ClCompile Include="Nt\Collider.cpp">
       <Filter>Nt</Filter>
     </ClCompile>
@@ -455,38 +441,17 @@
     <ClCompile Include="Physics\PhysicsSystem.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Nt\CollisionAlgorithms\GJK_EPA.cpp">
-      <Filter>Nt\CollisionAlgorithms</Filter>
-    </ClCompile>
-    <ClCompile Include="Nt\CollisionAlgorithms\CollisionAlgorithm.cpp">
-      <Filter>Nt\CollisionAlgorithms</Filter>
-    </ClCompile>
     <ClCompile Include="Controllers\RotatableController.cpp">
       <Filter>Source Files\Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\CameraObject.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\Actors\Movable.cpp">
-      <Filter>Source Files\Objects\Actors</Filter>
-    </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Controllers\InputMapper.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\StaticBody.cpp">
-      <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Creatures\Undead\Zombie.cpp">
       <Filter>Source Files\Objects\Creatures\Undead</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Creatures\Humanoid\Orc.cpp">
       <Filter>Source Files\Objects\Creatures\Humanoid</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\CollisionSystem.cpp">
-      <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="MovementSystem.cpp">
       <Filter>Source Files</Filter>
@@ -506,17 +471,41 @@
     <ClCompile Include="Input\InputMapper.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Components\InputComponent.cpp">
-      <Filter>Source Files\Objects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\Components\IComponent.cpp">
-      <Filter>Source Files\Objects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\Components\MovementComponent.cpp">
-      <Filter>Source Files\Objects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Controllers\PlayerController.cpp">
       <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\Algorithms\GJK.cpp">
+      <Filter>Nt\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\Algorithms\EPA.cpp">
+      <Filter>Nt\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="Nt\Algorithms\RayCast.cpp">
+      <Filter>Nt\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MSAA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIImage.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\HUD.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UISystem.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Canvas.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="World\Biomes\Terrain.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\ProgressBar.cpp">
+      <Filter>Source Files\Helper</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,8 +2,6 @@
 
 #include <Controllers/IController.h>
 #include <Objects/Actors/Player.h>
-#include <Objects/Components/InputComponent.h>
-#include <Objects/Components/MovementComponent.h>
 
 class PlayerController final : public IController {
 public:
@@ -19,9 +17,9 @@ public:
 	void Update(const Float& deltaTime) override;
 
 private:
-	Player* m_pPlayer;
-	InputComponent* m_pInputComponent;
-	MovementComponent* m_pMovementComponent;
+	Transform3D* m_pTransform;
+	Movement3D* m_pMovement;
+	InputComponent* m_pInput;
 
 private:
 	Nt::Float3D GetDirection() const noexcept;

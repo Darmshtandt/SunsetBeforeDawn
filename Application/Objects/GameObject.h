@@ -1,81 +1,79 @@
 #pragma once
 
-#include <Nt/Graphics/Objects/Model.h>
 #include <Objects/Components/IComponent.h>
+#include <QueryBus.h>
 #include <RegistrarBase.h>
-#include <Signal.h>
 
-class IBody;
+namespace Bus {
+	inline QueryBus g_StatisticsQuery;
+}
 
 enum class ObjectType : Byte {
-	Debug,
-	Player,
-	Creature,
-	Interactive,
-	Static
+	Debug, Static,
+	Player, Creature, Interactive,
+	Canvas, UI
 };
 
-class GameObject : public Nt::Model, public Identifier {
-private:
-	using ComponentPtr = std::unique_ptr<IComponent>;
-
+class GameObject : public Identifier {
 protected:
 	GameObject(const ClassID& id, const ObjectType& type) noexcept;
 
 public:
 	GameObject() = delete;
-	GameObject(const GameObject&) noexcept = default;
+	GameObject(const GameObject&) = delete;
 	GameObject(GameObject&&) noexcept = default;
 	~GameObject() noexcept override = default;
 
-	GameObject& operator = (const GameObject&) noexcept = default;
+	GameObject& operator = (const GameObject&) = delete;
 	GameObject& operator = (GameObject&&) noexcept = default;
 
-	void Render(NotNull<Nt::Renderer*> pRenderer) const override;
-	void Translate(const Nt::Float3D& offset) noexcept;
-	void SubscribeOnMoved(const Signal<GameObject*>::Slot& onMoved);
-
-	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
-	void AddComponent() {
-		m_Components[Class<_Ty>::ID()] = std::make_unique<_Ty>();
+	virtual void Update(const Float& deltaTime) {
+		(void)deltaTime;
 	}
 
-	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	template <class _Ty>
+	_Ty* AddComponent() {
+		const ClassID id = Class<_Ty>::ID();
+		if (!m_Components.contains(id))
+			m_Components[id] = std::make_unique<_Ty>(this);
+		return static_cast<_Ty*>(m_Components[id].get());
+	}
+
+	template <class _Ty>
+	void RemoveComponent() {
+		const ClassID id = Class<_Ty>::ID();
+		Assert(m_Components[id], "Does not have a component");
+		m_Components.erase(id);
+	}
+
+	template <class _Ty>
 	[[nodiscard]] const _Ty* GetComponent() const noexcept {
-		auto it = m_Components.find(Class<_Ty>::ID());
-		if (it == m_Components.cend())
-			return nullptr;
-		return static_cast<const _Ty*>(it->second.get());
+		return _GetComponentImpl<_Ty>();
 	}
 
-	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	template <class _Ty>
 	[[nodiscard]] _Ty* GetComponent() noexcept {
-		auto it = m_Components.find(Class<_Ty>::ID());
-		if (it == m_Components.cend())
-			return nullptr;
-		return static_cast<_Ty*>(it->second.get());
+		return const_cast<_Ty*>(_GetComponentImpl<_Ty>());
 	}
 
-	template <class _Ty> requires std::is_base_of_v<IComponent, _Ty>
+	template <class _Ty>
 	[[nodiscard]] Bool HasComponent() const noexcept {
 		return m_Components.contains(Class<_Ty>::ID());
 	}
 
-	[[nodiscard]] Float GetDistance(const GameObject& object) const noexcept;
 	[[nodiscard]] ObjectType GetType() const noexcept;
-	[[nodiscard]] IBody* GetBodyPtr() noexcept;
-	[[nodiscard]] const IBody* GetBodyPtr() const noexcept;
 
 protected:
-	Signal<GameObject*> m_OnMoved;
-	std::unordered_map<ComponentID, ComponentPtr> m_Components;
-	std::unique_ptr<IBody> m_pBody;
+	std::unordered_map<ClassID, std::unique_ptr<IComponent>> m_Components;
 	ObjectType m_Type;
 
-protected:
-	template <class _Ty> requires std::is_base_of_v<IBody, _Ty>
-	void SetBody() {
-		m_pBody = std::make_unique<_Ty>(this);
+private:
+	template <class _Ty>
+	[[nodiscard]] const _Ty* _GetComponentImpl() const noexcept {
+		const auto it = m_Components.find(Class<_Ty>::ID());
+		if (it == m_Components.cend())
+			return nullptr;
+		return static_cast<const _Ty*>(it->second.get());
 	}
 };
 
@@ -85,4 +83,4 @@ using ObjectFactory = FactoryBase<std::shared_ptr, GameObject, ObjectPtr(*)()>;
 template <class _Ty>
 using ObjectRegistrar = RegistrarBase<std::shared_ptr, _Ty, ObjectFactory>;
 
-#include <Nt/IBody.h>
+#include <Objects/Components/BasicComponents.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Objects/CameraObject.h>
+#include <Objects/GameObject.h>
 
 class Interactive : public GameObject {
 protected:
@@ -15,8 +15,6 @@ public:
 
 	Interactive& operator = (const Interactive&) noexcept = default;
 	Interactive& operator = (Interactive&&) noexcept = default;
-
-	virtual void Update(const Float& deltaTime) = 0;
 };
 
 using InteractivePtr = std::shared_ptr<Interactive>;

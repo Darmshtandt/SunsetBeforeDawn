@@ -1,18 +1,19 @@
 #include <Objects/NPC/Behaviors/IBehavior.h>
+#include <Objects/NPC/Creature.h>
 
 IBehavior::IBehavior(const ClassID& id) noexcept :
 	Identifier(id)
 {
 }
 
-void IBehavior::OnTargetAcquired(Creature& npc, IAlive* target)
+void IBehavior::OnTargetAcquired(MovableCreature& movable, IAlive* target)
 {
 }
 
-void IBehavior::OnTargetLost(Creature& npc)
+void IBehavior::OnTargetLost(MovableCreature& movable)
 {
 }
 
-void IBehavior::OnDamaged(Creature& npc, const Float& damage)
+void IBehavior::OnDamaged(MovableCreature& movable, const Float& damage)
 {
 }

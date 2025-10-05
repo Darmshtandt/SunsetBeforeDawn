@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ClassManager.h>
-#include <Nt/Graphics/System/Window.h>
+#include <memory>
 
 using ControllerID = ClassID;
 
@@ -27,8 +27,6 @@ public:
 	IController& operator = (IController&&) noexcept = default;
 
 	virtual void Update(const Float& deltaTime) = 0;
-	virtual void Register(NotNull<Nt::Window*> pWindow) {};
-	virtual void Unregister(NotNull<Nt::Window*> pWindow) {};
 
 	void Enable() noexcept {
 		m_Enabled = true;

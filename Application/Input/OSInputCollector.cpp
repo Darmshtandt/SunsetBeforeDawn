@@ -33,7 +33,7 @@ void OSInputCollector::Unregister(NotNull<Nt::Window*> pWindow) const {
 	pWindow->UnregisterKeyboardListener(m_pKeyboardHandler.get());
 }
 
-RawInputQueue OSInputCollector::ExtractRawInputQueue() noexcept {
+RawInputQueue OSInputCollector::Poll() noexcept {
 	RawInputQueue queue;
 	queue.swap(m_RawInputQueue);
 	return queue;

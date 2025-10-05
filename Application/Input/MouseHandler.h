@@ -18,8 +18,8 @@ public:
 	MouseHandler& operator = (const MouseHandler&) noexcept = default;
 	MouseHandler& operator = (MouseHandler&&) noexcept = default;
 
-	void ButtonPressed(const Nt::Mouse::Button& button) override;
-	void ButtonReleased(const Nt::Mouse::Button& button) override;
+	void ButtonPressed(const Nt::Key& button) override;
+	void ButtonReleased(const Nt::Key& button) override;
 
 private:
 	OnPressed m_OnPressed;

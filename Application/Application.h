@@ -1,8 +1,11 @@
 #pragma once
 
 #include <Game.h>
-#include <Nt/Graphics/FrameBuffer.h>
+#include <Input/OSInputCollector.h>
+#include <Input/InputSystem.h>
 #include <Nt/Graphics/RenderWindow.h>
+#include <UI/UISystem.h>
+#include <RenderSystem.h>
 
 class Application {
 public:
@@ -28,9 +31,7 @@ public:
 		WindowListener& operator = (const WindowListener&) noexcept = default;
 		WindowListener& operator = (WindowListener&&) noexcept = default;
 
-		void Resize([[maybe_unused]] const Nt::ResizeType& type, [[maybe_unused]] const Nt::Int2D& newSize) override;
-
-		void Close() override;
+		void Resize(const Nt::ResizeType& type, const Nt::Int2D& size) override;
 	};
 
 	class KeyboardListener final : public Listener, public Nt::KeyboardListener {
@@ -58,14 +59,24 @@ public:
 	Application& operator = (Application&&) noexcept = default;
 
 	void Initialize();
-
 	void Run();
 
 private:
-	std::unique_ptr<Game> m_pGame = nullptr;
+	OSInputCollector m_InputCollector;
+	InputSystem m_InputSystem;
+	UISystem m_UISystem;
+	std::unique_ptr<RenderSystem> m_RenderSystem;
+	Game m_Game;
+	EventBus* m_pGameDispatcher;
+
 	Nt::RenderWindow m_Window;
 	WindowListener m_WindowListener;
 	KeyboardListener m_KeyboardListener;
 	Nt::Shader m_Shader;
 	Nt::Timer m_FPSTimer;
+
+private:
+	void _HandleOnAddToScene(const Game::OnAddToScene& event);
+	void _HandleOnRemoveFromScene(const Game::OnRemoveFromScene& event);
+	void _HandleOnClearScene(const Game::OnClearScene& event);
 };

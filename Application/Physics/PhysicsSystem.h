@@ -1,9 +1,20 @@
 #pragma once
 
-#include <Physics/RigidBody.h>
+#include <Objects/GameObject.h>
 #include <vector>
 
+class RigidBodyComponent;
+class ColliderComponent;
+
 class PhysicsSystem final {
+public:
+	struct PhysicObject {
+		Transform3D* pTransform = nullptr;
+		RigidBodyComponent* pRigidBody = nullptr;
+		ColliderComponent* pCollider = nullptr;
+		GameObject* pObject = nullptr;
+	};
+
 public:
 	PhysicsSystem() noexcept = default;
 	PhysicsSystem(const PhysicsSystem&) = delete;
@@ -15,12 +26,16 @@ public:
 
 	void Update(const Float& deltaTime) const noexcept;
 
-	void AddObject(NotNull<GameObject*> pObject);
-	void RemoveObject(NotNull<const GameObject*> pObject);
+	void RegisterObject(GameObject& object);
+	void UnregisterObject(const GameObject& object);
 	void Clear();
 
-public:
+private:
 	Nt::Float3D m_GravityDirection = { 0.f, -1.f, 0.f };
-	std::vector<IBody*> m_Bodies;
+	std::vector<PhysicObject> m_Bodies;
+	Float m_G = 9.81f;
 	Bool m_EnabledGravitation = false;
+
+private:
+	void CollisionResolve(const PhysicObject& object) const;
 };

@@ -13,11 +13,14 @@ enum TextureID : Byte {
 	TEXTURE_ELF,
 	TEXTURE_TEST,
 	TEXTURE_WATER,
+	TEXTURE_HP_BAR,
+	TEXTURE_ARMOR_BAR,
 };
 
 enum MeshID : Byte {
 	MESH_CUBE,
-	MESH_CHARASTER
+	MESH_CHARASTER,
+	MESH_QUAD
 };
 
 class PathManager final {

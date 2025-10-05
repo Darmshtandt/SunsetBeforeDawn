@@ -1,11 +1,11 @@
 #pragma once
 
 #include <Controllers/IController.h>
-#include <Objects/Actors/Movable.h>
+#include <Objects/GameObject.h>
 
 class RotatableController final : public IController {
 public:
-	explicit RotatableController(NotNull<Movable*> pMovable) noexcept;
+	explicit RotatableController(NotNull<GameObject*> pObject);
 
 	RotatableController() = delete;
 	RotatableController(const RotatableController&) noexcept = default;
@@ -18,9 +18,5 @@ public:
 	void Update(const Float& deltaTime) override;
 
 private:
-	Movable* m_pMovable;
-
-private:
-	void Register(NotNull<Nt::Window*> pWindow) override;
-	void Unregister(NotNull<Nt::Window*> pWindow) override;
+	Movement3D* m_pMovement;
 };

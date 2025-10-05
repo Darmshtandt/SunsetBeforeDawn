@@ -1,7 +1,6 @@
 #include <Objects/NPC/Behaviors/BehaviorSystem.h>
 #include <Objects/NPC/Behaviors/WanderingBehavior.h>
 #include <Objects/NPC/Behaviors/PersecutionBehavior.h>
-#include <Objects/NPC/Creature.h>
 
 BehaviorSystem::BehaviorSystem() noexcept :
 	m_BehaviorMap(BehaviorFactory::Instance().CreateAll())

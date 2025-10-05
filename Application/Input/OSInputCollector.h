@@ -18,7 +18,7 @@ public:
 	void Register(NotNull<Nt::Window*> pWindow) const;
 	void Unregister(NotNull<Nt::Window*> pWindow) const;
 
-	[[nodiscard]] RawInputQueue ExtractRawInputQueue() noexcept;
+	[[nodiscard]] RawInputQueue Poll() noexcept;
 
 private:
 	RawInputQueue m_RawInputQueue;

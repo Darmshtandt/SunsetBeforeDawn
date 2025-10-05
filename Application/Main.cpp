@@ -5,8 +5,9 @@
 #include <Nt/Core/Console.h>
 
 int main() {
+	_controlfp_s(NULL, 0, _EM_INVALID);
 	srand(uInt(time(nullptr)));
-	
+
 	try {
 		Application app;
 		app.Initialize();

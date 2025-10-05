@@ -6,16 +6,19 @@ PersecutionBehavior::PersecutionBehavior() noexcept :
 {
 }
 
-void PersecutionBehavior::Update(Creature& creature, const Float& deltaTime) {
-	RequireNotNull(creature.GetTarget().lock());
+void PersecutionBehavior::Update(MovableCreature& creature, const Float& deltaTime) {
+	const Creature::Target& target = creature.pCreature->GetTarget();
+	if (creature.pCreature->CanInteract())
+		return;
 
-	const Nt::Float3D direction = _CalculateAngle(creature.GetPosition(), creature.GetTarget().lock()->GetPosition());
-	creature.SetAngle({ 0.f, -std::atan2(direction.x, direction.z) / RADf, 0.f });
+	const Nt::Float3D direction =
+		-creature.pTransform->CalculateAngle(*target.pTransform);
 
-	if (!creature.CanInteract())
-		creature.Move(direction * creature.GetSpeed() * deltaTime);
-}
+	creature.pMovement->Direction = direction;
+	creature.pMovement->DesiredRotation.y = std::atan2(-direction.x, direction.z);
+	creature.pMovement->DesiredRotation.y -= creature.pTransform->Rotation().y;
+	creature.pMovement->DesiredRotation.y /= deltaTime * 4.f;
 
-Nt::Float3D PersecutionBehavior::_CalculateAngle(const Nt::Float3D& npcPosition, const Nt::Float3D& targetPosition) {
-	return (targetPosition - npcPosition).GetNormalize();
+	if (!std::isfinite(creature.pMovement->DesiredRotation.y))
+		creature.pMovement->DesiredRotation.y = 0.f;
 }

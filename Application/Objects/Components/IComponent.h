@@ -1,19 +1,21 @@
 #pragma once
 
-#include <ClassManager.h>
+#include <Nt/Core/Utilities.h>
 
-using ComponentID = ClassID;
+class GameObject;
 
-class IComponent : public Identifier {
-protected:
-	explicit IComponent(const ComponentID& id) noexcept;
-
+class IComponent {
 public:
-	IComponent() = delete;
-	IComponent(const IComponent&) noexcept = default;
-	IComponent(IComponent&&) noexcept = default;
-	~IComponent() noexcept override = default;
+	explicit IComponent(NotNull<GameObject*> pOwner) noexcept :
+		m_pOwner(pOwner) {
+	}
+	virtual ~IComponent() noexcept = default;
 
-	IComponent& operator = (const IComponent&) noexcept = default;
-	IComponent& operator = (IComponent&&) noexcept = default;
+	[[nodiscard]]
+	GameObject* OwnerPtr() noexcept {
+		return m_pOwner;
+	}
+
+private:
+	GameObject* m_pOwner;
 };

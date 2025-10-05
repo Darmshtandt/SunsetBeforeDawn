@@ -20,10 +20,10 @@ public:
 	WanderingBehavior& operator = (const WanderingBehavior&) noexcept = default;
 	WanderingBehavior& operator = (WanderingBehavior&&) noexcept = default;
 
-	void Update(Creature& creature, const Float& deltaTime) override;
+	void Update(MovableCreature& creature, const Float& deltaTime) override;
 
 private:
-	Nt::Float3D m_NpcDirection;
+	Nt::Float3D m_Direction;
 	Interval m_ChangeStateInterval;
 	State m_State = State::Idle;
 

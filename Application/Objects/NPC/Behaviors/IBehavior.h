@@ -3,11 +3,14 @@
 #include <RegistrarBase.h>
 
 struct IAlive;
-class Creature;
+struct MovableCreature;
 
 class IBehavior : public Identifier {
-public:
+protected:
 	explicit IBehavior(const ClassID& id) noexcept;
+
+public:
+	IBehavior() = delete;
 	IBehavior(const IBehavior&) noexcept= default;
 	IBehavior(IBehavior&&) noexcept = default;
 	~IBehavior() noexcept override = default;
@@ -15,11 +18,11 @@ public:
 	IBehavior& operator = (const IBehavior&) noexcept = default;
 	IBehavior& operator = (IBehavior&&) noexcept = default;
 
-	virtual void Update(Creature& npc, const Float& deltaTime) = 0;
+	virtual void Update(MovableCreature& creature, const Float& deltaTime) = 0;
 
-	virtual void OnTargetAcquired(Creature& npc, IAlive* target);
-	virtual void OnTargetLost(Creature& npc);
-	virtual void OnDamaged(Creature& npc, const Float& damage);
+	virtual void OnTargetAcquired(MovableCreature& movable, IAlive* target);
+	virtual void OnTargetLost(MovableCreature& movable);
+	virtual void OnDamaged(MovableCreature& movable, const Float& damage);
 };
 
 using BehaviorPtr = std::unique_ptr<IBehavior>;
