@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{bc49a71b-bdf5-4b29-b3d2-c5227743c1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat">
+      <UniqueIdentifier>{13402f40-f217-4903-9c61-7b9f084cd7e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{fdced539-0d03-4974-868c-094e24dc6530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{d08bc961-e159-4649-a8d1-2c1468be3d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Base">
+      <UniqueIdentifier>{3d346eb0-5a0a-42cf-b647-5f380d27d07b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Base\PhysicsInterfaces.h">
+      <Filter>Physics\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Base\RigidBody.h">
+      <Filter>Physics\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Base\CollisionEventDispatcher.h">
+      <Filter>Physics\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Base\PhysicObject.h">
+      <Filter>Physics\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\IntegratorEuler.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\NarrowPhaseDetectorGJK.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsSystem.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\CollisionResolverImpulse.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\DebugBroadPhaseDetector.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputSystem.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputBinder.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat\CombatSystem.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat\CombatInterfaces.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\IBehavior.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\IBehaviorSelector.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\ITargetScanner.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\AISystem.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Base\RigidBody.cpp">
+      <Filter>Physics\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Base\CollisionEventDispatcher.cpp">
+      <Filter>Physics\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\IntegratorEuler.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\NarrowPhaseDetectorGJK.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsSystem.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\CollisionResolverImpulse.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputSystem.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputBinder.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat\CombatSystem.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\AISystem.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\IBehavior.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

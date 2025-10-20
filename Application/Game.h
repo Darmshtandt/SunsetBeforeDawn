@@ -1,11 +1,10 @@
 #pragma once
 
 #include <World/Scene.h>
-#include <Controllers/IController.h>
+#include <Engine/IController.h>
 #include <unordered_set>
 
-class BehaviorSystem;
-class TargetingSystem;
+class AISystem;
 class PhysicsSystem;
 class MovementSystem;
 
@@ -81,8 +80,7 @@ public:
 private:
 	std::unique_ptr<PhysicsSystem> m_pPhysicsSystem;
 	std::unique_ptr<MovementSystem> m_pMovementSystem;
-	std::unique_ptr<BehaviorSystem> m_pBehaviorSystem;
-	std::unique_ptr<TargetingSystem> m_pTargetingSystem;
+	std::unique_ptr<AISystem> m_pAISystem;
 	ControllerMap m_Controllers;
 	ControllerSet m_ActiveControllers;
 

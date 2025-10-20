@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Controllers">
+      <UniqueIdentifier>{6f608acf-7213-4258-8803-ad95bf15e03d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat">
+      <UniqueIdentifier>{f1a7b388-f53b-4796-b6e1-832948e25245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behaviors">
+      <UniqueIdentifier>{24bd09da-412a-4c54-be4f-e7ea3336a2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{cbfe16b9-f4eb-4a34-8687-020429801bbf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AI\DefaultBehaviorSelector.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\DefaultTargetScanner.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\Persecution.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\Wandering.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\BehaviorLocator.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\BehaviorRegistrar.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat\DefautProjectileService.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat\DefaultDamageResolver.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\RotatableController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\WeaponController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\PlayerController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Behaviors\Persecution.cpp">
+      <Filter>Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviors\Wandering.cpp">
+      <Filter>Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat\DefautProjectileService.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat\DefaultDamageResolver.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\RotatableController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\WeaponController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\PlayerController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

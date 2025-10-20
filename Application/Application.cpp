@@ -1,11 +1,12 @@
 #include <NtStdH.h>
 
-#include <Application.h>
-#include <Helpers/Profiler.h>
-#include <StdH.h>
+#include <Application/Application.h>
+#include <Core/Helpers/Profiler.h>
+#include <Core/StdH.h>
 
 #include <Nt/Graphics/Geometry/Primitives.h>
 #include <Nt/Graphics/Resources/ResourceManager.h>
+#include <Core/BusLocator.h>
 
 Application::Listener::Listener(NotNull<Application*> pApplication) noexcept:
 	m_pApp(pApplication)
@@ -71,8 +72,8 @@ Application::~Application() {
 void Application::Initialize() {
 	Profiler::Instance().Start();
 	m_Window.Create(Nt::Int2D(1200, 1000), "Sunset Before Dawn");
-	m_Window.SetClearColor(Nt::Colors::LightBlue);
 	m_Window.SetCullFace(Nt::CullFace::NONE);
+	m_Window.SetClearColor(Nt::Colors::LightBlue);
 	Profiler::Instance().Stop("Window creation time");
 
 	m_Window.RegisterWindowListener(&m_WindowListener);
@@ -84,18 +85,23 @@ void Application::Initialize() {
 	m_RenderSystem = std::make_unique<RenderSystem>(&m_Window);
 
 	Profiler::Instance().Start();
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "Entities\\Player.tga");
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "Entities\\Enemys\\Golem.tga");
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "Entities\\NPC\\Elf.tga");
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "Test.tga");
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "Water.tga");
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "UI\\HealthBar.tga");
-	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::GetTextures() + "UI\\ArmorBar.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "Entities\\Player.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "Entities\\Enemys\\Golem.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "Entities\\NPC\\Elf.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "Test.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "Water.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\HealthBar.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\HealthBar_Line.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\ArmorBar.tga");
 
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Cube({ 1.f, 2.f, 1.f }, Nt::Colors::White));
-	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::GetModels() + "Charaster.obj");
+	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::Models() + "Charaster.obj");
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Quad({ 1.f, 1.f }, Nt::Colors::White));
 	Profiler::Instance().Stop("Textures addition in ResourceManager time");
+
+	BusLocator::DebugQuery().Subscribe<Debug::Event::FPS>([this]() {
+		return Debug::Event::FPS { m_Window.GetFPS() };
+	});
 
 	m_Game.Initialize();
 }
@@ -108,7 +114,7 @@ void Application::Run() {
 		const Float deltaTime = m_Window.GetFrameTimeSec();
 		m_RenderSystem->ClearScreen();
 
-		m_InputSystem.Update(m_Game.GetScene(), m_InputCollector.Poll());
+		m_InputSystem.TranslateInput(m_InputCollector.Poll());
 
 		m_Game.Update(deltaTime);
 		m_UISystem.Update(deltaTime);
@@ -121,7 +127,8 @@ void Application::Run() {
 		m_Window.PeekMessages();
 
 		if (m_FPSTimer.GetElapsedTimeMs() >= 1000) {
-			std::printf("FPS: %u\n", m_Window.GetFPS());
+			BusLocator::DebugDispatcher()
+				.Emmit<Debug::Event::OnChangedFPS>({ m_Window.GetFPS() });
 			m_FPSTimer.Restart();
 		}
 	}

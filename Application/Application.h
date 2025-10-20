@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Game.h>
-#include <Input/OSInputCollector.h>
-#include <Input/InputSystem.h>
+#include <Application/Game.h>
+#include <Core/Input/OSInputCollector.h>
+#include <Engine/Input/InputSystem.h>
 #include <Nt/Graphics/RenderWindow.h>
 #include <UI/UISystem.h>
-#include <RenderSystem.h>
+#include <Engine/RenderSystem.h>
 
 class Application {
 public:

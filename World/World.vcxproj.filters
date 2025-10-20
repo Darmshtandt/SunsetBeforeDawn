@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Biomes">
+      <UniqueIdentifier>{71104f47-eca2-4ce6-8950-58d80d365301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{cb4b538c-8532-4456-8db1-e1a6ccf4bcfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Weapons">
+      <UniqueIdentifier>{d3221f78-d50f-4dd0-95c0-e3e2f9df221e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Interactives">
+      <UniqueIdentifier>{36c2f466-f363-42db-84fe-19baa2dd409d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Creatures">
+      <UniqueIdentifier>{3f614bef-56b4-4e27-a296-7264994ac881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Creatures\Undead">
+      <UniqueIdentifier>{ecfdbaaa-a3c0-49a0-93c6-e7243ba699b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Creatures\Humanoid">
+      <UniqueIdentifier>{e747c75b-7753-4338-9e7d-b12c8cae760c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{96651929-26e1-4a58-be42-a92208e83174}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Objects\Creatures\Humanoid\Orc.h">
+      <Filter>Objects\Creatures\Humanoid</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creatures\Undead\Zombie.h">
+      <Filter>Objects\Creatures\Undead</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creatures\Faction.h">
+      <Filter>Objects\Creatures</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creatures\FactionManager.h">
+      <Filter>Objects\Creatures</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Interactives\Door.h">
+      <Filter>Objects\Interactives</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Interactives\Interactive.h">
+      <Filter>Objects\Interactives</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Weapons\Fist.h">
+      <Filter>Objects\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Weapons\IWeapon.h">
+      <Filter>Objects\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Character.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Creature.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\AllCreatures.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Biomes\ForestBiome.h">
+      <Filter>Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="Biomes\HilsBiome.h">
+      <Filter>Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="Biomes\OceanBiome.h">
+      <Filter>Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="Biomes\SwampBiome.h">
+      <Filter>Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="Biomes\DesertBiome.h">
+      <Filter>Biomes</Filter>
+    </ClInclude>
+    <ClInclude Include="BiomeRegistrar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Landscape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AllBiomes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arena.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Biome.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BiomeFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\IComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PhysicComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RenderComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\UIComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BasicComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CombatComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\GameComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Objects\Creatures\Humanoid\Orc.cpp">
+      <Filter>Objects\Creatures\Humanoid</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Creatures\Undead\Zombie.cpp">
+      <Filter>Objects\Creatures\Undead</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Creatures\FactionManager.cpp">
+      <Filter>Objects\Creatures</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Creatures\Faction.cpp">
+      <Filter>Objects\Creatures</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Interactives\Interactive.cpp">
+      <Filter>Objects\Interactives</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Interactives\Door.cpp">
+      <Filter>Objects\Interactives</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Creature.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Player.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Character.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Landscape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
