@@ -131,6 +131,9 @@
     <ClInclude Include="FactoryBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Nt\Quaternion.h">
+      <Filter>Nt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Nt\ClassManager.inl">

@@ -7,5 +7,5 @@ public:
 	CollisionResolverImpulse() noexcept = default;
 	~CollisionResolverImpulse() noexcept override = default;
 
-	void Resolve(const CollisionContact& contact) const override;
+	void Resolve(const ObjectContactPair& pair) const override;
 };

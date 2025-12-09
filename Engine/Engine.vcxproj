@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -135,17 +136,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI\AIContext.h" />
     <ClInclude Include="AI\AISystem.h" />
+    <ClInclude Include="AI\BehaviorTree.h" />
+    <ClInclude Include="AI\Blackboard.h" />
     <ClInclude Include="AI\IBehavior.h" />
+    <ClInclude Include="AI\BehaviorNode.h" />
     <ClInclude Include="AI\IBehaviorSelector.h" />
     <ClInclude Include="AI\ITargetScanner.h" />
+    <ClInclude Include="AI\AISenses.h" />
     <ClInclude Include="Combat\CombatInterfaces.h" />
     <ClInclude Include="Combat\CombatSystem.h" />
+    <ClInclude Include="Combat\DamageLogic.h" />
     <ClInclude Include="IController.h" />
     <ClInclude Include="Input\InputBinder.h" />
     <ClInclude Include="Input\InputSystem.h" />
+    <ClInclude Include="ISystem.h" />
     <ClInclude Include="MovementSystem.h" />
     <ClInclude Include="Physics\Base\CollisionEventDispatcher.h" />
+    <ClInclude Include="Physics\Base\PhysicUtilities.h" />
     <ClInclude Include="Physics\Base\PhysicObject.h" />
     <ClInclude Include="Physics\Base\PhysicsInterfaces.h" />
     <ClInclude Include="Physics\Base\RigidBody.h" />
@@ -159,11 +168,14 @@
   <ItemGroup>
     <ClCompile Include="AI\AISystem.cpp" />
     <ClCompile Include="AI\IBehavior.cpp" />
+    <ClCompile Include="AI\AISenses.cpp" />
     <ClCompile Include="Combat\CombatSystem.cpp" />
+    <ClCompile Include="Combat\DamageLogic.cpp" />
     <ClCompile Include="Input\InputBinder.cpp" />
     <ClCompile Include="Input\InputSystem.cpp" />
     <ClCompile Include="MovementSystem.cpp" />
     <ClCompile Include="Physics\Base\CollisionEventDispatcher.cpp" />
+    <ClCompile Include="Physics\Base\PhysicObject.cpp" />
     <ClCompile Include="Physics\Base\RigidBody.cpp" />
     <ClCompile Include="Physics\CollisionResolverImpulse.cpp" />
     <ClCompile Include="Physics\IntegratorEuler.cpp" />

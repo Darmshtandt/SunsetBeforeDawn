@@ -9,7 +9,8 @@ class Scale final : public IComponent {
 
 public:
 	explicit Scale(GameObject* pOwner) :
-		IComponent(pOwner) {
+		IComponent(pOwner, Class<Scale>::ID())
+	{
 		m_pTransform = pOwner->GetComponent<Transform>();
 		if (m_pTransform == nullptr)
 			m_pTransform = pOwner->AddComponent<Transform>();
@@ -151,7 +152,8 @@ public:
 
 public:
 	explicit Layout(GameObject* pOwner) :
-		IComponent(pOwner) {
+		IComponent(pOwner, Class<Layout>::ID())
+	{
 	}
 
 	Vector Padding;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Nt/Core/Math/Matrix4x4.h>
+#include <Nt/Core/Math/Projections.h>
 
 template <typename _Ty, uInt fromDimension, uInt toDimension>
 [[nodiscard]]
@@ -22,51 +23,34 @@ Nt::Vector<_Ty, toDimension> ConvertVector(const Nt::Vector<_Ty, fromDimension>&
 
 template <typename _Ty, uInt dimension>
 [[nodiscard]]
-Nt::Matrix4x4 MatrixRotateYXZ(const Nt::Vector<_Ty, dimension>& vector) {
-	Nt::Matrix4x4 result;
-
-	if constexpr (dimension >= 2)
-		result *= Nt::Matrix4x4::GetRotateY(vector.y);
-	if constexpr (dimension >= 1)
-		result *= Nt::Matrix4x4::GetRotateX(vector.x);
-	if constexpr (dimension >= 3)
-		result *= Nt::Matrix4x4::GetRotateZ(vector.z);
-
-	return result;
-}
-
-template <typename _Ty, uInt dimension>
-[[nodiscard]]
-constexpr Nt::Matrix4x4 MatrixRotateZXY(const Nt::Vector<_Ty, dimension>& vector) {
-	Nt::Matrix4x4 result;
-
-	if constexpr (dimension >= 3)
-		result *= Nt::Matrix4x4::GetRotateZ(vector.z);
-	if constexpr (dimension >= 1)
-		result *= Nt::Matrix4x4::GetRotateX(vector.x);
-	if constexpr (dimension >= 2)
-		result *= Nt::Matrix4x4::GetRotateY(vector.y);
-
-	return result;
-}
-
-template <typename _Ty, uInt dimension>
-[[nodiscard]]
 constexpr Nt::Matrix4x4 MatrixRotateXYZ(const Nt::Vector<_Ty, dimension>& vector) {
 	Nt::Matrix4x4 result;
 	if constexpr (dimension >= 1)
-		result *= Nt::Matrix4x4::GetRotateX(vector.x);
+		result *= Nt::MatrixRotateLHX(vector.x);
 	if constexpr (dimension >= 2)
-		result *= Nt::Matrix4x4::GetRotateY(vector.y);
+		result *= Nt::MatrixRotateLHY(vector.y);
 	if constexpr (dimension >= 3)
-		result *= Nt::Matrix4x4::GetRotateZ(vector.z);
+		result *= Nt::MatrixRotateLHZ(vector.z);
+	return result;
+}
+
+template <typename _Ty, uInt dimension>
+[[nodiscard]]
+constexpr Nt::Matrix4x4 MatrixRotateZYX(const Nt::Vector<_Ty, dimension>& vector) {
+	Nt::Matrix4x4 result;
+	if constexpr (dimension >= 3)
+		result *= Nt::MatrixRotateLHZ(vector.z);
+	if constexpr (dimension >= 2)
+		result *= Nt::MatrixRotateLHY(vector.y);
+	if constexpr (dimension >= 1)
+		result *= Nt::MatrixRotateLHX(vector.x);
 	return result;
 }
 
 [[nodiscard]]
 constexpr Nt::Matrix4x4& TranslateWorld(Nt::Matrix4x4& matrix, const Nt::Float3D& vector) noexcept {
 	if (vector.LengthSquare() != 0.f)
-		matrix.Rows[3].xyz += vector;
+		matrix.Columns[3].xyz += vector;
 	return matrix;
 }
 
@@ -75,40 +59,70 @@ struct Matrix {
 	using Vector = Nt::Vector<_Ty, Dimension>;
 
 	[[nodiscard]] static
-	Nt::Matrix4x4 LocalToWorld(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
+	Nt::Matrix4x4 LocalToWorldLH(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
+	[[nodiscard]] static
+	Nt::Matrix4x4 LocalToWorldRH(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
 
 	[[nodiscard]] static
-	Nt::Matrix4x4 WorldToLocal(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
+	Nt::Matrix4x4 WorldToLocalLH(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
+	[[nodiscard]] static
+	Nt::Matrix4x4 WorldToLocalRH(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
 };
 
 template <typename _Ty, uInt Dimension>
-Nt::Matrix4x4 Matrix<_Ty, Dimension>::LocalToWorld(const Vector& position, const Vector& rotation, const Vector& size) noexcept {
+Nt::Matrix4x4 Matrix<_Ty, Dimension>::LocalToWorldLH(const Vector& position, const Vector& rotation, const Vector& size) noexcept {
 	const Nt::Vector<_Ty, 3> correctPosition =
 		ConvertVector<_Ty, Dimension, 3>(position);
 	const Nt::Vector<_Ty, 3> correctSize =
 		ConvertVector<_Ty, Dimension, 3>(size);
 
-	Nt::Matrix4x4 result = Nt::Matrix4x4::GetTranslate(correctPosition);
-	if constexpr (Dimension >= 2)
-		result *= Nt::Matrix4x4::GetRotateY(rotation.y);
-	if constexpr (Dimension >= 1)
-		result *= Nt::Matrix4x4::GetRotateX(rotation.x);
-	if constexpr (Dimension >= 3)
-		result *= Nt::Matrix4x4::GetRotateZ(rotation.z);
+	const Nt::Matrix4x4 matScale = Nt::Matrix4x4::GetScale(correctSize);
+	const Nt::Matrix4x4 matRotation = MatrixRotateXYZ(rotation);
+	const Nt::Matrix4x4 matTranslate = Nt::Matrix4x4::GetTranslate(correctPosition);
 
-	return result * Nt::Matrix4x4::GetScale(correctSize);
+	return matTranslate * matRotation * matScale;
+}
+template <typename _Ty, uInt Dimension>
+Nt::Matrix4x4 Matrix<_Ty, Dimension>::WorldToLocalLH(const Vector& position, const Vector& rotation, const Vector& size) noexcept {
+	const Nt::Vector<_Ty, 3> correctPosition =
+		ConvertVector<_Ty, Dimension, 3>(position);
+	const Nt::Vector<_Ty, 3> correctSize =
+		ConvertVector<_Ty, Dimension, 3>(size);
+
+	const Nt::Matrix4x4 invScale = Nt::Matrix4x4::GetScale(_Ty(1) / correctSize);
+	const Nt::Matrix4x4 invRotation = MatrixRotateXYZ(-rotation);
+	const Nt::Matrix4x4 invTranslate = Nt::Matrix4x4::GetTranslate(-correctPosition);
+
+	return invScale * invRotation * invTranslate;
 }
 
 template <typename _Ty, uInt Dimension>
-Nt::Matrix4x4 Matrix<_Ty, Dimension>::WorldToLocal(const Vector& position, const Vector& rotation, const Vector& size) noexcept {
+Nt::Matrix4x4 Matrix<_Ty, Dimension>::LocalToWorldRH(const Vector& position, const Vector& rotation, const Vector& size) noexcept {
 	const Nt::Vector<_Ty, 3> correctPosition =
 		ConvertVector<_Ty, Dimension, 3>(position);
+	const Nt::Vector<_Ty, 3> correctedRotation =
+		ConvertVector<_Ty, Dimension, 3>(rotation) * Nt::Vector<_Ty, 3>(1, 1, -1);
 	const Nt::Vector<_Ty, 3> correctSize =
 		ConvertVector<_Ty, Dimension, 3>(size);
 
-	const Nt::Matrix4x4 matScale = Nt::Matrix4x4::GetScale(_Ty(1) / correctSize);
-	const Nt::Matrix4x4 matRotation = MatrixRotateXYZ(rotation);
-	const Nt::Matrix4x4 matTranslate = Nt::Matrix4x4::GetTranslate(-correctPosition);
+	const Nt::Matrix4x4 matScale = Nt::Matrix4x4::GetScale(correctSize);
+	const Nt::Matrix4x4 matRotation = MatrixRotateXYZ(correctedRotation);
+	const Nt::Matrix4x4 matTranslate = Nt::Matrix4x4::GetTranslate(correctPosition);
 
-	return matScale * matRotation * matTranslate;
+	return matTranslate * matRotation * matScale;
+}
+template <typename _Ty, uInt Dimension>
+Nt::Matrix4x4 Matrix<_Ty, Dimension>::WorldToLocalRH(const Vector& position, const Vector& rotation, const Vector& size) noexcept {
+	const Nt::Vector<_Ty, 3> correctPosition =
+		ConvertVector<_Ty, Dimension, 3>(position);
+	const Nt::Vector<_Ty, 3> correctRotation =
+		ConvertVector<_Ty, Dimension, 3>(rotation) * Nt::Vector<_Ty, 3>(1, 1, -1);
+	const Nt::Vector<_Ty, 3> correctSize =
+		ConvertVector<_Ty, Dimension, 3>(size);
+
+	const Nt::Matrix4x4 invScale = Nt::Matrix4x4::GetScale(_Ty(1) / correctSize);
+	const Nt::Matrix4x4 invRotation = MatrixRotateXYZ(-correctRotation);
+	const Nt::Matrix4x4 invTranslate = Nt::Matrix4x4::GetTranslate(-correctPosition);
+
+	return invScale * invRotation * invTranslate;
 }

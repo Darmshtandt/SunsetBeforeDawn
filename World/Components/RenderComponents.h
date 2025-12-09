@@ -12,8 +12,9 @@ struct ICamera {
 
 	[[nodiscard]] virtual Nt::Matrix4x4 View() const noexcept = 0;
 	[[nodiscard]] virtual Bool IsDirty() const noexcept = 0;
-	[[nodiscard]] virtual Bool Is2D() const noexcept = 0;
-	[[nodiscard]] virtual Bool Is3D() const noexcept = 0;
+	[[nodiscard]] virtual uInt GetDimension() const noexcept = 0;
+	[[deprecated]] [[nodiscard]] virtual Bool Is2D() const noexcept = 0;
+	[[deprecated]] [[nodiscard]] virtual Bool Is3D() const noexcept = 0;
 };
 
 template <typename _Ty, uInt Dimension>
@@ -23,43 +24,41 @@ public:
 	using Vector = typename Transform::Vector;
 
 public:
-	explicit Camera(GameObject* pOwner) : IComponent(pOwner) {
-		pTransform = pOwner->GetComponent<Transform>();
-		if (pTransform == nullptr)
-			pTransform = pOwner->AddComponent<Transform>();;
+	explicit Camera(GameObject* pOwner) :
+		IComponent(pOwner, Class<Camera>::ID()),
+		m_LocalTransform(pOwner)
+	{
+		m_pParentTransform = pOwner->GetComponent<Transform>();
+		if (m_pParentTransform == nullptr)
+			m_pParentTransform = pOwner->AddComponent<Transform>();
 	}
 	~Camera() noexcept override = default;
 
 	[[nodiscard]] Nt::Matrix4x4 View() const noexcept override {
-		Nt::Matrix4x4 view = pTransform->WorldToLocal();
-		if constexpr (Dimension == 2)
-			view.Translate(Nt::Float3D(-m_Origin, 0.f));
-		else if constexpr (Dimension == 3)
-			view.Translate(-m_Origin);
-
-		return view;
+		const Nt::Matrix4x4 invView = 
+			m_pParentTransform->LocalToWorld() * m_LocalTransform.LocalToWorld();
+		return invView.GetInverse();
 	}
 
-	[[nodiscard]] Vector Origin() const noexcept {
-		return m_Origin;
+	[[nodiscard]] Transform& LocalTransform() noexcept {
+		return m_LocalTransform;
+	}
+	[[nodiscard]] uInt GetDimension() const noexcept override {
+		return Dimension;
 	}
 	[[nodiscard]] Bool IsDirty() const noexcept override {
-		return pTransform->IsDirty();
+		return m_pParentTransform->IsDirty();
 	}
-	[[nodiscard]] Bool Is2D() const noexcept override {
+	[[deprecated]] [[nodiscard]] Bool Is2D() const noexcept override {
 		return Dimension == 2;
 	}
-	[[nodiscard]] Bool Is3D() const noexcept override {
+	[[deprecated]] [[nodiscard]] Bool Is3D() const noexcept override {
 		return Dimension == 3;
 	}
 
-	void Origin(const Vector& origin) noexcept {
-		m_Origin = origin;
-	}
-
-public:
-	Transform* pTransform;
-	Vector m_Origin;
+private:
+	Transform* m_pParentTransform;
+	Transform m_LocalTransform;
 };
 
 template <class _Ty, Requires(std::is_base_of_v<Nt::IResource, _Ty>)>
@@ -94,7 +93,8 @@ private:
 class MeshRenderer final :
 	public IComponent, public ResourceRenderer<Nt::Mesh> {
 public:
-	explicit MeshRenderer(GameObject* pOwner) : IComponent(pOwner)
+	explicit MeshRenderer(GameObject* pOwner) :
+		IComponent(pOwner, Class<MeshRenderer>::ID())
 	{
 	}
 	~MeshRenderer() noexcept override = default;
@@ -106,7 +106,8 @@ public:
 class TextureRenderer final :
 	public IComponent, public ResourceRenderer<Nt::Texture> {
 public:
-	explicit TextureRenderer(GameObject* pOwner) : IComponent(pOwner)
+	explicit TextureRenderer(GameObject* pOwner) :
+		IComponent(pOwner, Class<TextureRenderer>::ID())
 	{
 	}
 	~TextureRenderer() noexcept override = default;
@@ -114,7 +115,8 @@ public:
 
 class TextureMap final : public IComponent {
 public:
-	explicit TextureMap(GameObject* pOwner) : IComponent(pOwner)
+	explicit TextureMap(GameObject* pOwner) :
+		IComponent(pOwner, Class<TextureMap>::ID())
 	{
 	}
 
@@ -124,7 +126,8 @@ public:
 
 class Text final : public IComponent {
 public:
-	explicit Text(GameObject* pOwner) : IComponent(pOwner)
+	explicit Text(GameObject* pOwner) :
+		IComponent(pOwner, Class<Text>::ID())
 	{
 	}
 

@@ -16,14 +16,14 @@
     <Filter Include="Controllers">
       <UniqueIdentifier>{6f608acf-7213-4258-8803-ad95bf15e03d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Combat">
-      <UniqueIdentifier>{f1a7b388-f53b-4796-b6e1-832948e25245}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Behaviors">
       <UniqueIdentifier>{24bd09da-412a-4c54-be4f-e7ea3336a2d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI">
       <UniqueIdentifier>{cbfe16b9-f4eb-4a34-8687-020429801bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controllers\AI">
+      <UniqueIdentifier>{be2b9f47-10f1-4901-99d1-f9914dad8d58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,12 +45,6 @@
     <ClInclude Include="Behaviors\BehaviorRegistrar.h">
       <Filter>Behaviors</Filter>
     </ClInclude>
-    <ClInclude Include="Combat\DefautProjectileService.h">
-      <Filter>Combat</Filter>
-    </ClInclude>
-    <ClInclude Include="Combat\DefaultDamageResolver.h">
-      <Filter>Combat</Filter>
-    </ClInclude>
     <ClInclude Include="Controllers\RotatableController.h">
       <Filter>Controllers</Filter>
     </ClInclude>
@@ -60,6 +54,15 @@
     <ClInclude Include="Controllers\PlayerController.h">
       <Filter>Controllers</Filter>
     </ClInclude>
+    <ClInclude Include="Behaviors\Attack.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\AI\AIMovementController.h">
+      <Filter>Controllers\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\AI\AIAttackController.h">
+      <Filter>Controllers\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Behaviors\Persecution.cpp">
@@ -67,12 +70,6 @@
     </ClCompile>
     <ClCompile Include="Behaviors\Wandering.cpp">
       <Filter>Behaviors</Filter>
-    </ClCompile>
-    <ClCompile Include="Combat\DefautProjectileService.cpp">
-      <Filter>Combat</Filter>
-    </ClCompile>
-    <ClCompile Include="Combat\DefaultDamageResolver.cpp">
-      <Filter>Combat</Filter>
     </ClCompile>
     <ClCompile Include="Controllers\RotatableController.cpp">
       <Filter>Controllers</Filter>
@@ -82,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Controllers\PlayerController.cpp">
       <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviors\Attack.cpp">
+      <Filter>Behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

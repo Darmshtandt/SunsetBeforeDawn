@@ -5,7 +5,7 @@
 #include <Core/RegistrarBase.h>
 
 enum class ObjectType : Byte {
-	Debug, Static,
+	Debug, Static, Other,
 	Player, Creature, Interactive,
 	Canvas, UI
 };
@@ -23,6 +23,8 @@ public:
 	GameObject& operator = (const GameObject&) = delete;
 	GameObject& operator = (GameObject&&) noexcept = default;
 
+	void UnmarkValid() noexcept;
+
 	template <class _Ty>
 	_Ty* AddComponent() {
 		const ClassID id = Class<_Ty>::ID();
@@ -36,6 +38,13 @@ public:
 		const ClassID id = Class<_Ty>::ID();
 		Assert(m_Components[id], "Does not have a component");
 		m_Components.erase(id);
+	}
+
+	template <class... _Components>
+	[[nodiscard]] std::tuple<_Components*...> GetComponentsTuple() noexcept {
+		return std::make_tuple(
+			static_cast<_Components*>(
+				m_Components[Class<_Components>::ID()])...);
 	}
 
 	template <class _Ty>
@@ -54,10 +63,12 @@ public:
 	}
 
 	[[nodiscard]] ObjectType GetType() const noexcept;
+	[[nodiscard]] Bool IsValid() const noexcept;
 
 protected:
 	std::unordered_map<ClassID, std::unique_ptr<IComponent>> m_Components;
 	ObjectType m_Type;
+	Bool m_IsValid = true;
 
 private:
 	template <class _Ty>

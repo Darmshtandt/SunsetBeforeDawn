@@ -8,6 +8,7 @@ struct IBehaviorSelector {
 	virtual void OnSpawned(Pawn& pawn) = 0;
 	virtual void OnTargetFound(Pawn& pawn) = 0;
 	virtual void OnTargetLost(Pawn& pawn) = 0;
+	virtual void OnTargetReached(Pawn& pawn) = 0;
 
 	virtual void OnEnterView(Pawn& pawn) = 0;
 	virtual void OnInView(Pawn& pawn) = 0;

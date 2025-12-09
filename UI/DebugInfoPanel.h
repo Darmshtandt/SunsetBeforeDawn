@@ -14,15 +14,13 @@ public:
 		m_pFPSCounter->pScale->LocalPosition({ 0.f, 3.f });
 		m_pFPSCounter->pScale->LocalSize({ 0.5f, 0.5f });
 
-		AddComponent<Handler>()->Function = [this] (const Float& deltaTime) {
-			(void)deltaTime;
+		using namespace Debug::Event;
 
-			if (!BusLocator::DebugQuery().Has<Debug::Event::FPS>())
-				return;
-
-			m_pFPSCounter->pText->TextString = "FPS: " + std::to_string(
-				BusLocator::DebugQuery().Request<Debug::Event::FPS>().Count);
-			};
+		BusLocator::DebugDispatcher().Subscribe<OnChangedFPS>(
+			[this] (const OnChangedFPS& event) {
+				m_pFPSCounter->pText->TextString = 
+					"FPS: " + std::to_string(event.Count);
+			});
 	}
 	DebugInfoPanel(const DebugInfoPanel&) noexcept = default;
 	DebugInfoPanel(DebugInfoPanel&&) noexcept = default;

@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -145,9 +146,12 @@
     <ClInclude Include="Biomes\HilsBiome.h" />
     <ClInclude Include="Biomes\OceanBiome.h" />
     <ClInclude Include="Biomes\SwampBiome.h" />
+    <ClInclude Include="Components\AIComponent.h" />
+    <ClInclude Include="Components\BasicAttackComponents.h" />
     <ClInclude Include="Components\BasicComponents.h" />
     <ClInclude Include="Components\CombatComponents.h" />
     <ClInclude Include="Components\GameComponents.h" />
+    <ClInclude Include="Components\IAttackComponent.h" />
     <ClInclude Include="Components\IComponent.h" />
     <ClInclude Include="Components\PhysicComponents.h" />
     <ClInclude Include="Components\RenderComponents.h" />
@@ -165,8 +169,10 @@
     <ClInclude Include="Objects\Interactives\Door.h" />
     <ClInclude Include="Objects\Interactives\Interactive.h" />
     <ClInclude Include="Objects\Player.h" />
+    <ClInclude Include="Objects\Traps\Bomb.h" />
     <ClInclude Include="Objects\Weapons\Fist.h" />
     <ClInclude Include="Objects\Weapons\IWeapon.h" />
+    <ClInclude Include="Objects\Weapons\Pistol.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="WorldEditor.h" />

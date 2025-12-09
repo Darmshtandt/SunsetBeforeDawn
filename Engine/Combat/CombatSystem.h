@@ -2,22 +2,28 @@
 
 #include <World/Entities.h>
 #include <World/Components/CombatComponents.h>
+#include <Engine/ISystem.h>
 
-class CombatSystem final {
+struct IPhysicsOverlapper;
+
+class CombatSystem final : public ICombatDispatcher, public ISystem {
 public:
-	CombatSystem() noexcept = default;
+	CombatSystem(NotNull<IPhysicsOverlapper*> pOverlapper) noexcept;
 	CombatSystem(const CombatSystem&) = delete;
 	CombatSystem(CombatSystem&&) noexcept = default;
-	~CombatSystem() noexcept = default;
+	~CombatSystem() noexcept override = default;
 
 	CombatSystem& operator = (const CombatSystem&) = delete;
 	CombatSystem& operator = (CombatSystem&&) noexcept = default;
 
-	void RegisterObject(GameObject& object);
-	void UnregisterObject(const GameObject& object);
+	void RegisterObject(GameObject& object) override;
+	void UnregisterObject(const GameObject& object) override;
 
-	void Update();
+	void Dispatch(const DamageCommand& command) override;
+
+	void Update(const Float& deltaTime) override;
 
 private:
+	IPhysicsOverlapper* m_pPhysicsOverlapper;
 	std::vector<CombatPawn> m_CombatPawns;
 };

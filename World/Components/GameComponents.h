@@ -30,7 +30,8 @@ protected:
 
 class Health final : public IComponent, public GameResource<Float> {
 public:
-	explicit Health(GameObject* pObject) : IComponent(pObject)
+	explicit Health(GameObject* pObject) :
+		IComponent(pObject, Class<Health>::ID())
 	{
 	}
 	~Health() noexcept override = default;
@@ -56,7 +57,8 @@ public:
 
 class Armor final : public IComponent, public GameResource<Float> {
 public:
-	explicit Armor(GameObject* pObject) : IComponent(pObject)
+	explicit Armor(GameObject* pObject) :
+		IComponent(pObject, Class<Armor>::ID())
 	{
 	}
 	~Armor() noexcept override = default;
@@ -98,7 +100,8 @@ public:
 	};
 
 public:
-	explicit Intent(GameObject* pObject) : IComponent(pObject)
+	explicit Intent(GameObject* pObject) :
+		IComponent(pObject, Class<Intent>::ID())
 	{
 	}
 	~Intent() noexcept override = default;
@@ -163,7 +166,9 @@ public:
 	};
 
 public:
-	explicit Route(GameObject* pObject) : IComponent(pObject) {
+	explicit Route(GameObject* pObject) :
+		IComponent(pObject, Class<Route>::ID())
+	{
 		m_pTransform = pObject->GetComponent<Transform>();
 		if (m_pTransform == nullptr)
 			m_pTransform = pObject->AddComponent<Transform>();
@@ -177,6 +182,14 @@ public:
 		Assert(!m_Markers.empty(), "Out of range");
 		m_Markers.pop();
 	}
+	Bool IsReachedMarker() noexcept {
+		if (m_Markers.empty())
+			return true;
+
+		const Marker& marker = m_Markers.top();
+		const _Ty directionSq = m_pTransform->DistanceSquare(marker.Position);
+		return directionSq <= InteractionDistance * InteractionDistance;
+	}
 	Bool IsReachedMarker(const Float& deltaTime) noexcept {
 		if (m_Markers.empty())
 			return true;
@@ -184,12 +197,13 @@ public:
 		const Marker& marker = m_Markers.top();
 		const _Ty directionSq = m_pTransform->DistanceSquare(marker.Position);
 		const _Ty thresholdSq = marker.Speed * marker.Speed * deltaTime;
-		return directionSq <= thresholdSq;
+		return directionSq <= thresholdSq + InteractionDistance * InteractionDistance;
 	}
 	void Clear() {
 		while (!m_Markers.empty())
 			m_Markers.pop();
 	}
+
 
 	[[nodiscard]] Vector DirectionToMarker() {
 		Assert(!m_Markers.empty(), "Out of range");
@@ -199,6 +213,9 @@ public:
 	[[nodiscard]] const Marker& GetMarker() const {
 		Assert(!m_Markers.empty(), "Out of range");
 		return m_Markers.top();
+	}
+	[[nodiscard]] uInt GetMarkerCount() const noexcept {
+		return m_Markers.size();
 	}
 	[[nodiscard]] Bool HasMarker() const noexcept {
 		return !m_Markers.empty();
@@ -211,6 +228,7 @@ private:
 	std::stack<Marker> m_Markers;
 	Transform* m_pTransform;
 };
+
 
 using Intent2D = Intent<Float, 2>;
 using Route2D = Route<Float, 2>;

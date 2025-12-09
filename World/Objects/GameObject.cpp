@@ -9,6 +9,14 @@ GameObject::GameObject(const ClassID& id, const ObjectType& type) noexcept :
 {
 }
 
+void GameObject::UnmarkValid() noexcept {
+	m_IsValid = false;
+}
+
 ObjectType GameObject::GetType() const noexcept {
 	return m_Type;
+}
+
+Bool GameObject::IsValid() const noexcept {
+	return m_IsValid;
 }

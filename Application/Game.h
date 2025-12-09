@@ -2,11 +2,14 @@
 
 #include <World/Scene.h>
 #include <Engine/IController.h>
+#include <Engine/ISystem.h>
 #include <unordered_set>
+#include <forward_list>
 
 class AISystem;
 class PhysicsSystem;
 class MovementSystem;
+class CombatSystem;
 
 class Game {
 public:
@@ -24,7 +27,7 @@ public:
 	};
 
 public:
-	Game();
+	Game(NotNull<EventBus*> pBus);
 	Game(const Game&) = delete;
 	Game(Game&&) noexcept = default;
 	~Game() noexcept;
@@ -56,7 +59,6 @@ public:
 	void Update(const Float& deltaTime);
 
 	[[nodiscard]] Scene& GetScene() noexcept;
-	[[nodiscard]] EventBus& GetDispatcher() noexcept;
 
 	template <class _Controller>
 	void ActivateController() {
@@ -78,15 +80,13 @@ public:
 	void ToggleController(const ControllerID& id);
 
 private:
-	std::unique_ptr<PhysicsSystem> m_pPhysicsSystem;
-	std::unique_ptr<MovementSystem> m_pMovementSystem;
-	std::unique_ptr<AISystem> m_pAISystem;
+	std::forward_list<SystemPtr> m_Systems;
 	ControllerMap m_Controllers;
 	ControllerSet m_ActiveControllers;
 
 	Scene m_Scene;
-	EventBus m_Dispatcher;
-	EventBus* m_pSceneDispatcher;
+	EventBus* m_pDispatcher;
+	EventBus m_SceneDispatcher;
 
 private:
 	ControllerPtr& _GetController(const ControllerID& id);

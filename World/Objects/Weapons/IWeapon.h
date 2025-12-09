@@ -16,4 +16,7 @@ public:
 
 	IWeapon& operator = (const IWeapon&) noexcept = default;
 	IWeapon& operator = (IWeapon&&) noexcept = default;
+
+	[[nodiscard]]
+	virtual const IDamage* GetDamageType() const = 0;
 };

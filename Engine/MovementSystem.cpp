@@ -12,7 +12,7 @@ void MovementSystem::RegisterObject(GameObject& object) {
 		m_Movables.emplace_back(movable);
 }
 
-void MovementSystem::UnregisterObject(GameObject& object) {
+void MovementSystem::UnregisterObject(const GameObject& object) {
 	std::erase_if(m_Movables, [&object](const Movable& movable) noexcept {
 		return movable.pObject == &object;
 	});

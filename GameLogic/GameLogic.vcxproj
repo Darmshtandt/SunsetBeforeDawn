@@ -32,6 +32,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -138,21 +139,21 @@
   <ItemGroup>
     <ClInclude Include="AI\DefaultBehaviorSelector.h" />
     <ClInclude Include="AI\DefaultTargetScanner.h" />
+    <ClInclude Include="Behaviors\Attack.h" />
     <ClInclude Include="Behaviors\BehaviorLocator.h" />
     <ClInclude Include="Behaviors\BehaviorRegistrar.h" />
     <ClInclude Include="Behaviors\Persecution.h" />
     <ClInclude Include="Behaviors\Wandering.h" />
-    <ClInclude Include="Combat\DefaultDamageResolver.h" />
-    <ClInclude Include="Combat\DefautProjectileService.h" />
+    <ClInclude Include="Controllers\AI\AIAttackController.h" />
+    <ClInclude Include="Controllers\AI\AIMovementController.h" />
     <ClInclude Include="Controllers\PlayerController.h" />
     <ClInclude Include="Controllers\RotatableController.h" />
     <ClInclude Include="Controllers\WeaponController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Behaviors\Attack.cpp" />
     <ClCompile Include="Behaviors\Persecution.cpp" />
     <ClCompile Include="Behaviors\Wandering.cpp" />
-    <ClCompile Include="Combat\DefaultDamageResolver.cpp" />
-    <ClCompile Include="Combat\DefautProjectileService.cpp" />
     <ClCompile Include="Controllers\PlayerController.cpp" />
     <ClCompile Include="Controllers\RotatableController.cpp" />
     <ClCompile Include="Controllers\WeaponController.cpp" />

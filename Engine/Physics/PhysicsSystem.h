@@ -1,25 +1,35 @@
 #pragma once
 
 #include <Engine/Physics/Base/PhysicsInterfaces.h>
+#include <Engine/ISystem.h>
 #include <vector>
 
 class CollisionEventDispatcher;
 
-class PhysicsSystem final {
+class PhysicsSystem final : public IPhysicsOverlapper, public ISystem {
 public:
 	PhysicsSystem();
 	PhysicsSystem(const PhysicsSystem&) = delete;
 	PhysicsSystem(PhysicsSystem&&) noexcept;
-	~PhysicsSystem() noexcept;
+	~PhysicsSystem() noexcept override;
 
 	PhysicsSystem& operator = (const PhysicsSystem&) = delete;
 	PhysicsSystem& operator = (PhysicsSystem&&) noexcept;
 
-	void Update(const Float& deltaTime) const noexcept;
+	void Update(const Float& deltaTime) override;
 
-	void RegisterObject(GameObject& object);
-	void UnregisterObject(const GameObject& object);
+	void RegisterObject(GameObject& object) override;
+	void UnregisterObject(const GameObject& object) override;
 	void Clear();
+
+	[[nodiscard]]
+	std::vector<PhysicObject> OverlapSphere(const Nt::Float3D& position, const Float& radius, const Int& layerMask) override;
+
+	[[nodiscard]]
+	std::vector<PhysicObject> OverlapAABB(const Nt::Float3D& min, const Nt::Float3D& max, const Int& layerMask) override;
+
+	[[nodiscard]]
+	std::vector<PhysicObject> OverlapRayCast(const Nt::Ray& ray, const Int& layerMask) override;
 
 	template <class _Ty> requires std::is_base_of_v<IPhysicsIntegrator, _Ty>
 	void SetPhysicsIntegrator() {

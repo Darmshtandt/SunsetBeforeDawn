@@ -18,7 +18,7 @@ public:
 
 		pCollider->SetShape(pMesh->Set(MESH_CUBE)->GetShape());
 		pRigidBody->Body.SetMass(0.f);
-		pTransform->Size({ 100.f, 1.f, 100.f });
+		pTransform->Size({ 150.f, 1.f, 100.f });
 	}
 
 	Arena(const Arena&) noexcept = default;

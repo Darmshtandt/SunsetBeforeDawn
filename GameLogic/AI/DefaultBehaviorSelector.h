@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine/AI/IBehaviorSelector.h>
+#include <GameLogic/Behaviors/Attack.h>
 #include <GameLogic/Behaviors/Wandering.h>
 #include <GameLogic/Behaviors/Persecution.h>
 
@@ -23,6 +24,9 @@ struct DefaultBehaviorSelector : public IBehaviorSelector {
 	}
 	void OnTargetLost(Pawn& pawn) override {
 		pawn.pIntent3D->SetBehavior(BehaviorLocator::Get<Wandering>());
+	}
+	void OnTargetReached(Pawn& pawn) override {
+		pawn.pIntent3D->SetBehavior(BehaviorLocator::Get<Attack>());
 	}
 
 	void OnEnterView(Pawn& pawn) {

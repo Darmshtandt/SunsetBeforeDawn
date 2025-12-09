@@ -4,8 +4,9 @@
 #include <Engine/Physics/NarrowPhaseDetectorGJK.h>
 #include <Engine/Physics/CollisionResolverImpulse.h>
 #include <Engine/Physics/Base/CollisionEventDispatcher.h>
-#include <World/Components/PhysicComponents.h>
+#include <Engine/Physics/Base/PhysicUtilities.h>
 #include <Core/BusLocator.h>
+#include <Core/Nt/Algorithms/RayCast.h>
 
 PhysicsSystem::PhysicsSystem() {
 	SetPhysicsIntegrator<IntegratorEuler>();
@@ -31,15 +32,14 @@ PhysicsSystem::~PhysicsSystem() noexcept = default;
 PhysicsSystem& PhysicsSystem::operator=(PhysicsSystem&&) noexcept = default;
 
 
-void PhysicsSystem::Update(const Float& deltaTime) const noexcept {
-	for (const PhysicObject& object : m_Bodies) {
+void PhysicsSystem::Update(const Float& deltaTime) {
+	for (const PhysicObject& object : m_Bodies)
 		m_pPhysicsIntegrator->Integrate(object, deltaTime);
-	}
 
 	std::vector<PhysicObjectPair> objectPairs =
 		m_pBroadPhaseDetector->ComputePairs(m_Bodies);
 
-	std::vector<CollisionContact> contacts =
+	std::vector<ObjectContactPair> contacts =
 		m_pNarrowPhaseDetector->GenerateContacts(objectPairs);
 
 	m_pCollisionDispatcher->ProcessFrameContacts(contacts);
@@ -69,4 +69,48 @@ void PhysicsSystem::UnregisterObject(const GameObject& object) {
 
 void PhysicsSystem::Clear() {
 	m_Bodies.clear();
+}
+
+std::vector<PhysicObject> PhysicsSystem::OverlapSphere(const Nt::Float3D& position, const Float& range, const Int& layerMask) {
+	std::vector<PhysicObject> result;
+	for (const PhysicObject& object : m_Bodies) {
+		if (object.pCollider == nullptr)
+			continue;
+
+		if (HasColliderInRange(*object.pCollider, position, range))
+			result.emplace_back(object);
+	}
+
+	return result;
+}
+
+std::vector<PhysicObject> PhysicsSystem::OverlapAABB(const Nt::Float3D& min, const Nt::Float3D& max, const Int& layerMask) {
+	const AABBBox bBox = { min, max };
+
+	std::vector<PhysicObject> result;
+	for (const PhysicObject& object : m_Bodies) {
+		if (object.pCollider == nullptr)
+			continue;
+
+		if (CheckAABBCollision(*object.pCollider, bBox))
+			result.emplace_back(object);
+	}
+
+	return result;
+}
+
+std::vector<PhysicObject> PhysicsSystem::OverlapRayCast(const Nt::Ray& ray, const Int& layerMask) {
+	std::vector<PhysicObject> result;
+	for (const PhysicObject& object : m_Bodies) {
+		if (object.pCollider == nullptr)
+			continue;
+
+		const Nt::RayCastResult testResult =
+			Nt::RayCast::RayCastTest(*object.pCollider, ray);
+
+		if (testResult.FaceIndex != -1)
+			result.emplace_back(object);
+	}
+
+	return result;
 }

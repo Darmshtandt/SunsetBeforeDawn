@@ -6,6 +6,7 @@ struct Actor final {
 	const Transform3D* pTransform = nullptr;
 	Movement3D* pMovement = nullptr;
 	Route3D* pRoute = nullptr;
+	GameObject* pObject = nullptr;
 };
 
 class IBehavior : public Identifier {

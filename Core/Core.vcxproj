@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -167,6 +168,7 @@
     <ClInclude Include="Nt\ClassManager.h" />
     <ClInclude Include="Nt\HitBox.h" />
     <ClInclude Include="Nt\MatrixPlus.h" />
+    <ClInclude Include="Nt\Quaternion.h" />
     <ClInclude Include="QueryBus.h" />
     <ClInclude Include="RegistrarBase.h" />
     <ClInclude Include="Signal.h" />

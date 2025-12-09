@@ -2,16 +2,26 @@
 #include <Engine/Physics/CollisionResolverImpulse.h>
 #include <World/Components/PhysicComponents.h>
 
-void CollisionResolverImpulse::Resolve(const CollisionContact& contact) const {
-	Nt::RigidBody& bodyA = contact.pA->pRigidBody->Body;
-	Nt::RigidBody& bodyB = contact.pB->pRigidBody->Body;
+void CollisionResolverImpulse::Resolve(const ObjectContactPair& pair) const {
+	const CollisionContact& contact = pair.Contact;
+	if (pair.pA->pRigidBody == nullptr) {
+		pair.pB->pTransform->Translate(contact.Normal * contact.Depth);
+		return;
+	}
+	if (pair.pB->pRigidBody == nullptr) {
+		pair.pA->pTransform->Translate(-contact.Normal * contact.Depth);
+		return;
+	}
+
+	Nt::RigidBody& bodyA = pair.pA->pRigidBody->Body;
+	Nt::RigidBody& bodyB = pair.pB->pRigidBody->Body;
 
 	Nt::Float3D linearVelocityA = bodyA.GetLinearVelocity();
 	Nt::Float3D linearVelocityB = bodyB.GetLinearVelocity();
 	const Nt::Float3D relativeLinearVelocity = linearVelocityA - linearVelocityB;
 
 	const Float velocityAlongNormal = relativeLinearVelocity.Dot(contact.Normal);
-	if (velocityAlongNormal <= 0.f)
+	if (velocityAlongNormal > 0.f)
 		return;
 
 	const Float e = std::min(bodyA.GetRestitution(), bodyB.GetRestitution());
@@ -21,11 +31,11 @@ void CollisionResolverImpulse::Resolve(const CollisionContact& contact) const {
 	const Nt::Float3D impulse = contact.Normal * -j;
 	if (!bodyA.IsStatic()) {
 		//bodyA.AddForce(impulse);
-		contact.pA->pTransform->Translate(-contact.Normal * contact.Depth);
+		pair.pA->pTransform->Translate(-contact.Normal * contact.Depth);
 	}
 
 	if (!bodyB.IsStatic()) {
-		contact.pB->pTransform->Translate(contact.Normal * contact.Depth);
+		pair.pB->pTransform->Translate(contact.Normal * contact.Depth);
 		//bodyB.AddForce(-impulse);
 	}
 }

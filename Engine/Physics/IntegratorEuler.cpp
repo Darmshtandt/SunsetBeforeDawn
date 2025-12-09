@@ -15,8 +15,9 @@ void IntegratorEuler::Integrate(const PhysicObject& object, const Float& deltaTi
 	//if (!rigidBody.HasForce())
 	//	return;
 
-	rigidBody.ApplyForces(deltaTime);
+	rigidBody.ApplyForces(1.f);
 	object.pTransform->Translate(rigidBody.GetLinearVelocity() * deltaTime);
+	rigidBody.SetLinearVelocity({ });
 }
 
 void IntegratorEuler::SetGravityVelocity(const Nt::Float3D& gravity) noexcept {

@@ -3,6 +3,7 @@
 #include <Core/MSAA.h>
 #include <World/Objects/GameObject.h>
 
+class Collider;
 struct ICamera;
 class MeshRenderer;
 class TextureRenderer;
@@ -23,6 +24,7 @@ private:
 		const MeshRenderer* pMesh = nullptr;
 		const TextureRenderer* pTexture = nullptr;
 		const Text* pText = nullptr;
+		const Collider* pCollider = nullptr;
 		const GameObject* pObject = nullptr;
 	};
 
@@ -37,8 +39,6 @@ public:
 	RenderSystem& operator = (const RenderSystem&) noexcept = default;
 	RenderSystem& operator = (RenderSystem&&) noexcept = default;
 
-	void Initialize();
-
 	void RegisterObject(const GameObject& object);
 	void UnregisterObject(const GameObject& object);
 	void ClearObjects() noexcept;
@@ -50,6 +50,7 @@ public:
 	void RenderScene();
 	void RenderUI();
 	void RenderObject(const Renderable& renderable);
+	void RenderCollider(const Renderable& renderable);
 	void RenderText(const Renderable& renderable);
 
 	void SetActiveProjection(const Projection& projection);

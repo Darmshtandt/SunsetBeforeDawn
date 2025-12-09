@@ -90,6 +90,30 @@
     <ClInclude Include="AI\AISystem.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\Base\PhysicUtilities.h">
+      <Filter>Physics\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat\DamageLogic.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="ISystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\BehaviorTree.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\BehaviorNode.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Blackboard.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\AIContext.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\AISenses.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RenderSystem.cpp">
@@ -129,6 +153,15 @@
       <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="AI\IBehavior.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Base\PhysicObject.cpp">
+      <Filter>Physics\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat\DamageLogic.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\AISenses.cpp">
       <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>

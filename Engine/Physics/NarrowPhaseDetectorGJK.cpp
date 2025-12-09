@@ -2,9 +2,9 @@
 #include <Core/Nt/Algorithms/GJK.h>
 #include <Core/Nt/Algorithms/EPA.h>
 
-std::vector<CollisionContact> NarrowPhaseDetectorGJK::
+std::vector<ObjectContactPair> NarrowPhaseDetectorGJK::
 GenerateContacts(const std::vector<PhysicObjectPair>& pairs) const {
-	std::vector<CollisionContact> result;
+	std::vector<ObjectContactPair> result;
 	for (const PhysicObjectPair& pair : pairs) {
 		const ColliderPair colliderPair = {
 			*pair.pA->pCollider,
@@ -19,7 +19,8 @@ GenerateContacts(const std::vector<PhysicObjectPair>& pairs) const {
 		const Nt::CollisionPoint point =
 			Nt::EPA::CheckCollision(gjkResult.second, colliderPair);
 
-		result.emplace_back(pair.pA, pair.pB, Nt::Float3D(), point.Normal, point.Depth);
+		const CollisionContact contact = { Nt::Float3D(), point.Normal, point.Depth };
+		result.emplace_back(pair.pA, pair.pB, contact);
 	}
 	return result;
 }

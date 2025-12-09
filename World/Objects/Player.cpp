@@ -6,12 +6,17 @@
 #include <World/Components/PhysicComponents.h>
 #include <World/Components/GameComponents.h>
 #include <Core/StdH.h>
+#include <World/Components/CombatComponents.h>
+#include <World/Objects/Weapons/Pistol.h>
 
 Player::Player() :
 	Character(Class<Player>::ID(), ObjectType::Player, "Humanoid")
 {
-	AddComponent<Camera3D>()->Origin({ 0.f, 1.f, 0.f });
-	AddComponent<Movement3D>()->Speed = 5.f;
+	AddComponent<Camera3D>()->LocalTransform().Position({ 0.f, 1.f, 0.f });
+	AddComponent<Movement3D>()->Speed = 25.f;
+
+	AddComponent<Combat>();
+	AddComponent<WeaponBelt>()->Add<Pistol>();
 
 	Nt::Mesh* pMesh = Nt::ResourceManager::Instance().Get<Nt::Mesh>(MESH_CUBE);
 	GetComponent<Collider>()->SetShape(pMesh->GetShape());

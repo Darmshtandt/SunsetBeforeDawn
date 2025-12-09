@@ -1,15 +1,31 @@
 #include <Engine/Physics/Base/CollisionEventDispatcher.h>
+#include <World/Components/PhysicComponents.h>
 #include <Core/BusLocator.h>
 
-void CollisionEventDispatcher::ProcessFrameContacts(const std::vector<CollisionContact>& contacts) {
-	for (const CollisionContact& contact : contacts) {
-		if (m_PreviousContacts.contains(contact)) {
+void CollisionEventDispatcher::ProcessFrameContacts(const std::vector<ObjectContactPair>& contacts) {
+	for (const ObjectContactPair& pair : contacts) {
+		const Collider* pColliderA = pair.pA->pCollider;
+		const Collider* pColliderB = pair.pA->pCollider;
+
+		if (m_PreviousContacts.contains(pair)) {
+			if (pColliderA->OnStay)
+				pColliderA->OnStay(*pair.pB, pair.Contact);
+
+			if (pColliderB->OnStay)
+				pColliderB->OnStay(*pair.pA, pair.Contact);
+
 			BusLocator::PhysicsDispatcher()
-				.Emmit<OnCollisionStay>({ contact });
+				.Emmit<OnCollisionStay>({ pair });
 		}
 		else {
 			BusLocator::PhysicsDispatcher()
-				.Emmit<OnCollisionEnter>({ contact });
+				.Emmit<OnCollisionEnter>({ pair });
+		}
+
+		const auto it = std::find(m_PreviousContacts.cbegin(), m_PreviousContacts.cend(), pair);
+		if (it != m_PreviousContacts.cend()) {
+			BusLocator::PhysicsDispatcher()
+				.Emmit<OnCollisionExit>({ pair });
 		}
 	}
 

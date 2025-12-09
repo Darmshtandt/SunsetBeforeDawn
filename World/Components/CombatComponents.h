@@ -5,7 +5,9 @@
 
 class WeaponBelt final : public IComponent {
 public:
-	explicit WeaponBelt(GameObject* pObject) : IComponent(pObject) {
+	explicit WeaponBelt(GameObject* pObject) :
+		IComponent(pObject, Class<WeaponBelt>::ID())
+	{
 	}
 	~WeaponBelt() noexcept override = default;
 
@@ -51,31 +53,42 @@ private:
 
 class Combat final : public IComponent {
 public:
-	explicit Combat(GameObject* pObject) : IComponent(pObject)
+	explicit Combat(GameObject* pObject) :
+		IComponent(pObject, Class<Combat>::ID())
 	{
 	}
 	~Combat() noexcept override = default;
 
-	void PerformAttack(const Float& direction) {
-		if (m_pAttackDispatcher == nullptr)
+	void PerformAttack() {
+		if (m_Timer.GetElapsedTimeMs() < m_DelayMs)
 			return;
 
-		AttackCommand command = { };
-		command.pObject = OwnerPtr();
-		command.pStrategy = m_pAttackStrategy;
-		command.Direction = direction;
+		m_Timer.Restart();
 
-		m_pAttackDispatcher->Dispatch(command);
+		Assert(m_pDamage != nullptr, "Damage not selected");
+		if (m_pCombatDispatcher == nullptr)
+			return;
+
+		DamageCommand command;
+		command.pDamage = m_pDamage;
+		command.pOwner = OwnerPtr();
+		command.pOwnerTransform = RequireNotNull(command.pOwner->GetComponent<Transform3D>());
+		m_pCombatDispatcher->Dispatch(command);
 	}
 
-	void SetAttackStrategy(IAttackStrategy* pStrategy) {
-		m_pAttackStrategy = pStrategy;
+	void SetDelayMs(const uInt& delayMs) noexcept {
+		m_DelayMs = delayMs;
 	}
-	void SetAttackDispatcher(IAttackDispatcher* pDispatcher) {
-		m_pAttackDispatcher = pDispatcher;
+	void SetDamageType(const IDamage* pDamage) noexcept {
+		m_pDamage = pDamage;
+	}
+	void SetCombatDispatcher(ICombatDispatcher* pDispatcher) noexcept {
+		m_pCombatDispatcher = pDispatcher;
 	}
 
 private:
-	IAttackStrategy* m_pAttackStrategy = nullptr;
-	IAttackDispatcher* m_pAttackDispatcher = nullptr;
+	const IDamage* m_pDamage = nullptr;
+	ICombatDispatcher* m_pCombatDispatcher = nullptr;
+	Nt::Timer m_Timer;
+	uInt m_DelayMs = 1000;
 };

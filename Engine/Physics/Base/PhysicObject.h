@@ -11,3 +11,49 @@ struct PhysicObject {
 	Collider* pCollider = nullptr;
 	GameObject* pObject = nullptr;
 };
+
+struct CollisionContact final {
+	Nt::Float3D ContactPoint;
+	Nt::Float3D Normal;
+	Float Depth;
+};
+struct ObjectContactPair final {
+	void OnEnter() const;
+	void OnStay() const;
+	void OnExit() const;
+
+	const PhysicObject* pA;
+	const PhysicObject* pB;
+	CollisionContact Contact;
+};
+
+struct PhysicObjectPair final {
+	PhysicObjectPair() noexcept = default;
+	PhysicObjectPair(const ObjectContactPair& contact) noexcept :
+		pA(contact.pA),
+		pB(contact.pB) {
+	}
+	PhysicObjectPair(const PhysicObject* a, const PhysicObject* b) noexcept :
+		pA(a),
+		pB(b) {
+	}
+
+	[[nodiscard]] Bool operator == (const PhysicObjectPair& other) const noexcept {
+		return (pA == other.pA && pB == other.pB)
+			|| (pA == other.pB && pB == other.pA);
+	}
+	[[nodiscard]] Bool operator == (const ObjectContactPair& contact) const noexcept {
+		return (pA == contact.pA && pB == contact.pB)
+			|| (pA == contact.pB && pB == contact.pA);
+	}
+
+	const PhysicObject* pA;
+	const PhysicObject* pB;
+};
+struct PhysicObjectHash final {
+	[[nodiscard]] std::size_t operator () (const PhysicObjectPair& pair) const noexcept {
+		return
+			reinterpret_cast<std::size_t>(pair.pA) ^
+			reinterpret_cast<std::size_t>(pair.pB);
+	}
+};

@@ -37,6 +37,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{96651929-26e1-4a58-be42-a92208e83174}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Traps">
+      <UniqueIdentifier>{38a61085-c820-4348-971f-0ccceaa5aa7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\Creatures\Humanoid\Orc.h">
@@ -145,6 +148,21 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\GameComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\IAttackComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BasicAttackComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Traps\Bomb.h">
+      <Filter>Objects\Traps</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Weapons\Pistol.h">
+      <Filter>Objects\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\AIComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

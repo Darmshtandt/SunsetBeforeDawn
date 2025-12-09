@@ -3,10 +3,10 @@
 #include <Engine/Physics/Base/PhysicsInterfaces.h>
 
 struct OnCollisionEnter final {
-	CollisionContact Contact;
+	ObjectContactPair Contact;
 };
 struct OnCollisionStay final {
-	CollisionContact Contact;
+	ObjectContactPair Contact;
 };
 struct OnCollisionExit final {
 	PhysicObjectPair Pair;
@@ -22,7 +22,7 @@ public:
 	CollisionEventDispatcher& operator = (const CollisionEventDispatcher&) = delete;
 	CollisionEventDispatcher& operator = (CollisionEventDispatcher&&) noexcept = default;
 
-	void ProcessFrameContacts(const std::vector<CollisionContact>& contacts);
+	void ProcessFrameContacts(const std::vector<ObjectContactPair>& contacts);
 
 private:
 	std::unordered_set<PhysicObjectPair, PhysicObjectHash> m_PreviousContacts;

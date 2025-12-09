@@ -11,7 +11,7 @@ public:
 	using Vector = Nt::Vector<_Ty, Dimension>;
 
 public:
-	explicit Transform(GameObject* pOwner) : IComponent(pOwner) {
+	explicit Transform(GameObject* pOwner) : IComponent(pOwner, Class<Transform>::ID()) {
 		m_Size.Fill(_Ty(1));
 	}
 
@@ -88,20 +88,14 @@ public:
 
 	[[nodiscard]] const Nt::Matrix4x4& LocalToWorld() const noexcept {
 		if (m_IsDirty) {
-			m_LocalToWorld = Matrix<_Ty, Dimension>::LocalToWorld(
-				m_Position, m_Rotation, m_Size);
-			m_WorldToLocal = Matrix<_Ty, Dimension>::WorldToLocal(
-				m_Position, m_Rotation, m_Size);
+			_ComputeMatrix();
 			m_IsDirty = false;
 		}
 		return m_LocalToWorld;
 	}
 	[[nodiscard]] const Nt::Matrix4x4& WorldToLocal() const noexcept {
 		if (m_IsDirty) {
-			m_LocalToWorld = Matrix<_Ty, Dimension>::LocalToWorld(
-				m_Position, m_Rotation, m_Size);
-			m_WorldToLocal = Matrix<_Ty, Dimension>::WorldToLocal(
-				m_Position, m_Rotation, m_Size);
+			_ComputeMatrix();
 			m_IsDirty = false;
 		}
 		return m_WorldToLocal;
@@ -128,6 +122,14 @@ private:
 	Vector m_Position;
 	Vector m_Rotation;
 	Vector m_Size;
+
+private:
+	void _ComputeMatrix() const noexcept {
+		m_LocalToWorld = Matrix<_Ty, Dimension>::LocalToWorldLH(
+			m_Position, m_Rotation, m_Size);
+		m_WorldToLocal = Matrix<_Ty, Dimension>::WorldToLocalLH(
+			m_Position, m_Rotation, m_Size);
+	}
 };
 
 template <typename _Ty, uInt Dimension>
@@ -136,7 +138,7 @@ public:
 	using Vector = Nt::Vector<_Ty, Dimension>;
 
 public:
-	explicit Movement(GameObject* pOwner) : IComponent(pOwner)
+	explicit Movement(GameObject* pOwner) : IComponent(pOwner, Class<Movement>::ID())
 	{
 	}
 
@@ -150,7 +152,7 @@ public:
 };
 
 struct Handler final : public IComponent {
-	explicit Handler(GameObject* pOwner) : IComponent(pOwner)
+	explicit Handler(GameObject* pOwner) : IComponent(pOwner, Class<Handler>::ID())
 	{
 	}
 	~Handler() noexcept override = default;

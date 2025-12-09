@@ -1,42 +1,49 @@
 #include <Application/Game.h>
 #include <GameLogic/Controllers/PlayerController.h>
 #include <GameLogic/Controllers/RotatableController.h>
+#include <GameLogic/Controllers/WeaponController.h>
 
 #include <Engine/Physics/PhysicsSystem.h>
 #include <Engine/MovementSystem.h>
 #include <Engine/AI/AISystem.h>
+#include <Engine/Combat/CombatSystem.h>
 
 #include <World/AllBiomes.h>
 #include <World/Objects/Player.h>
 #include <World/Objects/AllCreatures.h>
 #include <World/Objects/Interactives/Interactive.h>
+#include <World/Objects/Traps/Bomb.h>
 #include <UI/HUD.h>
 #include <UI/DebugInfoPanel.h>
 
 #include <World/Arena.h>
 
-Game::Game() :
-	m_pPhysicsSystem(std::make_unique<PhysicsSystem>()),
-	m_pMovementSystem(std::make_unique<MovementSystem>()),
-	m_pAISystem(std::make_unique<AISystem>()),
-	m_pSceneDispatcher(m_Scene.GetDispatcherPtr())
+Game::Game(NotNull<EventBus*> pBus) :
+	m_pDispatcher(pBus),
+	m_Scene(&m_SceneDispatcher)
 {
+	PhysicsSystem* pPhysicsSystem = new PhysicsSystem;
+
+	m_Systems.emplace_front(pPhysicsSystem);
+	m_Systems.emplace_front(std::make_unique<MovementSystem>());
+	m_Systems.emplace_front(std::make_unique<AISystemV2>(pPhysicsSystem));
+	m_Systems.emplace_front(std::make_unique<CombatSystem>(pPhysicsSystem));
 }
 
 Game::~Game() noexcept = default;
 
 void Game::Initialize() {
-	m_pSceneDispatcher->Subscribe<Scene::OnAdd>(
+	m_SceneDispatcher.Subscribe<Scene::OnAdd>(
 		[this] (const Scene::OnAdd& event) {
 			_HandleEventOnAdd(event);
 		});
 
-	m_pSceneDispatcher->Subscribe<Scene::OnRemove>(
+	m_SceneDispatcher.Subscribe<Scene::OnRemove>(
 		[this] (const Scene::OnRemove& event) {
 			_HandleEventOnRemove(event);
 		});
 
-	m_pSceneDispatcher->Subscribe<Scene::OnClear>(
+	m_SceneDispatcher.Subscribe<Scene::OnClear>(
 		[this] (const Scene::OnClear& event) {
 			_HandleEventOnClear(event);
 		});
@@ -48,27 +55,41 @@ void Game::Initialize() {
 	m_Scene.AddObject<DebugInfoPanel>({ });
 	m_Scene.AddObject<UIHealthBar>({ });
 	m_Scene.AddObject<UIArmorBar>({ });
+
 	m_Scene.AddObject<Player>({ -0.f, 1.f, -0.f });
+
+	for (uInt i = 0; i < 0; ++i) {
+		const Float x = std::rand() % 50 - 50;
+		const Float z = std::rand() % 50 - 50;
+
+		if (Nt::FloatRect({ -20.f, -20.f, 20.f, 20.f }).Intersect(Nt::Float2D(x, z))) {
+			--i;
+			continue;
+		}
+
+		m_Scene.AddObject<Zombie>({ 
+			x,
+			1.f,
+			z
+		});
+	}
+
 	m_Scene.AddObject<Zombie>({ -20.f, 1.f, -20.f });
 	//m_Scene.AddObject<Orc>({ -30.f, 1.f, -30.f });
+	//m_Scene.AddObject<Bomb>({ 0.f, 1.f, -20.f });
 }
 
 void Game::Update(const Float& deltaTime) {
 	for (IController* pController : m_ActiveControllers)
 		pController->Update(deltaTime);
 
-	m_pAISystem->Update(deltaTime);
 	m_Scene.Update(deltaTime);
-	m_pMovementSystem->Update(deltaTime);
-	m_pPhysicsSystem->Update(deltaTime);
+	for (SystemPtr& pSystem : m_Systems)
+		pSystem->Update(deltaTime);
 }
 
 Scene& Game::GetScene() noexcept {
 	return m_Scene;
-}
-
-EventBus& Game::GetDispatcher() noexcept {
-	return m_Dispatcher;
 }
 
 void Game::ActivateController(const ControllerID& id) {
@@ -101,7 +122,7 @@ ControllerPtr& Game::_GetController(const ControllerID& id) {
 }
 
 void Game::_HandleEventOnAdd(const Scene::OnAdd& event) {
-	m_Dispatcher.Emmit<OnAddToScene>({ event.pObject });
+	m_pDispatcher->Emmit<OnAddToScene>({ event.pObject });
 	if (event.pObject->GetType() == ObjectType::Canvas)
 		return;
 	if (event.pObject->GetType() == ObjectType::UI)
@@ -111,10 +132,12 @@ void Game::_HandleEventOnAdd(const Scene::OnAdd& event) {
 		Player* pPlayer = static_cast<Player*>(event.pObject);
 
 		AddController<PlayerController, Player>(pPlayer);
-		AddController<RotatableController, GameObject>(pPlayer);
+		AddController<RotatableController, GameObject>(event.pObject);
+		AddController<WeaponController, GameObject>(event.pObject);
 
 		ActivateController<PlayerController>();
 		ActivateController<RotatableController>();
+		ActivateController<WeaponController>();
 
 		BusLocator::StatisticsQuery().Subscribe<Player::Statistics>(
 			[pPlayer] () {
@@ -123,13 +146,12 @@ void Game::_HandleEventOnAdd(const Scene::OnAdd& event) {
 	}
 
 	GameObject& object = *event.pObject;
-	m_pAISystem->RegisterObject(object);
-	m_pMovementSystem->RegisterObject(object);
-	m_pPhysicsSystem->RegisterObject(object);
+	for (SystemPtr& pSystem : m_Systems)
+		pSystem->RegisterObject(object);
 }
 
 void Game::_HandleEventOnRemove(const Scene::OnRemove& event) {
-	m_Dispatcher.Emmit<OnRemoveFromScene>({ event.pObject });
+	m_pDispatcher->Emmit<OnRemoveFromScene>({ event.pObject });
 	if (event.pObject->GetType() == ObjectType::Canvas)
 		return;
 	if (event.pObject->GetType() == ObjectType::UI)
@@ -144,18 +166,16 @@ void Game::_HandleEventOnRemove(const Scene::OnRemove& event) {
 	}
 
 	GameObject& object = *event.pObject;
-	m_pAISystem->UnregisterObject(object);
-	m_pMovementSystem->UnregisterObject(object);
-	m_pPhysicsSystem->UnregisterObject(object);
+	for (SystemPtr& pSystem : m_Systems)
+		pSystem->UnregisterObject(object);
 }
 
 void Game::_HandleEventOnClear(const Scene::OnClear& event) {
 	(void)event;
 
 	BusLocator::StatisticsQuery().Clear();
-	m_Dispatcher.Emmit<OnClearScene>({ });
+	m_pDispatcher->Emmit<OnClearScene>({ });
 
 	m_ActiveControllers.clear();
 	m_Controllers.clear();
-	m_pPhysicsSystem->Clear();
 }

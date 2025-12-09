@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine/IController.h>
+#include <World/Components/RenderComponents.h>
 #include <World/Objects/GameObject.h>
 
 class RotatableController final : public IController {
@@ -18,5 +19,6 @@ public:
 	void Update(const Float& deltaTime) override;
 
 private:
-	Movement3D* m_pMovement;
+	Transform3D* m_pObjectTransform;
+	Camera3D* m_pCamera;
 };

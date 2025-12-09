@@ -13,7 +13,7 @@ struct DefaultTargetScanner : public ITargetScanner {
 
 	[[nodiscard]] Bool Scan(Pawn& pawn, const std::vector<Target>& targets, const View& view) override {
 		for (const Target& target : targets) {
-			if (pawn.pObject == target.pObject)
+			if (pawn.This.pObject == target.pObject)
 				continue;
 
 			if (!IsVisibleTarget(pawn, view, target))

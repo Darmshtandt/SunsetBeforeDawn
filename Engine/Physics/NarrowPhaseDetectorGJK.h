@@ -8,5 +8,5 @@ public:
 	~NarrowPhaseDetectorGJK() noexcept override = default;
 
 	[[nodiscard]]
-	std::vector<CollisionContact> GenerateContacts(const std::vector<PhysicObjectPair>& pairs) const override;
+	std::vector<ObjectContactPair> GenerateContacts(const std::vector<PhysicObjectPair>& pairs) const override;
 };

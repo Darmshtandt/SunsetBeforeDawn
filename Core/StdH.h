@@ -20,8 +20,9 @@ enum TextureID : Byte {
 
 enum MeshID : Byte {
 	MESH_CUBE,
-	MESH_CHARASTER,
-	MESH_QUAD
+	MESH_QUAD,
+	MESH_CHARACTER,
+	MESH_BOMB,
 };
 
 class PathManager final {

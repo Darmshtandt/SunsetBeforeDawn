@@ -38,12 +38,12 @@ void PlayerController::Execute(const std::unordered_set<InputCommandID>& command
 		direction.y -= 1.f;
 
 	if (commands.contains(InputCommandID::Forward)) {
-		direction.x -= sinf(pitch);
-		direction.z -= cosf(pitch);
-	}
-	if (commands.contains(InputCommandID::Back)) {
 		direction.x += sinf(pitch);
 		direction.z += cosf(pitch);
+	}
+	if (commands.contains(InputCommandID::Back)) {
+		direction.x -= sinf(pitch);
+		direction.z -= cosf(pitch);
 	}
 
 	m_pMovement->Direction = direction.GetNormalize();

@@ -67,7 +67,7 @@ private:
 	UISystem m_UISystem;
 	std::unique_ptr<RenderSystem> m_RenderSystem;
 	Game m_Game;
-	EventBus* m_pGameDispatcher;
+	EventBus m_GameDispatcher;
 
 	Nt::RenderWindow m_Window;
 	WindowListener m_WindowListener;

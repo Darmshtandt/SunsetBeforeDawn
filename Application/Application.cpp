@@ -8,12 +8,12 @@
 #include <Nt/Graphics/Resources/ResourceManager.h>
 #include <Core/BusLocator.h>
 
-Application::Listener::Listener(NotNull<Application*> pApplication) noexcept:
+Application::Listener::Listener(NotNull<Application*> pApplication) noexcept :
 	m_pApp(pApplication)
 {
 }
 
-Application::WindowListener::WindowListener(NotNull<Application*> pApplication) noexcept:
+Application::WindowListener::WindowListener(NotNull<Application*> pApplication) noexcept :
 	Listener(pApplication)
 {
 }
@@ -28,7 +28,7 @@ void Application::WindowListener::Resize(const Nt::ResizeType& type, const Nt::I
 	m_pApp->m_UISystem.Resize(viewport.RightBottom);
 }
 
-Application::KeyboardListener::KeyboardListener(NotNull<Application*> pApplication) noexcept:
+Application::KeyboardListener::KeyboardListener(NotNull<Application*> pApplication) noexcept :
 	Listener(pApplication)
 {
 }
@@ -40,23 +40,23 @@ void Application::KeyboardListener::KeyReleased(const Nt::Key& key) {
 	}
 }
 
-Application::Application():
+Application::Application() :
 	m_Window(true),
 	m_WindowListener(this),
 	m_KeyboardListener(this),
-	m_pGameDispatcher(&m_Game.GetDispatcher())
+	m_Game(&m_GameDispatcher)
 {
-	m_pGameDispatcher->Subscribe<Game::OnAddToScene>(
+	m_GameDispatcher.Subscribe<Game::OnAddToScene>(
 		[this] (const Game::OnAddToScene& event) {
 			_HandleOnAddToScene(event);
 		});
 
-	m_pGameDispatcher->Subscribe<Game::OnRemoveFromScene>(
+	m_GameDispatcher.Subscribe<Game::OnRemoveFromScene>(
 		[this] (const Game::OnRemoveFromScene& event) {
 			_HandleOnRemoveFromScene(event);
 		});
 
-	m_pGameDispatcher->Subscribe<Game::OnClearScene>(
+	m_GameDispatcher.Subscribe<Game::OnClearScene>(
 		[this] (const Game::OnClearScene& event) {
 			_HandleOnClearScene(event);
 		});
@@ -95,13 +95,10 @@ void Application::Initialize() {
 	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\ArmorBar.tga");
 
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Cube({ 1.f, 2.f, 1.f }, Nt::Colors::White));
-	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::Models() + "Charaster.obj");
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Quad({ 1.f, 1.f }, Nt::Colors::White));
+	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::Models() + "Character.obj");
+	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::Models() + "Bomb.obj");
 	Profiler::Instance().Stop("Textures addition in ResourceManager time");
-
-	BusLocator::DebugQuery().Subscribe<Debug::Event::FPS>([this]() {
-		return Debug::Event::FPS { m_Window.GetFPS() };
-	});
 
 	m_Game.Initialize();
 }

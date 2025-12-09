@@ -12,12 +12,14 @@ public:
 		std::vector<PhysicObjectPair> result;
 		for (uInt i = 0; i < bodies.size(); ++i) {
 			const PhysicObject& objectA = bodies[i];
-			if (!objectA.pRigidBody || !objectA.pCollider)
+			if (!objectA.pCollider)
 				continue;
 
 			for (uInt j = i + 1; j < bodies.size(); ++j) {
 				const PhysicObject& objectB = bodies[j];
-				if (!objectB.pRigidBody || !objectB.pCollider)
+				if (!objectB.pCollider)
+					continue;
+				if (!objectA.pRigidBody && !objectB.pRigidBody)
 					continue;
 
 				result.emplace_back(&objectA, &objectB);
