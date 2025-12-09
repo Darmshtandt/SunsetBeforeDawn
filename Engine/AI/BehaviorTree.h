@@ -84,7 +84,7 @@ namespace Temporary {
 
 			Route3D* pRoute = context.pMovementController->GetRoute();
 			if (!pRoute->HasMarker())
-				return BNStatus::Successful;
+				return BNStatus::Failed;
 
 			if (pRoute->IsReachedMarker(deltaTime)) {
 				pRoute->PopMarker();
@@ -111,6 +111,16 @@ namespace Temporary {
 
 		[[nodiscard]]
 		BNStatus Tick(const AIContext& context, Float deltaTime) override {
+			if (m_Timer.GetElapsedTimeMs() < context.pAttackController->GetCooldown())
+				return BNStatus::Running;
+
+			Route3D* pRoute = context.pMovementController->GetRoute();
+			if (pRoute->HasMarker())
+				return BNStatus::Failed;
+
+			context.pAttackController->Attack();
+			m_Timer.Restart();
+
 			return BNStatus::Running;
 		}
 		IBehaviorNode* AddNode(const std::string& name) override {
@@ -118,24 +128,7 @@ namespace Temporary {
 		}
 
 	private:
+		Nt::Timer m_Timer;
 		inline static BNodeRegistrar<BNAttack> m_Registrar = { "Attack" };
 	};
-
-	//struct BTCreator final {
-	//	static BehaviorTree CreateZombieTree() {
-	//		std::stack<IBehaviorNode*> bnStack;
-
-	//		BehaviorTree behaviorTree;
-	//		bnStack.push(behaviorTree.SetRootNode<BehaviorSelectorNode>());
-
-	//		bnStack.push(bnStack.top()->AddNode("Sequence"));
-	//		bnStack.top()->AddNode("Pursue");
-	//		bnStack.top()->AddNode("Attack");
-	//		bnStack.pop();
-
-	//		bnStack.top()->AddNode("Patrol");
-
-	//		return behaviorTree;
-	//	}
-	//};
 }

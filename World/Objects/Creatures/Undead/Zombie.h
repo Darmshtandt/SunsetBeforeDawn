@@ -42,5 +42,8 @@ public:
 private:
 	BehaviorTree m_BehaviorTree;
 	AIContext m_Context;
+	Intent3D* m_pIntent;
+	Route3D* m_pRoute;
+	Movement3D* m_Movement;
 	Zombie* m_pOwner;
 };

@@ -12,11 +12,19 @@ public:
 	}
 	~AIAttackController() noexcept override = default;
 
+	void Attack() override {
+		m_pCombat->PerformAttack();
+	}
+
+	[[nodiscard]] uLLong GetCooldown() const noexcept override {
+		return m_Cooldown;
+	}
 	[[nodiscard]] Bool HasTarget() const noexcept override {
 		return m_Intent->HasTarget();
 	}
 
 private:
+	uLLong m_Cooldown = 1000;
 	Combat* m_pCombat;
 	Intent3D* m_Intent;
 };

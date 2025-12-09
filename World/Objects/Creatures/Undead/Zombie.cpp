@@ -47,7 +47,10 @@ ISenses* Zombie::GetSenses() const noexcept {
 
 
 ZombieAI::ZombieAI(NotNull<Zombie*> pOwner) :
-	m_pOwner(pOwner)
+	m_pOwner(pOwner),
+	m_pIntent(RequireNotNull(pOwner->GetComponent<Intent3D>())),
+	m_pRoute(RequireNotNull(pOwner->GetComponent<Route3D>())),
+	m_Movement(RequireNotNull(pOwner->GetComponent<Movement3D>()))
 {
 	m_Context.pMovementController = pOwner->GetMovementController();
 	m_Context.pAttackController = pOwner->GetAttackController();
@@ -69,5 +72,27 @@ void ZombieAI::Scan(NotNull<IPhysicsOverlapper*> pOverlapper, Float deltaTime) {
 }
 
 void ZombieAI::Tick(Float deltaTime) {
+	if (!m_pIntent->HasTarget()) {
+		const std::vector<LivingPawn>& visiblePawns = m_Context.pSenses->GetVisiblePawns();
+		if (!visiblePawns.empty()) {
+			const LivingPawn& pawn = visiblePawns.back();
+
+			const Intent3D::Target target = {
+				.pTransform = pawn.pTransform,
+				.pHealth = pawn.pHealth,
+				.pArmor = pawn.pArmor,
+				.pObject = pawn.pObject
+			};
+			m_pIntent->SetTarget(target);
+		}
+	}
+	else {
+		m_pRoute->Clear();
+		m_pRoute->PushMarker({
+			m_pIntent->GetTarget().pTransform->Position(),
+			m_Movement->Speed
+			});
+	}
+
 	m_BehaviorTree.Tick(m_Context, deltaTime);
 }

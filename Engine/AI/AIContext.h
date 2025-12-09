@@ -20,6 +20,9 @@ struct IMovementController {
 struct IAttackController {
 	virtual ~IAttackController() noexcept = default;
 
+	virtual void Attack() = 0;
+
+	[[nodiscard]] virtual uLLong GetCooldown() const noexcept = 0;
 	[[nodiscard]] virtual Bool HasTarget() const noexcept = 0;
 };
 
