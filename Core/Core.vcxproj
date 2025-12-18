@@ -165,6 +165,7 @@
     <ClInclude Include="Nt\Algorithms\EPA.h" />
     <ClInclude Include="Nt\Algorithms\GJK.h" />
     <ClInclude Include="Nt\Algorithms\RayCast.h" />
+    <ClInclude Include="Nt\BoundingBox.h" />
     <ClInclude Include="Nt\ClassManager.h" />
     <ClInclude Include="Nt\HitBox.h" />
     <ClInclude Include="Nt\MatrixPlus.h" />

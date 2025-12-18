@@ -6,7 +6,6 @@ UIImage::UIImage() noexcept :
 	GameObject(Class<UIImage>::ID(), ObjectType::UI)
 {
 	pTransform = AddComponent<Transform2D>();
-	pLayout = AddComponent<Layout2D>();
 	pScale = AddComponent<Scale2D>();
 	pTexture = AddComponent<TextureRenderer>();
 

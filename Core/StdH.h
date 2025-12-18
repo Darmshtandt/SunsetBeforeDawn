@@ -16,6 +16,7 @@ enum TextureID : Byte {
 	TEXTURE_HP_BAR,
 	TEXTURE_HP_BAR_LINE,
 	TEXTURE_ARMOR_BAR,
+	TEXTURE_CROSSHAIR,
 };
 
 enum MeshID : Byte {

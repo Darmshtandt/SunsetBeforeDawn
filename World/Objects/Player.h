@@ -1,5 +1,6 @@
 #pragma once
 
+#include <World/Components/RenderComponents.h>
 #include <World/Objects/Character.h>
 
 class Player final : public Character {
@@ -20,9 +21,12 @@ public:
 	Player& operator = (const Player&) noexcept = default;
 	Player& operator = (Player&&) noexcept = default;
 
+	[[nodiscard]] Nt::Float3D GetFullRotation() const noexcept;
+
 	[[nodiscard]] Statistics GetStatistics() const noexcept;
 
 private:
+	Camera3D* m_pCamera;
 	inline static ObjectRegistrar<Player> m_Registrar = { "Player" };
 };
 

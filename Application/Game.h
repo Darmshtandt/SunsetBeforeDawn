@@ -27,7 +27,7 @@ public:
 	};
 
 public:
-	Game(NotNull<EventBus*> pBus);
+	explicit Game(NotNull<EventBus*> pBus);
 	Game(const Game&) = delete;
 	Game(Game&&) noexcept = default;
 	~Game() noexcept;

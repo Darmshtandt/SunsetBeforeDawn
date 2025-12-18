@@ -33,3 +33,17 @@ public:
 private:
 	inline static ObjectRegistrar<UIArmorBar> g_Registrar { "UIArmorBar" };
 };
+
+class UICrosshair final : public Canvas {
+public:
+	UICrosshair();
+	UICrosshair(const UICrosshair&) noexcept = default;
+	UICrosshair(UICrosshair&&) noexcept = default;
+	~UICrosshair() noexcept override = default;
+
+	UICrosshair& operator = (const UICrosshair&) noexcept = default;
+	UICrosshair& operator = (UICrosshair&&) noexcept = default;
+
+private:
+	inline static ObjectRegistrar<UICrosshair> g_Registrar { "UICrosshair" };
+};

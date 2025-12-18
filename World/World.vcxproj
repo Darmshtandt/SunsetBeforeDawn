@@ -147,16 +147,13 @@
     <ClInclude Include="Biomes\OceanBiome.h" />
     <ClInclude Include="Biomes\SwampBiome.h" />
     <ClInclude Include="Components\AIComponent.h" />
-    <ClInclude Include="Components\BasicAttackComponents.h" />
     <ClInclude Include="Components\BasicComponents.h" />
     <ClInclude Include="Components\CombatComponents.h" />
     <ClInclude Include="Components\GameComponents.h" />
-    <ClInclude Include="Components\IAttackComponent.h" />
     <ClInclude Include="Components\IComponent.h" />
     <ClInclude Include="Components\PhysicComponents.h" />
     <ClInclude Include="Components\RenderComponents.h" />
     <ClInclude Include="Components\UIComponents.h" />
-    <ClInclude Include="Entities.h" />
     <ClInclude Include="Landscape.h" />
     <ClInclude Include="Objects\AllCreatures.h" />
     <ClInclude Include="Objects\Character.h" />

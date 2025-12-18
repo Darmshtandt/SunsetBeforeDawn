@@ -134,6 +134,9 @@
     <ClInclude Include="Nt\Quaternion.h">
       <Filter>Nt</Filter>
     </ClInclude>
+    <ClInclude Include="Nt\BoundingBox.h">
+      <Filter>Nt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Nt\ClassManager.inl">

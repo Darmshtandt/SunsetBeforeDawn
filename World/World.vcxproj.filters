@@ -99,9 +99,6 @@
     <ClInclude Include="BiomeRegistrar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Landscape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -148,12 +145,6 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\GameComponents.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\IAttackComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\BasicAttackComponents.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Traps\Bomb.h">

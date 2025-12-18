@@ -5,7 +5,6 @@ UIText::UIText() :
 	GameObject(Class<UIText>::ID(), ObjectType::UI)
 {
 	pTransform = AddComponent<Transform2D>();
-	pLayout = AddComponent<Layout2D>();
 	pScale = AddComponent<Scale2D>();
 	pText = AddComponent<Text>();
 

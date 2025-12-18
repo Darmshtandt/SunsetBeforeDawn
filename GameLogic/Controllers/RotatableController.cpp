@@ -18,7 +18,7 @@ void RotatableController::Update(const Float& deltaTime) {
 	const Nt::Float2D screenCenter(Nt::GetMonitorSize() / 2);
 
 	if (!(cursorPosition == screenCenter)) {
-		const Nt::Float2D rotation = -(cursorPosition - screenCenter) * 10.f * RADf * deltaTime;
+		const Nt::Float2D rotation = (cursorPosition - screenCenter) * 10.f * RADf * deltaTime;
 
 		m_pObjectTransform->Rotate({ 0.f, rotation.x, 0.f });
 		m_pCamera->LocalTransform().Rotate({ rotation.y, 0.f, 0.f });

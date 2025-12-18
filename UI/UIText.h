@@ -16,7 +16,6 @@ public:
 
 public:
 	Transform2D* pTransform;
-	Layout2D* pLayout;
 	Scale2D* pScale;
 	Text* pText;
 };

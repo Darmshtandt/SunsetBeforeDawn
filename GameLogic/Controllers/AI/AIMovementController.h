@@ -13,6 +13,21 @@ public:
 	}
 	~AIMovementController() noexcept override = default;
 
+	void FollowRoute(Float deltaTime) override {
+		if (!m_pRoute->HasMarker())
+			return;
+
+		if (m_pRoute->IsReachedMarker(deltaTime)) {
+			m_pRoute->PopMarker();
+			if (!m_pRoute->HasMarker())
+				return;
+		}
+
+		const Nt::Float3D direction = -m_pRoute->DirectionToMarker();
+		MoveInDirection(direction);
+		LookInDirection(direction, deltaTime * 4.f);
+	}
+
 	void MoveTo(const Nt::Float3D& point) override {
 		const Float distanceSq = m_pTransform->DistanceSquare(point);
 		if (distanceSq <= FLT_EPSILON)
@@ -43,9 +58,8 @@ public:
 	[[nodiscard]] Bool IsAt(const Nt::Float3D& point) const override {
 		return m_pTransform->DistanceSquare(point) <= FLT_EPSILON;
 	}
-
-	[[nodiscard]] Route3D* GetRoute() override {
-		return m_pRoute;
+	[[nodiscard]] Bool HasRoute() const override {
+		return m_pRoute->HasMarker();
 	}
 
 private:

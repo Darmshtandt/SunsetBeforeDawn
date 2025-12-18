@@ -7,6 +7,8 @@ struct IIntelligence {
 
 	virtual void Scan(NotNull<IPhysicsOverlapper*> pOverlapper, Float deltaTime) = 0;
 	virtual void Tick(Float deltaTime) = 0;
+
+	[[nodiscard]] virtual AIContext GetContext() const noexcept = 0;
 };
 
 class AIComponent final : public IComponent {

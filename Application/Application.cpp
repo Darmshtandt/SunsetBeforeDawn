@@ -93,8 +93,9 @@ void Application::Initialize() {
 	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\HealthBar.tga");
 	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\HealthBar_Line.tga");
 	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\ArmorBar.tga");
+	Nt::ResourceManager::Instance().Add<Nt::Texture>(PathManager::Textures() + "UI\\Crosshair.tga");
 
-	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Cube({ 1.f, 2.f, 1.f }, Nt::Colors::White));
+	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Cube({ 1.f, 1.f, 1.f }, Nt::Colors::White));
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(Nt::Primitive::Quad({ 1.f, 1.f }, Nt::Colors::White));
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::Models() + "Character.obj");
 	Nt::ResourceManager::Instance().Add<Nt::Mesh>(PathManager::Models() + "Bomb.obj");

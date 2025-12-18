@@ -2,6 +2,7 @@
 #include <World/Components/RenderComponents.h>
 
 #include <algorithm>
+#include <unordered_set>
 
 void UISystem::Resize(const Nt::Float2D& contextSize) {
 	if (m_ContextSize == contextSize)
@@ -41,11 +42,6 @@ void UISystem::Resize(const Nt::Float2D& contextSize) {
 		else if (!hasText) {
 			element.pTransform->Resize(localSize);
 		}
-
-		if (element.pLayout == nullptr)
-			continue;
-
-		element.pTransform->Translate(element.pLayout->Padding);
 	}
 }
 
@@ -59,7 +55,6 @@ void UISystem::RegisterCanvas(Canvas& canvas) {
 
 		UIElement element = { };
 		element.pTransform = RequireNotNull(pObject->GetComponent<Transform2D>());
-		element.pLayout = pObject->GetComponent<Layout2D>();
 		element.pScale = pObject->GetComponent<Scale2D>();
 		element.pTexture = pObject->GetComponent<TextureRenderer>();
 		element.pText = pObject->GetComponent<Text>();

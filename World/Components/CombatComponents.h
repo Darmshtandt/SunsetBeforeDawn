@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine/Combat/CombatInterfaces.h>
+#include <Nt/Core/Timer.h>
 #include <World/Objects/Weapons/IWeapon.h>
 
 class WeaponBelt final : public IComponent {
@@ -54,12 +55,13 @@ private:
 class Combat final : public IComponent {
 public:
 	explicit Combat(GameObject* pObject) :
-		IComponent(pObject, Class<Combat>::ID())
+		IComponent(pObject, Class<Combat>::ID()),
+		m_pOwnerTransform(RequireNotNull(pObject->GetComponent<Transform3D>()))
 	{
 	}
 	~Combat() noexcept override = default;
 
-	void PerformAttack() {
+	void PerformAttack(const Nt::Float3D& position, const Nt::Float3D& rotation) {
 		if (m_Timer.GetElapsedTimeMs() < m_DelayMs)
 			return;
 
@@ -72,7 +74,8 @@ public:
 		DamageCommand command;
 		command.pDamage = m_pDamage;
 		command.pOwner = OwnerPtr();
-		command.pOwnerTransform = RequireNotNull(command.pOwner->GetComponent<Transform3D>());
+		command.Position = position;
+		command.Rotation = rotation;
 		m_pCombatDispatcher->Dispatch(command);
 	}
 
@@ -89,6 +92,7 @@ public:
 private:
 	const IDamage* m_pDamage = nullptr;
 	ICombatDispatcher* m_pCombatDispatcher = nullptr;
+	Transform3D* m_pOwnerTransform;
 	Nt::Timer m_Timer;
 	uInt m_DelayMs = 1000;
 };

@@ -33,7 +33,7 @@ void Scene::AddObject(const Nt::Float3D& position, ClassID id) {
 	if (position.LengthSquare() != 0.f) {
 		auto* pTransform =
 			RequireNotNull(pObject->GetComponent<Transform3D>());
-		pTransform->Position(position);
+		pTransform->LocalPosition(position);
 	}
 
 	const auto* pHandler = pObject->GetComponent<Handler>();
@@ -72,9 +72,12 @@ void Scene::Update(const Float& deltaTime) {
 	for (const Handler* pHandler : m_Handlers)
 		pHandler->Function(deltaTime);
 
-	for (ObjectPtr& pObject : m_Objects) {
+	for (uInt i = 0; i < m_Objects.size();) {
+		GameObject* pObject = m_Objects[i].get();
 		if (!pObject->IsValid())
 			RemoveObject(*pObject);
+		else
+			++i;
 	}
 }
 

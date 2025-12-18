@@ -26,7 +26,7 @@ Game::Game(NotNull<EventBus*> pBus) :
 
 	m_Systems.emplace_front(pPhysicsSystem);
 	m_Systems.emplace_front(std::make_unique<MovementSystem>());
-	m_Systems.emplace_front(std::make_unique<AISystemV2>(pPhysicsSystem));
+	m_Systems.emplace_front(std::make_unique<AISystem>(pPhysicsSystem));
 	m_Systems.emplace_front(std::make_unique<CombatSystem>(pPhysicsSystem));
 }
 
@@ -53,6 +53,7 @@ void Game::Initialize() {
 
 	m_Scene.AddObject<Arena>({ -5.f, -10.f, -5.f });
 	m_Scene.AddObject<DebugInfoPanel>({ });
+	m_Scene.AddObject<UICrosshair>({ });
 	m_Scene.AddObject<UIHealthBar>({ });
 	m_Scene.AddObject<UIArmorBar>({ });
 
@@ -133,7 +134,7 @@ void Game::_HandleEventOnAdd(const Scene::OnAdd& event) {
 
 		AddController<PlayerController, Player>(pPlayer);
 		AddController<RotatableController, GameObject>(event.pObject);
-		AddController<WeaponController, GameObject>(event.pObject);
+		AddController<WeaponController, Player>(pPlayer);
 
 		ActivateController<PlayerController>();
 		ActivateController<RotatableController>();

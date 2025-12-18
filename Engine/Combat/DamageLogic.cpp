@@ -2,9 +2,10 @@
 #include <Engine/Physics/Base/PhysicsInterfaces.h>
 #include <Nt/Graphics/Geometry/RayCast.h>
 #include <Core/Nt/Quaternion.h>
+#include <World/Components/GameComponents.h>
 
-std::vector<PhysicObject> SphereDamage::FindTargets(const Transform3D& ownerTransform, NotNull<IPhysicsOverlapper*> pOverlapper) const noexcept {
-	return pOverlapper->OverlapSphere(ownerTransform.Position(), Radius, 0);
+std::vector<PhysicObject> SphereDamage::HitDetect(const Nt::Float3D& position, const Nt::Float3D& rotation, NotNull<IPhysicsOverlapper*> pOverlapper) const noexcept {
+	return pOverlapper->OverlapSphere(position, Radius, 0);
 }
 
 void SphereDamage::Apply(const std::vector<GameObject*>& targets) const {
@@ -21,12 +22,12 @@ Float SphereDamage::GetAmount() const noexcept {
 	return Amount;
 }
 
-std::vector<PhysicObject> RayDamage::FindTargets(const Transform3D& ownerTransform, NotNull<IPhysicsOverlapper*> pOverlapper) const noexcept {
-	const Nt::Quaternion quaternion = Nt::Quaternion::FromEulerLH(ownerTransform.Rotation());
+std::vector<PhysicObject> RayDamage::HitDetect(const Nt::Float3D& position, const Nt::Float3D& rotation, NotNull<IPhysicsOverlapper*> pOverlapper) const noexcept {
+	const Nt::Quaternion quaternion = Nt::Quaternion::FromEulerLH(rotation);
 	const Nt::Float3D forward = quaternion * Nt::Float3D(0.f, 0.f, 1.f);
 
 	Nt::Ray ray;
- 	ray.Start = Origin + ownerTransform.Position();
+ 	ray.Start = Origin + position;
 	ray.End = ray.Start + forward * Distance;
 
 	return pOverlapper->OverlapRayCast(ray, 0);

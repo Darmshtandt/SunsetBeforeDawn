@@ -28,6 +28,9 @@
     <Filter Include="Physics\Base">
       <UniqueIdentifier>{3d346eb0-5a0a-42cf-b647-5f380d27d07b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI\Behavior">
+      <UniqueIdentifier>{357d2820-309d-433c-83e5-f5f3819a0229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MovementSystem.h">
@@ -78,15 +81,6 @@
     <ClInclude Include="Combat\CombatInterfaces.h">
       <Filter>Combat</Filter>
     </ClInclude>
-    <ClInclude Include="AI\IBehavior.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\IBehaviorSelector.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\ITargetScanner.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="AI\AISystem.h">
       <Filter>AI</Filter>
     </ClInclude>
@@ -99,12 +93,6 @@
     <ClInclude Include="ISystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AI\BehaviorTree.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\BehaviorNode.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="AI\Blackboard.h">
       <Filter>AI</Filter>
     </ClInclude>
@@ -112,6 +100,21 @@
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="AI\AISenses.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Behavior\BehaviorNode.h">
+      <Filter>AI\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Behavior\BehaviorTree.h">
+      <Filter>AI\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Behavior\BNComposites.h">
+      <Filter>AI\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Behavior\BaseBehaviors.h">
+      <Filter>AI\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\EnemyAI.h">
       <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,9 +155,6 @@
     <ClCompile Include="AI\AISystem.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="AI\IBehavior.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Base\PhysicObject.cpp">
       <Filter>Physics\Base</Filter>
     </ClCompile>
@@ -163,6 +163,12 @@
     </ClCompile>
     <ClCompile Include="AI\AISenses.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\EnemyAI.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Behavior\BaseBehaviors.cpp">
+      <Filter>AI\Behavior</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

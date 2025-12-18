@@ -24,11 +24,11 @@ NearestPoint GetNearestPoint(const Nt::PointContainer& points, const Nt::Float3D
 }
 
 [[nodiscard]] inline
-Bool HasColliderInRange(const Collider& collider, const Nt::Float3D& position, const Float& range) {
+Bool HasColliderInRadius(const Collider& collider, const Nt::Float3D& position, const Float& radius) {
 	const Nt::Matrix4x4& localToWorld = collider.LocalToWorld();
 	const Nt::PointContainer& colliderPoints = collider.GetPoints();
 
-	const Float rangeSq = range * range;
+	const Float rangeSq = radius * radius;
 	for (const Nt::Float4D& localPoint : colliderPoints) {
 		const Nt::Float4D realPoint = localToWorld * localPoint;
 
@@ -38,10 +38,4 @@ Bool HasColliderInRange(const Collider& collider, const Nt::Float3D& position, c
 	}
 
 	return false;
-}
-
-[[nodiscard]] inline
-Bool CheckAABBCollision(const Collider& aCollider, const AABBBox& bBox) {
-	const AABBBox aBox = aCollider.GetAABBBox();
-	return (aBox.Min <= bBox.Max && aBox.Max >= bBox.Min);
 }

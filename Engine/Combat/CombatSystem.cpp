@@ -1,5 +1,6 @@
 #include <Engine/Combat/CombatSystem.h>
 #include <Engine/Physics/Base/PhysicsInterfaces.h>
+#include <World/Components/GameComponents.h>
 #include <World/Objects/Traps/Bomb.h>
 
 CombatSystem::CombatSystem(NotNull<IPhysicsOverlapper*> pOverlapper) noexcept :
@@ -28,13 +29,11 @@ void CombatSystem::UnregisterObject(const GameObject& object) {
 
 void CombatSystem::Dispatch(const DamageCommand& command) {
 	std::vector<PhysicObject> physicObjects =
-		command.pDamage->FindTargets(*command.pOwnerTransform, m_pPhysicsOverlapper);
+		command.pDamage->HitDetect(command.Position, command.Rotation, m_pPhysicsOverlapper);
 
 	std::vector<GameObject*> objectPts;
 	for (PhysicObject& object : physicObjects) {
-		if (object.pObject == command.pOwner)
-			continue;
-		if (!object.pObject->HasComponent<Health>())
+		if (object.pObject == command.pOwner || !object.pObject->HasComponent<Health>())
 			continue;
 
 		objectPts.emplace_back(object.pObject);

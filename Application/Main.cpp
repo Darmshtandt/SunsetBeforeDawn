@@ -6,17 +6,17 @@
 
 int main() {
 	_controlfp_s(NULL, 0, _EM_INVALID);
-	srand(uInt(time(nullptr)));
+	//srand(uInt(time(nullptr)));
 
-	try {
+	//try {
 		Application app;
 		app.Initialize();
 		app.Run();
-	}
-	catch (const Nt::Error& error) {
-		error.Show();
-		Nt::Console::Pause();
-	}
+	//}
+	//catch (const Nt::Error& error) {
+	//	error.Show();
+	//	Nt::Console::Pause();
+	//}
 
 	return 0;
 }

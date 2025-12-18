@@ -1,10 +1,14 @@
 #include <GameLogic/Controllers/WeaponController.h>
 #include <World/Components/CombatComponents.h>
+#include <World/Objects/Player.h>
 #include <Core/BusLocator.h>
+#include <Core/Input/Commands.h>
 
-WeaponController::WeaponController(NotNull<GameObject*> pObject) :
-	m_pWeaponBelt(RequireNotNull(pObject->GetComponent<WeaponBelt>())),
-	m_pCombat(RequireNotNull(pObject->GetComponent<Combat>()))
+WeaponController::WeaponController(NotNull<Player*> pPlayer) :
+	m_pWeaponBelt(RequireNotNull(pPlayer->GetComponent<WeaponBelt>())),
+	m_pCombat(RequireNotNull(pPlayer->GetComponent<Combat>())),
+	m_pTransform(RequireNotNull(pPlayer->GetComponent<Transform3D>())),
+	m_pPlayer(pPlayer)
 {
 	m_pSelectedWeapon = m_pWeaponBelt->GetFirst();
 	if (m_pSelectedWeapon != nullptr)
@@ -30,5 +34,5 @@ void WeaponController::Execute(const std::unordered_set<InputCommandID>& command
 		return;
 
 	if (commands.contains(InputCommandID::Fire))
-		m_pCombat->PerformAttack();
+		m_pCombat->PerformAttack(m_pTransform->Position(), m_pPlayer->GetFullRotation());
 }

@@ -1,8 +1,11 @@
 #pragma once
 
+#include <unordered_set>
 #include <Engine/IController.h>
 #include <World/Objects/Player.h>
 #include <Core/EventBus.h>
+
+enum class InputCommandID : Byte;
 
 class PlayerController final : public IController {
 public:

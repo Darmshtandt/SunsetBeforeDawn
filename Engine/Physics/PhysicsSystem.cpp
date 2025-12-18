@@ -7,6 +7,7 @@
 #include <Engine/Physics/Base/PhysicUtilities.h>
 #include <Core/BusLocator.h>
 #include <Core/Nt/Algorithms/RayCast.h>
+#include <Nt/Core/Timer.h>
 
 PhysicsSystem::PhysicsSystem() {
 	SetPhysicsIntegrator<IntegratorEuler>();
@@ -71,13 +72,20 @@ void PhysicsSystem::Clear() {
 	m_Bodies.clear();
 }
 
-std::vector<PhysicObject> PhysicsSystem::OverlapSphere(const Nt::Float3D& position, const Float& range, const Int& layerMask) {
+std::vector<PhysicObject> PhysicsSystem::OverlapSphere(const Nt::Float3D& position, const Float& radius, const Int& layerMask) {
 	std::vector<PhysicObject> result;
 	for (const PhysicObject& object : m_Bodies) {
 		if (object.pCollider == nullptr)
 			continue;
 
-		if (HasColliderInRange(*object.pCollider, position, range))
+		const Nt::BoundingBox box = object.pCollider->GetBoundingBox();
+		const Nt::Float3D closest = box.Max.Min(box.Min.Max(position));
+		const Float distanceSq = (position - closest).LengthSquare();
+
+		if (distanceSq > radius * radius)
+			continue;
+
+		if (HasColliderInRadius(*object.pCollider, position, radius))
 			result.emplace_back(object);
 	}
 
@@ -85,14 +93,14 @@ std::vector<PhysicObject> PhysicsSystem::OverlapSphere(const Nt::Float3D& positi
 }
 
 std::vector<PhysicObject> PhysicsSystem::OverlapAABB(const Nt::Float3D& min, const Nt::Float3D& max, const Int& layerMask) {
-	const AABBBox bBox = { min, max };
+	const Nt::BoundingBox boundingBox = { min, max };
 
 	std::vector<PhysicObject> result;
 	for (const PhysicObject& object : m_Bodies) {
 		if (object.pCollider == nullptr)
 			continue;
 
-		if (CheckAABBCollision(*object.pCollider, bBox))
+		if (boundingBox.HasIntersection(object.pCollider->GetBoundingBox()))
 			result.emplace_back(object);
 	}
 

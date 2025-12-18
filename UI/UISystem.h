@@ -10,7 +10,6 @@ class UISystem final {
 public:
 	struct UIElement final {
 		Transform2D* pTransform = nullptr;
-		Layout2D* pLayout = nullptr;
 		Scale2D* pScale = nullptr;
 		TextureRenderer* pTexture = nullptr;
 		Text* pText = nullptr;

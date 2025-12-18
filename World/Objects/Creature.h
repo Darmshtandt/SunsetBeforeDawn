@@ -3,8 +3,7 @@
 #include <World/Objects/Character.h>
 #include <World/Components/GameComponents.h>
 
-class MeshRenderer;
-class TextureRenderer;
+class AIComponent;
 
 class Creature : public Character {
 protected:
@@ -12,20 +11,16 @@ protected:
 
 public:
 	Creature() = delete;
-	Creature(const Creature&) noexcept = default;
-	Creature(Creature&&) noexcept = default;
 	~Creature() noexcept override = default;
 
-	Creature& operator = (const Creature&) noexcept = default;
-	Creature& operator = (Creature&&) noexcept = default;
+	[[nodiscard]] virtual NotNull<IMovementController*> GetMovementController() const noexcept = 0;
+	[[nodiscard]] virtual NotNull<IAttackController*> GetAttackController() const noexcept = 0;
+	[[nodiscard]] virtual NotNull<ISenses*> GetSenses() const noexcept = 0;
 
 protected:
-	Transform3D* m_pTransform = nullptr;
-	Movement3D* m_pMovement = nullptr;
-	MeshRenderer* m_pMesh = nullptr;
-	TextureRenderer* m_pTexture = nullptr;
 	Route3D* m_pRoute;
 	Intent3D* m_pIntent;
+	AIComponent* m_pAIComponent;
 };
 
 using CreaturePtr = std::shared_ptr<Creature>;

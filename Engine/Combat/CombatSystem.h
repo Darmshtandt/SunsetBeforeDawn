@@ -1,6 +1,5 @@
 #pragma once
 
-#include <World/Entities.h>
 #include <World/Components/CombatComponents.h>
 #include <Engine/ISystem.h>
 
@@ -8,7 +7,13 @@ struct IPhysicsOverlapper;
 
 class CombatSystem final : public ICombatDispatcher, public ISystem {
 public:
-	CombatSystem(NotNull<IPhysicsOverlapper*> pOverlapper) noexcept;
+	struct CombatPawn final {
+		Combat* pCombat = nullptr;
+		const GameObject* pObject = nullptr;
+	};
+
+public:
+	explicit CombatSystem(NotNull<IPhysicsOverlapper*> pOverlapper) noexcept;
 	CombatSystem(const CombatSystem&) = delete;
 	CombatSystem(CombatSystem&&) noexcept = default;
 	~CombatSystem() noexcept override = default;

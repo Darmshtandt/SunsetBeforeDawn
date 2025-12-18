@@ -5,8 +5,10 @@
 namespace Nt {
 	struct Quaternion {
 		using Type = Float;
-		using Type3D = Nt::Vector3D<Type>;
-		using Type4D = Nt::Vector4D<Type>;
+		using Type3D = Vector3D<Type>;
+		using Type4D = Vector4D<Type>;
+
+		static constexpr Type Epsilon = std::numeric_limits<Type>::epsilon();
 
 		NT_CONSTEXPR Quaternion() noexcept = default;
 		NT_CONSTEXPR Quaternion(Type X, Type Y, Type Z, Type W) noexcept :
@@ -47,9 +49,9 @@ namespace Nt {
 		NT_NODISCARD static Quaternion FromEulerLH(const Type3D& angle) noexcept {
 			const Type3D halfAngle = angle * static_cast<Type>(0.5);
 
-			const Type sx = -std::sin(halfAngle.x), cx = std::cos(halfAngle.x);
-			const Type sy = -std::sin(halfAngle.y), cy = std::cos(halfAngle.y);
-			const Type sz = -std::sin(halfAngle.z), cz = std::cos(halfAngle.z);
+			const Type sx = std::sin(halfAngle.x), cx = std::cos(halfAngle.x);
+			const Type sy = std::sin(halfAngle.y), cy = std::cos(halfAngle.y);
+			const Type sz = std::sin(halfAngle.z), cz = std::cos(halfAngle.z);
 
 			const Quaternion qx(sx, 0, 0, cx);
 			const Quaternion qy(0, sy, 0, cy);
@@ -60,9 +62,9 @@ namespace Nt {
 		NT_NODISCARD static Quaternion FromEulerRH(const Type3D& angle) noexcept {
 			const Type3D halfAngle = angle * static_cast<Type>(0.5);
 
-			const Type sx = std::sin(halfAngle.x), cx = std::cos(halfAngle.x);
-			const Type sy = std::sin(halfAngle.y), cy = std::cos(halfAngle.y);
-			const Type sz = std::sin(halfAngle.z), cz = std::cos(halfAngle.z);
+			const Type sx = -std::sin(halfAngle.x), cx = std::cos(halfAngle.x);
+			const Type sy = -std::sin(halfAngle.y), cy = std::cos(halfAngle.y);
+			const Type sz = -std::sin(halfAngle.z), cz = std::cos(halfAngle.z);
 
 			const Quaternion qx(sx, 0, 0, cx);
 			const Quaternion qy(0, sy, 0, cy);
@@ -74,7 +76,7 @@ namespace Nt {
 		NT_NODISCARD_CONSTEXPR static Quaternion FromMatrix(const Matrix3x3& matrix) noexcept;
 		NT_NODISCARD_CONSTEXPR static Quaternion LookRotation(const Type3D& forward, const Type3D& up);
 
-		Quaternion operator * (const Quaternion& quat) const {
+		NT_NODISCARD_CONSTEXPR Quaternion operator * (const Quaternion& quat) const {
 			return Quaternion(
 				w * quat.x + x * quat.w + y * quat.z - z * quat.y,
 				w * quat.y - x * quat.z + y * quat.w + z * quat.x,
@@ -82,23 +84,88 @@ namespace Nt {
 				w * quat.w - x * quat.x - y * quat.y - z * quat.z
 			);
 		}
-		Type3D operator * (const Type3D& vector) const {
+		NT_NODISCARD_CONSTEXPR Type3D operator * (const Type3D& vector) const {
 			const Type3D qVector(x, y, z);
 			const Type3D t = qVector.GetCross(vector) * static_cast<Type>(2);
 			return vector + t * w + qVector.GetCross(t);
 		}
-		Quaternion operator + (const Quaternion& rhs) const;
-		Quaternion operator - (const Quaternion& rhs) const;
-		Quaternion operator * (Type s) const;
-		Quaternion operator / (Type s) const;
 
-		Type Length() const;
-		Type LengthSquared() const;
-		Quaternion Normalized() const;
-		void Normalize();
-		Type Dot(const Quaternion& rhs) const;
-		Quaternion Conjugate() const;
-		Quaternion Inverse() const;
+		NT_NODISCARD_CONSTEXPR Quaternion operator + (const Quaternion& quat) const noexcept {
+			return {
+				x + quat.x,
+				y + quat.y,
+				z + quat.z,
+				w + quat.w
+			};
+		}
+		NT_NODISCARD_CONSTEXPR Quaternion operator - (const Quaternion& quat) const noexcept {
+			return {
+				x - quat.x,
+				y - quat.y,
+				z - quat.z,
+				w - quat.w
+			};
+		}
+		NT_NODISCARD_CONSTEXPR Quaternion operator * (Type scalar) const noexcept {
+			return {
+				x * scalar,
+				y * scalar,
+				z * scalar,
+				w * scalar
+			};
+		}
+		NT_NODISCARD_CONSTEXPR Quaternion operator / (Type scalar) const noexcept {
+			return {
+				x / scalar,
+				y / scalar,
+				z / scalar,
+				w / scalar
+			};
+		}
+
+		NT_NODISCARD_CONSTEXPR Bool operator == (const Quaternion& quat) const noexcept {
+			return Abs(Dot(quat)) > (static_cast<Type>(1) - Epsilon);
+		}
+
+		NT_NODISCARD Type Length() const noexcept {
+			return std::sqrt(LengthSquared());
+		}
+		NT_NODISCARD_CONSTEXPR Type LengthSquared() const  noexcept {
+			return x * x + y * y + z * z + w * w;
+		}
+		NT_NODISCARD Quaternion GetNormalize() const noexcept {
+			const Type lengthSq = LengthSquared();
+			if (std::abs(lengthSq) <= Epsilon)
+				return Identity();
+
+			const Type inverseLength = static_cast<Type>(1) / std::sqrt(lengthSq);
+			return {
+				x * inverseLength,
+				y * inverseLength,
+				z * inverseLength,
+				w * inverseLength
+			};
+		}
+		NT_NODISCARD_CONSTEXPR Type Dot(const Quaternion& quat) const noexcept {
+			return x * quat.x + y * quat.y + z * quat.z + w * quat.w;
+		}
+
+		NT_NODISCARD_CONSTEXPR Quaternion GetConjugate() const noexcept {
+			return { -x, -y, -z, w };
+		}
+		NT_NODISCARD Quaternion GetInverse() const noexcept {
+			const Type lengthSq = LengthSquared();
+			if (std::abs(lengthSq) <= Epsilon)
+				return Identity();
+
+			const Type inverseLength = static_cast<Type>(1) / std::sqrt(lengthSq);
+			return {
+				-x * inverseLength,
+				-y * inverseLength,
+				-z * inverseLength,
+				 w * inverseLength
+			};
+		}
 
 		static Quaternion Lerp(const Quaternion& a, const Quaternion& b, Type t);
 		static Quaternion NLerp(const Quaternion& a, const Quaternion& b, Type t);

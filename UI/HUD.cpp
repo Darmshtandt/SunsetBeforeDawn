@@ -14,7 +14,7 @@ UIHealthBar::UIHealthBar() : Canvas(Class<UIHealthBar>::ID()) {
 	m_pHealthBarLine->pTexture->Set(TEXTURE_HP_BAR_LINE);
 
 	UIImage* pHealthBar = AddObject<UIImage>();
-	pHealthBar->pLayout->Padding = { 20.f, 20.f };
+	pHealthBar->pScale->Padding({ 20.f, 20.f });
 	pHealthBar->pScale->LocalPosition({ 0.5f, 0.5f });
 	pHealthBar->pScale->LocalSize({ 2.f, 2.f });
 	pHealthBar->pTexture->Set(TEXTURE_HP_BAR);
@@ -35,8 +35,14 @@ UIHealthBar::UIHealthBar() : Canvas(Class<UIHealthBar>::ID()) {
 
 UIArmorBar::UIArmorBar() : Canvas(Class<UIArmorBar>::ID()) {
 	UIImage* pArmorBar = AddObject<UIImage>();
-	pArmorBar->pLayout->Padding = { 20.f, 20.f };
+	pArmorBar->pScale->Padding({ 20.f, 20.f });
 	pArmorBar->pScale->LocalPosition({ 0.5f, 1.6f });
 	pArmorBar->pScale->LocalSize({ 2.f, 2.f });
 	pArmorBar->pTexture->Set(TEXTURE_ARMOR_BAR);
+}
+
+UICrosshair::UICrosshair() : Canvas(Class<UICrosshair>::ID()) {
+	UIImage* pArmorBar = AddObject<UIImage>();
+	pArmorBar->pScale->Position({ 0.5f, 0.5f });
+	pArmorBar->pTexture->Set(TEXTURE_CROSSHAIR);
 }

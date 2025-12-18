@@ -9,7 +9,7 @@ public:
 	DebugInfoPanel() : Canvas(Class<DebugInfoPanel>::ID()) {
 		m_pFPSCounter = AddObject<UIText>();
 		m_pFPSCounter->pText->TextString = "FPS: 120";
-		m_pFPSCounter->pLayout->Padding = { 20.f, 0.f };
+		m_pFPSCounter->pScale->Padding({ 20.f, 0.f });
 		m_pFPSCounter->pScale->Position({ 0.f, 1.f });
 		m_pFPSCounter->pScale->LocalPosition({ 0.f, 3.f });
 		m_pFPSCounter->pScale->LocalSize({ 0.5f, 0.5f });

@@ -1,6 +1,5 @@
 #include <World/Components/GameComponents.h>
 #include <World/Components/PhysicComponents.h>
-#include <World/Entities.h>
 #include <Engine/AI/AISenses.h>
 
 AISenses::AISenses(GameObject& object, Float viewRadius, uLLong cooldownMs) :

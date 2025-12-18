@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_set>
 #include <Engine/Physics/Base/PhysicsInterfaces.h>
 
 struct OnCollisionEnter final {

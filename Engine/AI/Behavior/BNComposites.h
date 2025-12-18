@@ -1,78 +1,9 @@
 #pragma once
 
-#include <Engine/AI/IBehavior.h>
-#include <Engine/AI/AIContext.h>
+#include <Engine/AI/Behavior/BehaviorNode.h>
+#include <functional>
 
-// BN - BehaviorNode
-enum class BNStatus {
-	Failed,
-	Successful,
-	Running
-};
-
-struct IBehaviorNode {
-	virtual ~IBehaviorNode() noexcept = default;
-
-	[[nodiscard]]
-	virtual BNStatus Tick(const AIContext& context, Float deltaTime) = 0;
-	virtual IBehaviorNode* AddNode(const std::string& name) = 0;
-};
-
-using BehaviorNodePtr = std::unique_ptr<IBehaviorNode>;
-
-// BN - BehaviorNode
-class BNFactory final {
-public:
-	using Creator = BehaviorNodePtr(*)();
-
-public:
-	[[nodiscard]] static BNFactory& Instance() noexcept {
-		static BNFactory instance;
-		return instance;
-	}
-
-	void Register(Creator creator, const std::string& name) {
-		if (m_Objects.contains(name))
-			Raise("Already registered: " + name);
-
-		m_Objects[name] = creator;
-	}
-
-	[[nodiscard]] BehaviorNodePtr Create(const std::string& name) const {
-		const auto it = m_Objects.find(name);
-		if (it == m_Objects.cend())
-			Raise("Not found: " + name);
-
-		return it->second();
-	}
-
-
-	[[nodiscard]] std::vector<std::string> GetNames() const {
-		std::vector<std::string> names;
-		names.reserve(m_Objects.size());
-
-		for (auto& [name, _] : m_Objects)
-			names.push_back(name);
-
-		return names;
-	}
-
-protected:
-	std::unordered_map<std::string, Creator> m_Objects;
-};
-
-// BN - BehaviorNode
-template <class _Ty>
-struct BNodeRegistrar final {
-	BNodeRegistrar(const std::string& name) {
-		BNFactory::Instance().Register([] () -> BehaviorNodePtr {
-			return std::make_unique<_Ty>();
-			}, name);
-	}
-};
-
-
-struct BehaviorSelectorNode : IBehaviorNode {
+struct BehaviorSelectorNode final : IBehaviorNode {
 	~BehaviorSelectorNode() noexcept override = default;
 
 	[[nodiscard]]
@@ -99,12 +30,12 @@ struct BehaviorSelectorNode : IBehaviorNode {
 	}
 
 private:
-	inline static BNodeRegistrar<BehaviorSelectorNode> m_Registrar = { "Selector" };
+	inline static BNRegistrar<BehaviorSelectorNode> m_Registrar = { "Selector" };
 	std::vector<BehaviorNodePtr> m_Nodes;
 	uInt m_RunningNodeIndex = 0;
 };
 
-struct BehaviorSequenceNode : IBehaviorNode {
+struct BehaviorSequenceNode final : IBehaviorNode {
 	~BehaviorSequenceNode() noexcept override = default;
 
 	[[nodiscard]]
@@ -131,12 +62,12 @@ struct BehaviorSequenceNode : IBehaviorNode {
 	}
 
 private:
-	inline static BNodeRegistrar<BehaviorSequenceNode> m_Registrar = { "Sequence" };
+	inline static BNRegistrar<BehaviorSequenceNode> m_Registrar = { "Sequence" };
 	std::vector<BehaviorNodePtr> m_Nodes;
 	uInt m_RunningNodeIndex = 0;
 };
 
-struct BehaviorActionNode : IBehaviorNode {
+struct BehaviorActionNode final : IBehaviorNode {
 	using ActionFunc = BNStatus(const AIContext& context, Float deltaTime);
 
 	~BehaviorActionNode() noexcept override = default;
@@ -157,6 +88,6 @@ struct BehaviorActionNode : IBehaviorNode {
 	}
 
 private:
-	inline static BNodeRegistrar<BehaviorActionNode> m_Registrar = { "Condition" };
+	inline static BNRegistrar<BehaviorActionNode> m_Registrar = { "Condition" };
 	std::function<ActionFunc> m_ActionFunc;
 };

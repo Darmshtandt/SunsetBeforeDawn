@@ -2,7 +2,6 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 
 #include <World/Objects/Player.h>
-#include <World/Components/RenderComponents.h>
 #include <World/Components/PhysicComponents.h>
 #include <World/Components/GameComponents.h>
 #include <Core/StdH.h>
@@ -10,19 +9,24 @@
 #include <World/Objects/Weapons/Pistol.h>
 
 Player::Player() :
-	Character(Class<Player>::ID(), ObjectType::Player, "Humanoid")
+	Character(Class<Player>::ID(), ObjectType::Player, "Human")
 {
-	AddComponent<Camera3D>()->LocalTransform().Position({ 0.f, 1.f, 0.f });
-	AddComponent<Movement3D>()->Speed = 25.f;
+	m_pCamera = AddComponent<Camera3D>();
+	m_pCamera->LocalTransform().LocalPosition({ 0.f, 1.f, 0.f });
+	m_pMovement->Speed = 25.f;
 
 	AddComponent<Combat>();
 	AddComponent<WeaponBelt>()->Add<Pistol>();
 
 	Nt::Mesh* pMesh = Nt::ResourceManager::Instance().Get<Nt::Mesh>(MESH_CUBE);
-	GetComponent<Collider>()->SetShape(pMesh->GetShape());
+	m_pCollider->SetShape(pMesh->GetShape());
 
 	m_pHealth->SetMaxAmount(100.f);
 	m_pHealth->Revive();
+}
+
+Nt::Float3D Player::GetFullRotation() const noexcept {
+	return m_pCamera->LocalTransform().Rotation();
 }
 
 Player::Statistics Player::GetStatistics() const noexcept {

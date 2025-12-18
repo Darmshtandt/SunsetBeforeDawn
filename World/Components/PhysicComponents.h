@@ -2,50 +2,61 @@
 
 #include <World/Components/BasicComponents.h>
 #include <Engine/Physics/Base/RigidBody.h>
-#include <Core/Nt/HitBox.h>
+#include <Core/Nt/BoundingBox.h>
 #include <Engine/Physics/Base/PhysicsInterfaces.h>
-
-struct AABBBox final {
-	Nt::Float3D Min = { FLT_MAX, FLT_MAX, FLT_MAX };
-	Nt::Float3D Max = { FLT_MIN, FLT_MIN, FLT_MIN };
-};
+#include <Nt/Core/Colors.h>
 
 class Collider final : public IComponent {
 public:
+	enum Axis {
+		X, Y, Z
+	};
+
+public:
 	explicit Collider(GameObject* pOwner) :
-		IComponent(pOwner, Class<Collider>::ID())
+		IComponent(pOwner, Class<Collider>::ID()),
+		m_LocalTransform(pOwner)
 	{
 		m_pTransform = pOwner->GetComponent<Transform3D>();
 		if (m_pTransform == nullptr)
 			m_pTransform = pOwner->AddComponent<Transform3D>();
+		m_LocalTransform.SetParent(m_pTransform);
 	}
 
-	[[nodiscard]] AABBBox GetAABBBox() const noexcept {
+	[[nodiscard]] Nt::BoundingBox GetBoundingBox() const noexcept {
 		if (m_IsDirty) {
-			m_ShapeBox = AABBBox();
-
-			const Nt::PointContainer& points = m_HitBox.GetPoints();
-			for (const Nt::Float4D& point : points) {
-				m_ShapeBox.Min = m_ShapeBox.Min.Min(point.xyz);
-				m_ShapeBox.Max = m_ShapeBox.Max.Max(point.xyz);
-			}
-
+			_UpdateData();
 			m_IsDirty = false;
 		}
 
-		const Nt::Float3D& position = m_pTransform->Position();
+		const Nt::Float3D position = m_pTransform->Position();
 
 		return {
-			m_ShapeBox.Min + position,
-			m_ShapeBox.Max + position
+			.Min = m_BoundingBox.Min + position,
+			.Max = m_BoundingBox.Max + position
 		};
+	}
+	[[nodiscard]] const Nt::Mesh& GetForwardLineMesh() const noexcept {
+		if (m_IsDirty) {
+			_UpdateData();
+			m_IsDirty = false;
+		}
+
+		return m_ForwardLine;
+	}
+
+	[[nodiscard]] const Transform3D& LocalTransform() const noexcept {
+		return m_LocalTransform;
+	}
+	[[nodiscard]] Transform3D& LocalTransform() noexcept {
+		return m_LocalTransform;
 	}
 
 	[[nodiscard]] const Nt::HitBox& GetHitBox() const noexcept {
 		return m_HitBox;
 	}
 	[[nodiscard]] const Nt::Matrix4x4& LocalToWorld() const noexcept {
-		return m_pTransform->LocalToWorld();
+		return m_LocalTransform.LocalToWorld();
 	}
 	[[nodiscard]] const Nt::PointContainer& GetPoints() const noexcept {
 		return m_HitBox.GetPoints();
@@ -65,11 +76,29 @@ public:
 	std::function<void(const PhysicObject& object)> OnExit;
 
 private:
-	mutable AABBBox m_ShapeBox;
+	mutable Nt::BoundingBox m_BoundingBox;
+	mutable Nt::Mesh m_ForwardLine;
 	Nt::HitBox m_HitBox;
 	Transform3D* m_pTransform;
+	Transform3D m_LocalTransform;
 	mutable Bool m_IsDirty = true;
 
+private:
+	void _UpdateData() const {
+		m_BoundingBox = Nt::CalculateBoundingBox(m_HitBox.GetPoints());
+
+		const Nt::Float3D eye = { 0.f, m_BoundingBox.Max.y * 0.75f, 0.f };
+		const Nt::Float3D forward = Nt::Float3D(0.f, 0.f, m_BoundingBox.Max.z + 1.f);
+
+		Nt::Shape forwardLine;
+		forwardLine.Indices = { 0, 1 };
+		forwardLine.Vertices = {
+			Nt::Vertex(eye, { }, { }, Nt::Colors::White),
+			Nt::Vertex(eye + forward, { }, { }, Nt::Colors::White)
+		};
+
+		m_ForwardLine = forwardLine;
+	}
 };
 
 class RigidBody final : public IComponent {

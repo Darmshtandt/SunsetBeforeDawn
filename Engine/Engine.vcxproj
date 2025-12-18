@@ -138,13 +138,13 @@
   <ItemGroup>
     <ClInclude Include="AI\AIContext.h" />
     <ClInclude Include="AI\AISystem.h" />
-    <ClInclude Include="AI\BehaviorTree.h" />
+    <ClInclude Include="AI\Behavior\BaseBehaviors.h" />
+    <ClInclude Include="AI\Behavior\BehaviorNode.h" />
+    <ClInclude Include="AI\Behavior\BehaviorTree.h" />
+    <ClInclude Include="AI\Behavior\BNComposites.h" />
     <ClInclude Include="AI\Blackboard.h" />
-    <ClInclude Include="AI\IBehavior.h" />
-    <ClInclude Include="AI\BehaviorNode.h" />
-    <ClInclude Include="AI\IBehaviorSelector.h" />
-    <ClInclude Include="AI\ITargetScanner.h" />
     <ClInclude Include="AI\AISenses.h" />
+    <ClInclude Include="AI\EnemyAI.h" />
     <ClInclude Include="Combat\CombatInterfaces.h" />
     <ClInclude Include="Combat\CombatSystem.h" />
     <ClInclude Include="Combat\DamageLogic.h" />
@@ -167,8 +167,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\AISystem.cpp" />
-    <ClCompile Include="AI\IBehavior.cpp" />
     <ClCompile Include="AI\AISenses.cpp" />
+    <ClCompile Include="AI\Behavior\BaseBehaviors.cpp" />
+    <ClCompile Include="AI\EnemyAI.cpp" />
     <ClCompile Include="Combat\CombatSystem.cpp" />
     <ClCompile Include="Combat\DamageLogic.cpp" />
     <ClCompile Include="Input\InputBinder.cpp" />

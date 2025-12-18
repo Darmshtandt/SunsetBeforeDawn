@@ -3,6 +3,8 @@
 #include <Nt/Core/Math/Matrix4x4.h>
 #include <Nt/Core/Math/Projections.h>
 
+#include "Quaternion.h"
+
 template <typename _Ty, uInt fromDimension, uInt toDimension>
 [[nodiscard]]
 Nt::Vector<_Ty, toDimension> ConvertVector(const Nt::Vector<_Ty, fromDimension>& vector) {
@@ -67,6 +69,43 @@ struct Matrix {
 	Nt::Matrix4x4 WorldToLocalLH(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
 	[[nodiscard]] static
 	Nt::Matrix4x4 WorldToLocalRH(const Vector& position, const Vector& rotation, const Vector& size) noexcept;
+
+
+	[[nodiscard]] static
+		Nt::Matrix4x4 LocalToWorldLH(const Vector& position, const Nt::Quaternion& rotation, const Vector& size) noexcept;
+	[[nodiscard]] static
+		Nt::Matrix4x4 LocalToWorldRH(const Vector& position, const Nt::Quaternion& rotation, const Vector& size) noexcept;
+
+	[[nodiscard]] static
+		Nt::Matrix4x4 WorldToLocalLH(const Vector& position, const Nt::Quaternion& rotation, const Vector& size) noexcept;
+	[[nodiscard]] static
+		Nt::Matrix4x4 WorldToLocalRH(const Vector& position, const Nt::Quaternion& rotation, const Vector& size) noexcept;
+
+
+	[[nodiscard]] __inline static Nt::Float3D Right(const Nt::Matrix4x4& mat) noexcept {
+		return mat.Columns[0].xyz;
+	}
+	[[nodiscard]] __inline static Nt::Float3D Up(const Nt::Matrix4x4& mat) noexcept {
+		return mat.Columns[1].xyz;
+	}
+	[[nodiscard]] __inline static Nt::Float3D Forward(const Nt::Matrix4x4& mat) noexcept {
+		return mat.Columns[2].xyz;
+	}
+	[[nodiscard]] __inline static Nt::Float3D Translation(const Nt::Matrix4x4& mat) noexcept {
+		return mat.Columns[3].xyz;
+	}
+
+	[[nodiscard]] __inline static Nt::Float3D ExtractRotation(const Nt::Matrix4x4& mat) noexcept {
+		const Nt::Float3D right = mat.Columns[0].xyz.GetNormalize();
+		const Nt::Float3D up = mat.Columns[1].xyz.GetNormalize();
+		const Nt::Float3D forward = mat.Columns[2].xyz.GetNormalize();
+
+		return {
+			atan2(up.z, forward.z),
+			-asin(right.z),
+			atan2(right.y, right.x)
+		};
+	}
 };
 
 template <typename _Ty, uInt Dimension>
@@ -122,6 +161,34 @@ Nt::Matrix4x4 Matrix<_Ty, Dimension>::WorldToLocalRH(const Vector& position, con
 
 	const Nt::Matrix4x4 invScale = Nt::Matrix4x4::GetScale(_Ty(1) / correctSize);
 	const Nt::Matrix4x4 invRotation = MatrixRotateXYZ(-correctRotation);
+	const Nt::Matrix4x4 invTranslate = Nt::Matrix4x4::GetTranslate(-correctPosition);
+
+	return invScale * invRotation * invTranslate;
+}
+
+
+template <typename _Ty, uInt Dimension>
+Nt::Matrix4x4 Matrix<_Ty, Dimension>::LocalToWorldLH(const Vector& position, const Nt::Quaternion& rotation, const Vector& size) noexcept {
+	const Nt::Vector<_Ty, 3> correctPosition =
+		ConvertVector<_Ty, Dimension, 3>(position);
+	const Nt::Vector<_Ty, 3> correctSize =
+		ConvertVector<_Ty, Dimension, 3>(size);
+
+	const Nt::Matrix4x4 matScale = Nt::Matrix4x4::GetScale(correctSize);
+	const Nt::Matrix4x4 matRotation = rotation.ToMatrix4x4();
+	const Nt::Matrix4x4 matTranslate = Nt::Matrix4x4::GetTranslate(correctPosition);
+
+	return matTranslate * matRotation * matScale;
+}
+template <typename _Ty, uInt Dimension>
+Nt::Matrix4x4 Matrix<_Ty, Dimension>::WorldToLocalLH(const Vector& position, const Nt::Quaternion& rotation, const Vector& size) noexcept {
+	const Nt::Vector<_Ty, 3> correctPosition =
+		ConvertVector<_Ty, Dimension, 3>(position);
+	const Nt::Vector<_Ty, 3> correctSize =
+		ConvertVector<_Ty, Dimension, 3>(size);
+
+	const Nt::Matrix4x4 invScale = Nt::Matrix4x4::GetScale(_Ty(1) / correctSize);
+	const Nt::Matrix4x4 invRotation = rotation.GetInverse().ToMatrix4x4();
 	const Nt::Matrix4x4 invTranslate = Nt::Matrix4x4::GetTranslate(-correctPosition);
 
 	return invScale * invRotation * invTranslate;

@@ -13,14 +13,12 @@ struct ICamera {
 	[[nodiscard]] virtual Nt::Matrix4x4 View() const noexcept = 0;
 	[[nodiscard]] virtual Bool IsDirty() const noexcept = 0;
 	[[nodiscard]] virtual uInt GetDimension() const noexcept = 0;
-	[[deprecated]] [[nodiscard]] virtual Bool Is2D() const noexcept = 0;
-	[[deprecated]] [[nodiscard]] virtual Bool Is3D() const noexcept = 0;
 };
 
 template <typename _Ty, uInt Dimension>
 class Camera final : public IComponent, public ICamera {
 public:
-	using Transform = Transform<_Ty, Dimension>;
+	using Transform = TransformSelector<_Ty, Dimension>::Type;
 	using Vector = typename Transform::Vector;
 
 public:
@@ -31,13 +29,12 @@ public:
 		m_pParentTransform = pOwner->GetComponent<Transform>();
 		if (m_pParentTransform == nullptr)
 			m_pParentTransform = pOwner->AddComponent<Transform>();
+		m_LocalTransform.SetParent(m_pParentTransform);
 	}
 	~Camera() noexcept override = default;
 
 	[[nodiscard]] Nt::Matrix4x4 View() const noexcept override {
-		const Nt::Matrix4x4 invView = 
-			m_pParentTransform->LocalToWorld() * m_LocalTransform.LocalToWorld();
-		return invView.GetInverse();
+		return m_LocalTransform.WorldToLocal();
 	}
 
 	[[nodiscard]] Transform& LocalTransform() noexcept {
@@ -48,12 +45,6 @@ public:
 	}
 	[[nodiscard]] Bool IsDirty() const noexcept override {
 		return m_pParentTransform->IsDirty();
-	}
-	[[deprecated]] [[nodiscard]] Bool Is2D() const noexcept override {
-		return Dimension == 2;
-	}
-	[[deprecated]] [[nodiscard]] Bool Is3D() const noexcept override {
-		return Dimension == 3;
 	}
 
 private:
@@ -90,11 +81,9 @@ private:
 	Nt::ResourceHandle<_Ty> m_Resource;
 };
 
-class MeshRenderer final :
-	public IComponent, public ResourceRenderer<Nt::Mesh> {
+class MeshRenderer final : public IComponent, public ResourceRenderer<Nt::Mesh> {
 public:
-	explicit MeshRenderer(GameObject* pOwner) :
-		IComponent(pOwner, Class<MeshRenderer>::ID())
+	explicit MeshRenderer(GameObject* pOwner) : IComponent(pOwner, Class<MeshRenderer>::ID())
 	{
 	}
 	~MeshRenderer() noexcept override = default;
@@ -103,8 +92,7 @@ public:
 	Bool IsVisible = true;
 };
 
-class TextureRenderer final :
-	public IComponent, public ResourceRenderer<Nt::Texture> {
+class TextureRenderer final : public IComponent, public ResourceRenderer<Nt::Texture> {
 public:
 	explicit TextureRenderer(GameObject* pOwner) :
 		IComponent(pOwner, Class<TextureRenderer>::ID())
@@ -136,5 +124,4 @@ public:
 };
 
 using Camera2D = Camera<Float, 2>;
-
 using Camera3D = Camera<Float, 3>;

@@ -36,7 +36,7 @@ public:
 				if (event.Contact.pA->pObject != this && event.Contact.pB->pObject != this)
 					return;
 
-				pCombat->PerformAttack();
+				pCombat->PerformAttack(pTransform->Position(), pTransform->Rotation());
 				UnmarkValid();
 			});
 	}

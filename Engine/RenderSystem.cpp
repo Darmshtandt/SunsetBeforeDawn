@@ -120,35 +120,6 @@ void RenderSystem::UpdateCamera() {
 	if (m_pCamera == nullptr)
 		return;
 
-	//if (m_pCamera->IsDirty()) {
-	//	Nt::Float3D cameraPosition;
-	//	Nt::Float3D cameraRotation;
-
-	//	if (m_pCamera->Is2D()) {
-	//		const Transform2D* pTransform2D =
-	//			static_cast<const Camera2D*>(m_pCamera)->m_pParentTransform;
-
-	//		cameraPosition.xy = pTransform2D->Position();
-	//		cameraRotation.xy = pTransform2D->Rotation();
-	//	}
-	//	else if (m_pCamera->Is3D()) {
-	//		const Transform3D* pTransform3D =
-	//			static_cast<const Camera3D*>(m_pCamera)->m_pParentTransform;
-
-	//		cameraPosition = pTransform3D->Position();
-	//		cameraRotation = pTransform3D->Rotation();
-	//	}
-
-	//	m_TerrainShader.SetUniform("cameraPosition", cameraPosition);
-
-	//	Nt::Double3D lightDirection(
-	//		cosf(cameraRotation.y), 1.0, sinf(cameraRotation.y));
-	//	m_TerrainShader.SetUniform("lightDirection", lightDirection);
-
-	//	lightDirection = Nt::Double3D(1.0, -1.0, 1.0).GetNormalize();
-	//	m_TerrainShader.SetUniform("lightDirection", lightDirection);
-	//}
-
 	m_pRenderer->SetView(m_pCamera->View());
 }
 
@@ -157,21 +128,25 @@ void RenderSystem::RenderScene() {
 
 	m_pRenderer->SetShader(&m_TerrainShader);
 	for (const Renderable& renderable : m_SceneObject) {
-		if (renderable.pTransform2D != nullptr)
-			m_pRenderer->SetWorld(renderable.pTransform2D->LocalToWorld());
-		else
-			m_pRenderer->SetWorld(renderable.pTransform3D->LocalToWorld());
-
 		if (Class<Landscape>::Is(*renderable.pObject))
 			m_TerrainShader.SetUniform("IsTerrain", true);
 
-		RenderObject(renderable);
-		RenderCollider(renderable);
+		if (renderable.pMesh && renderable.pMesh->IsValid() && renderable.pMesh->IsVisible) {
+			if (renderable.pTransform2D)
+				m_pRenderer->SetWorld(renderable.pTransform2D->LocalToWorld());
+			else if (renderable.pTransform3D)
+				m_pRenderer->SetWorld(renderable.pTransform3D->LocalToWorld());
+
+			RenderObject(renderable);
+		}
+
+		if (renderable.pCollider != nullptr) {
+			m_pRenderer->SetWorld(renderable.pCollider->LocalTransform().LocalToWorld());
+			RenderCollider(renderable);
+		}
 
 		if (Class<Landscape>::Is(*renderable.pObject))
 			m_TerrainShader.SetUniform("IsTerrain", false);
-
-		m_pRenderer->MatrixWorldPop();
 	}
 }
 
@@ -180,12 +155,14 @@ void RenderSystem::RenderUI() {
 
 	m_pRenderer->SetShader(&m_pUIShader);
 	for (const Renderable& renderable : m_UIObject) {
-		if (renderable.pTransform2D != nullptr)
-			m_pRenderer->SetWorld(renderable.pTransform2D->LocalToWorld());
-		else
-			m_pRenderer->SetWorld(renderable.pTransform3D->LocalToWorld());
+		if (renderable.pMesh && renderable.pMesh->IsValid() && renderable.pMesh->IsVisible) {
+			if (renderable.pTransform2D)
+				m_pRenderer->SetWorld(renderable.pTransform2D->LocalToWorld());
+			else if (renderable.pTransform3D)
+				m_pRenderer->SetWorld(renderable.pTransform3D->LocalToWorld());
 
-		RenderObject(renderable);
+			RenderObject(renderable);
+		}
 
 		if (renderable.pText != nullptr)
 			RenderText(renderable);
@@ -196,8 +173,9 @@ void RenderSystem::RenderUI() {
 }
 
 void RenderSystem::RenderObject(const Renderable& renderable) {
-	if (!renderable.pMesh || !renderable.pMesh->IsValid() || !renderable.pMesh->IsVisible)
-		return;
+	RequireNotNull(renderable.pMesh);
+	Assert(renderable.pMesh->IsValid(), "The Mesh is not set");
+	Assert(renderable.pMesh->IsVisible, "The Mesh is invisible");
 
 	if (renderable.pTexture && renderable.pTexture->IsValid())
 		m_pRenderer->BindTexture(renderable.pTexture->Get());
@@ -206,31 +184,17 @@ void RenderSystem::RenderObject(const Renderable& renderable) {
 }
 
 void RenderSystem::RenderCollider(const Renderable& renderable) {
-	if (renderable.pCollider == nullptr)
-		return;
-
-	const Nt::Mesh* pMesh = renderable.pCollider->GetHitBox().GetMeshPtr();
+	RequireNotNull(renderable.pCollider);
 
 	const Nt::Renderer::DrawingMode drawingMode = m_pRenderer->GetDrawingMode();
 	m_pRenderer->UnbindTexture();
 	m_pRenderer->SetLineWidth(5);
+
 	m_pRenderer->SetDrawingMode(Nt::Renderer::DrawingMode::LINE_STRIP);
-	m_pRenderer->Render(pMesh);
-
-	const Nt::Float3D size = renderable.pTransform3D->Size();
-	const Nt::Float3D forward = Nt::Float3D(0.f, 0.f, size.z + 1.f);
-	const Nt::Float3D eye = { 0.f, 0.75f * size.y, 0.f };
-
-	Nt::Shape line;
-	line.Indices = { 0, 1 };
-	line.Vertices = {
-		Nt::Vertex(eye, { }, { }, Nt::Colors::White),
-		Nt::Vertex(eye + forward, { }, { }, Nt::Colors::White)
-	};
-	const Nt::Mesh lineMesh = line;
+	m_pRenderer->Render(renderable.pCollider->GetHitBox().GetMeshPtr());
 
 	m_pRenderer->SetDrawingMode(Nt::Renderer::DrawingMode::LINES);
-	m_pRenderer->Render(&lineMesh);
+	m_pRenderer->Render(&renderable.pCollider->GetForwardLineMesh());
 
 	m_pRenderer->SetDrawingMode(drawingMode);
 	m_pRenderer->SetLineWidth(1);
